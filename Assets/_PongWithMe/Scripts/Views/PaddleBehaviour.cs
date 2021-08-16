@@ -7,32 +7,19 @@ namespace PongWithMe
         [SerializeField]
         private float _speed = 0.2f;
 
-        private Vector2 _movement = Vector2.zero;
-
+        private PlayerPaddle _player = null;
+        private PaddleMovementBehaviour _movementBehaviour = null;
         
-        public void Initialize()
+        public void Initialize(PlayerPaddle playerPaddle)
         {
+            _player = playerPaddle;
+            _movementBehaviour.Initialize(playerPaddle.PlayerInput, playerPaddle.PaddleDirection, _speed);
         }
 
         private void Awake()
         {
+            _movementBehaviour = GetComponent<PaddleMovementBehaviour>();
         }
-
-        private void FixedUpdate()
-        {
-            if (_movement == Vector2.zero)
-            {
-                return;
-            }
-
-            MovePlatformBy(_movement);
-        }
-
-        private void MovePlatformBy(Vector2 movement)
-        {
-            transform.position += new Vector3(movement.x * _speed, movement.y * _speed, 0);
-        }
-        
     }
 }
 
