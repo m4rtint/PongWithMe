@@ -5,7 +5,7 @@ namespace PongWithMe
 {
     public class BrickPool : ObjectPool<BrickBehaviour>
     {
-        private const int KEY = 213;
+        public static readonly int KEY = 213;
         private const int SPAWN_AMOUNT = 200;
         
         [SerializeField] private BrickBehaviour _prefab = null;
