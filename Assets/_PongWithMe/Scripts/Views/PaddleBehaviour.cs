@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace PongWithMe
 {
@@ -9,18 +7,15 @@ namespace PongWithMe
         [SerializeField]
         private float _speed = 0.2f;
 
-        private PlayerInput _input = null;
         private Vector2 _movement = Vector2.zero;
 
         
         public void Initialize()
         {
-            _input.SwitchCurrentControlScheme("Player_WASD");
         }
 
         private void Awake()
         {
-            _input = GetComponent<PlayerInput>();
         }
 
         private void FixedUpdate()
