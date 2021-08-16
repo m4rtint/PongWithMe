@@ -11,8 +11,7 @@ namespace PongWithMe
             for (int i = 0; i < _playerPaddles.Length; i++)
             {
                 var input = new PongInput(i);
-                var direction = i == 0 ? Direction.Right : Direction.Up;
-                var player = new PlayerPaddle(input, i, direction);
+                var player = new PlayerPaddle(input, i, (Direction) i);
                 _playerPaddles[i].Initialize(player);
             }
         }

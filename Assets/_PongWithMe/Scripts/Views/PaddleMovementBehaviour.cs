@@ -34,12 +34,12 @@ namespace PongWithMe
         {
             if (_playerInput.IsPressingLeft())
             {
-                MovePositionBy(new Vector3(-_speed, 0, 0));
+                MovePositionBy(Vector3.left);
             } 
             
             if (_playerInput.IsPressingRight())
             {
-                MovePositionBy(new Vector3(_speed, 0, 0));
+                MovePositionBy(Vector3.right);
             }
 
             ClampHorizontalMovementIfNeeded();
@@ -49,12 +49,12 @@ namespace PongWithMe
         {
             if (_playerInput.IsPressingUp())
             {
-                MovePositionBy(new Vector3(0, _speed, 0));
+                MovePositionBy(Vector3.up);
             } 
             
             if (_playerInput.IsPressingDown())
             {
-                MovePositionBy(new Vector3(0, -_speed, 0));
+                MovePositionBy(Vector3.down);
             }
 
             ClampVerticalMovementIfNeeded();
@@ -62,7 +62,7 @@ namespace PongWithMe
 
         private void MovePositionBy(Vector3 moveAmount)
         {
-            transform.position += moveAmount;
+            transform.position += moveAmount * _speed;
         }
 
         private void ClampHorizontalMovementIfNeeded()
