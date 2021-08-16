@@ -1,6 +1,5 @@
 using System;
 using Rewired;
-using UnityEngine;
 
 namespace PongWithMe
 {
