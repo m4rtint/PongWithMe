@@ -1,3 +1,4 @@
+using System;
 using Shapes;
 using UnityEngine;
 
@@ -24,6 +25,14 @@ namespace PongWithMe
                 _brick.OnColorSet -= HandleOnColorSet;
                 _brick.OnPositionSet -= HandleOnPositionSet;
                 _brick = null;
+            }
+        }
+
+        private void OnCollisionEnter2D(Collision2D other)
+        {
+            if (other.collider.TryGetComponent(out BallBehaviour ball))
+            {
+                gameObject.SetActive(false);
             }
         }
 
