@@ -12,8 +12,8 @@ namespace PongWithMe
         private void Start()
         {
             new ColorPalette();
-            var boardGenerator = new BoardGenerator();
-            _board = new Board(boardGenerator.Bricks.ToArray());
+            var boardGenerator = new BoardGenerator(2);
+            _board = new Board(boardGenerator.Bricks);
             _bricksBehaviour.Initialize(_board);
             _ballBehaviour.Initialize();
         }

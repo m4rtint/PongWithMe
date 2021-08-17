@@ -7,6 +7,8 @@ namespace PongWithMe
     {
         private Vector3 _position = Vector3.zero;
         private Color _brickColor;
+        private bool _isActive = false;
+        private int _playerOwnedBy;
         
         public Vector3 Position
         {
@@ -28,9 +30,21 @@ namespace PongWithMe
             }
         }
 
+        public bool IsActive
+        {
+            get => _isActive;
+            set
+            {
+                _isActive = value;
+                OnIsActiveSet?.Invoke(value);
+            }
+        }
+
         public event Action<Color> OnColorSet;
 
         public event Action<Vector3> OnPositionSet;
+
+        public event Action<bool> OnIsActiveSet;
     }
 }
 

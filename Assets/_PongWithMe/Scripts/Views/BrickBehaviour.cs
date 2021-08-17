@@ -15,6 +15,7 @@ namespace PongWithMe
             _brick = brick;
             _brick.OnColorSet += HandleOnColorSet;
             _brick.OnPositionSet += HandleOnPositionSet;
+            _brick.OnIsActiveSet += HandleIsActiveSet;
             transform.position = _brick.Position;
         }
 
@@ -24,6 +25,7 @@ namespace PongWithMe
             {
                 _brick.OnColorSet -= HandleOnColorSet;
                 _brick.OnPositionSet -= HandleOnPositionSet;
+                _brick.OnIsActiveSet -= HandleIsActiveSet;
                 _brick = null;
             }
         }
@@ -32,7 +34,7 @@ namespace PongWithMe
         {
             if (other.collider.TryGetComponent(out BallBehaviour ball))
             {
-                gameObject.SetActive(false);
+                _brick.IsActive = false;
             }
         }
 
@@ -46,6 +48,11 @@ namespace PongWithMe
         private void HandleOnPositionSet(Vector3 position)
         {
             transform.position = position;
+        }
+
+        private void HandleIsActiveSet(bool isActive)
+        {
+            gameObject.SetActive(isActive);
         }
         #endregion
     }

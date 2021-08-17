@@ -1,4 +1,3 @@
-using Rewired;
 using UnityEngine;
 
 namespace PongWithMe
@@ -39,7 +38,12 @@ namespace PongWithMe
             _playerInput = input;
             _direction = direction;
         }
+    }
 
+    public struct PlayerProperties
+    {
+        public int PlayerNumber;
+        public Color PlayerColor;
     }
 }
 
