@@ -18,5 +18,17 @@ namespace PongWithMe
             ColorUtility.TryParseHtmlString("#FBFB95", out PastelYellow);
             ColorUtility.TryParseHtmlString("#77DD77", out PastelGreen);
         }
+
+        public static Color PlayerColor(int playerIndex)
+        {
+            return playerIndex switch
+            {
+                0 => PastelBlue,
+                1 => PastelRed,
+                2 => PastelGreen,
+                3 => PastelYellow,
+                _ => PastelGrey
+            };
+        }
     }
 }
