@@ -8,6 +8,8 @@ namespace PongWithMe
         private Vector3 _position = Vector3.zero;
         private Color _brickColor;
         private bool _isActive = false;
+        
+        public int PlayerOwned { get; set; }
 
         public Vector3 Position
         {
