@@ -48,6 +48,14 @@ namespace PongWithMe
 
         private void HandleHorizontal(Vector3 paddlePosition)
         {
+            if (paddlePosition.x < _ball.transform.position.x)
+            {
+                _aiInput.Right = true;
+            } 
+            else if (paddlePosition.x > _ball.transform.position.x)
+            {
+                _aiInput.Left = true;
+            }
         }
 
         private void HandleVertical(Vector3 paddlePosition)
