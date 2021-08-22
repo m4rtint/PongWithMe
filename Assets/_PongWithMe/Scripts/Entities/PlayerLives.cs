@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 
 namespace PongWithMe
@@ -6,19 +7,29 @@ namespace PongWithMe
     {
         private readonly Brick[] _brickLives;
 
+        public event Action<int, int> OnBrickBreak;
+
         public PlayerLives(Brick[] bricks)
         {
             _brickLives = bricks;
-            // Requirements
-            // Know how many lives each player has at all times
-            // Can Destroy a life of choice
-
-            // Keeps track of Brick => life
+            foreach (var brick in bricks)
+            {
+                brick.OnBrickIsActiveSet += HandleOnBrickInactive;
+            }
         }
 
         public int GetPlayerLives(int player)
         {
             return _brickLives.Count(brick => brick.PlayerOwned == player && brick.IsActive);
         }
+        
+        #region Delegate
+
+        private void HandleOnBrickInactive(Brick brick, bool isActivate)
+        {
+            var playerLives = GetPlayerLives(brick.PlayerOwned);
+            OnBrickBreak?.Invoke(brick.PlayerOwned, playerLives);
+        }
+        #endregion
     }
 }

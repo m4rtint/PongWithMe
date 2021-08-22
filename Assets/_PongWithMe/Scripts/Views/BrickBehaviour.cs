@@ -1,4 +1,3 @@
-using System;
 using Shapes;
 using UnityEngine;
 
@@ -13,9 +12,9 @@ namespace PongWithMe
         public void Initialize(Brick brick)
         {
             _brick = brick;
-            _brick.OnColorSet += HandleOnColorSet;
-            _brick.OnPositionSet += HandleOnPositionSet;
-            _brick.OnIsActiveSet += HandleIsActiveSet;
+            _brick.OnBrickColorSet += HandleOnBrickColorSet;
+            _brick.OnBrickPositionSet += HandleOnBrickPositionSet;
+            _brick.OnBrickIsActiveSet += HandleBrickIsActiveSet;
             transform.position = _brick.Position;
         }
 
@@ -23,9 +22,9 @@ namespace PongWithMe
         {
             if (_brick != null)
             {
-                _brick.OnColorSet -= HandleOnColorSet;
-                _brick.OnPositionSet -= HandleOnPositionSet;
-                _brick.OnIsActiveSet -= HandleIsActiveSet;
+                _brick.OnBrickColorSet -= HandleOnBrickColorSet;
+                _brick.OnBrickPositionSet -= HandleOnBrickPositionSet;
+                _brick.OnBrickIsActiveSet -= HandleBrickIsActiveSet;
                 _brick = null;
             }
         }
@@ -40,17 +39,17 @@ namespace PongWithMe
 
         #region Delegate
 
-        private void HandleOnColorSet(Color color)
+        private void HandleOnBrickColorSet(Brick brick, Color color)
         {
             _shape.Color = color;
         }
 
-        private void HandleOnPositionSet(Vector3 position)
+        private void HandleOnBrickPositionSet(Brick brick, Vector3 position)
         {
             transform.position = position;
         }
 
-        private void HandleIsActiveSet(bool isActive)
+        private void HandleBrickIsActiveSet(Brick brick, bool isActive)
         {
             gameObject.SetActive(isActive);
         }

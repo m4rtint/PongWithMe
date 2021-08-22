@@ -9,7 +9,12 @@ namespace PongWithMe
         private Color _brickColor;
         private bool _isActive = false;
         
+        public event Action<Brick, Color> OnBrickColorSet;
+        public event Action<Brick, Vector3> OnBrickPositionSet;
+        public event Action<Brick, bool> OnBrickIsActiveSet;
+        
         public int PlayerOwned { get; set; }
+        
 
         public Vector3 Position
         {
@@ -17,7 +22,7 @@ namespace PongWithMe
             set
             {
                 _position = value;
-                OnPositionSet?.Invoke(value);
+                OnBrickPositionSet?.Invoke(this, value);
             }
         }
 
@@ -27,7 +32,7 @@ namespace PongWithMe
             set
             {
                 _brickColor = value;
-                OnColorSet?.Invoke(value);
+                OnBrickColorSet?.Invoke(this, value);
             }
         }
 
@@ -37,15 +42,10 @@ namespace PongWithMe
             set
             {
                 _isActive = value;
-                OnIsActiveSet?.Invoke(value);
+                OnBrickIsActiveSet?.Invoke(this, value);
             }
         }
 
-        public event Action<Color> OnColorSet;
-
-        public event Action<Vector3> OnPositionSet;
-
-        public event Action<bool> OnIsActiveSet;
     }
 }
 
