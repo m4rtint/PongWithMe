@@ -10,7 +10,7 @@ namespace PongWithMe
         private IInput _playerInput = null;
         private Direction _direction;
 
-        private bool IsHorizontal => _direction == Direction.Left || _direction == Direction.Right;
+        private bool IsPlacementHorizontal => _direction == Direction.Left || _direction == Direction.Right;
 
         public void Initialize(IInput input, Direction direction, float speed = 0.2f)
         {
@@ -21,13 +21,13 @@ namespace PongWithMe
 
         private void Update()
         {
-            if (IsHorizontal)
+            if (IsPlacementHorizontal)
             {
-                HandleHorizontalMovement();
+                HandleVerticalMovement();
             }
             else
             {
-                HandleVerticalMovement();
+                HandleHorizontalMovement();
             }
         }
 

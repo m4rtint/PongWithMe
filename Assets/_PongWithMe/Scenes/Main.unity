@@ -488,6 +488,7 @@ MonoBehaviour:
   _playerPaddles:
   - {fileID: 1205879740}
   - {fileID: 94928649}
+  _ballBehaviour: {fileID: 73626016}
 --- !u!1 &167090931
 GameObject:
   m_ObjectHideFlags: 0
@@ -1662,8 +1663,9 @@ GameObject:
   - component: {fileID: 631710152}
   - component: {fileID: 631710151}
   - component: {fileID: 631710150}
+  - component: {fileID: 631710154}
   m_Layer: 5
-  m_Name: PointCanvas
+  m_Name: LivesCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1753,6 +1755,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &631710154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 631710149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c9a6bd1d864e4f8385a9011d7aa0c17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _topLivesPosition: {fileID: 0}
+  _rightLivesPosition: {fileID: 0}
+  _downLivesPosition: {fileID: 0}
+  _leftLivesPosition: {fileID: 0}
 --- !u!1001 &676989550
 PrefabInstance:
   m_ObjectHideFlags: 0

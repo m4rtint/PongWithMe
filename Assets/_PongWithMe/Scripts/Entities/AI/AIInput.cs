@@ -26,5 +26,13 @@ namespace PongWithMe
         {
             return Right;
         }
+
+        public void ResetInput()
+        {
+            Up = false;
+            Down = false;
+            Left = false;
+            Right = false;
+        }
     }
 }
