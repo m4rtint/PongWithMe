@@ -8,6 +8,7 @@ namespace PongWithMe
 
         private void Start()
         {
+            /// Placeholder - players made somewhere else
             for (int i = 0; i < _playerPaddles.Length; i++)
             {
                 var input = new PongInput(i);

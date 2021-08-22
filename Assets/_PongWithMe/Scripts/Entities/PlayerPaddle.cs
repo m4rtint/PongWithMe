@@ -12,9 +12,7 @@ namespace PongWithMe
         public IInput PlayerInput => _playerInput;
         public Direction PaddleDirection => _direction;
         public Color PlayerColor => ColorPalette.PlayerColor(PlayerNumber);
-
-
-
+        
         public PlayerPaddle(IInput input, int number = 0, Direction direction = Direction.Left)
         {
             PlayerNumber = number;
@@ -27,6 +25,7 @@ namespace PongWithMe
     {
         public int PlayerNumber;
         public Color PlayerColor;
+        public Direction PlayerDirection;
     }
 }
 
