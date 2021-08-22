@@ -3,6 +3,34 @@ using UnityEngine;
 
 namespace PongWithMe
 {
+    public static class AIDifficulty
+    {
+        public enum Difficulty
+        {
+            SIMPLE,
+            EASY,
+            MEDIUM,
+            HARD
+        }
+
+        public static float DifficultyTolerance(Difficulty difficulty)
+        {
+            switch (difficulty)
+            {
+                case Difficulty.SIMPLE:
+                    return 2.0f;
+                case Difficulty.EASY:
+                    return 1.6f;
+                case Difficulty.MEDIUM:
+                    return 1.25f;
+                case Difficulty.HARD:
+                    return 0.75f;
+                default:
+                    return 1.75f;
+            }
+        }
+    }
+    
     public class AIPaddle : IPaddle
     {
         private readonly int _playerNumber;
@@ -10,22 +38,27 @@ namespace PongWithMe
         private readonly AIInput _aiInput;
         private readonly IInput _input;
         private readonly Direction _paddleDirection;
+        private readonly float _tolerance;
 
-        private bool IsPlacementHorizontal => _paddleDirection == Direction.Left || _paddleDirection == Direction.Right;
+        private bool IsMovementVertical => _paddleDirection == Direction.Left || _paddleDirection == Direction.Right;
 
         public IInput Input => _input;
         public Direction PaddleDirection => _paddleDirection;
 
         public Color PlayerColor => ColorPalette.PlayerColor(_playerNumber);
 
-        public AIPaddle(IInput input, int playerNumber, Direction direction, GameObject
-             ball)
+        public AIPaddle(IInput input, 
+            int playerNumber, 
+            Direction direction, 
+            GameObject ball,
+            AIDifficulty.Difficulty difficulty = AIDifficulty.Difficulty.HARD)
         {
             if (ball == null)
             {
                 PanicHelper.Panic(new Exception("AIPaddleBehaviour missing a ball"));
             }
 
+            _tolerance = AIDifficulty.DifficultyTolerance(difficulty);
             _ball = ball;
             _playerNumber = playerNumber;
             _input = input;
@@ -35,38 +68,55 @@ namespace PongWithMe
 
         public void OnFixedUpdate(Vector3 position)
         {
-            _aiInput.ResetInput();
-            if (IsPlacementHorizontal)
+            if (IsMovementVertical)
             {
                 HandleVertical(position);
             }
             else
             {
-                HandleHorizontal(position);
+                HandleHorizontalMovement(position);
             }
         }
 
-        private void HandleHorizontal(Vector3 paddlePosition)
+        private void HandleHorizontalMovement(Vector3 paddlePosition)
         {
-            if (paddlePosition.x < _ball.transform.position.x)
+            var displacement = paddlePosition.x - _ball.transform.position.x;
+            var goLeft = displacement < 0;
+            var shouldMove = Mathf.Abs(displacement) > _tolerance;
+            if (goLeft && shouldMove)
             {
+                _aiInput.Left = false;
                 _aiInput.Right = true;
             } 
-            else if (paddlePosition.x > _ball.transform.position.x)
+            else if (!goLeft && shouldMove)
             {
+                _aiInput.Right = false;
                 _aiInput.Left = true;
+            }
+            else
+            {
+                _aiInput.ResetInput();
             }
         }
 
         private void HandleVertical(Vector3 paddlePosition)
         {
-            if (paddlePosition.y < _ball.transform.position.y)
+            var displacement = paddlePosition.y - _ball.transform.position.y;
+            var goUp = displacement < 0;
+            var shouldMove = Mathf.Abs(displacement) > _tolerance;
+            if (goUp && shouldMove)
             {
+                _aiInput.Down = false;
                 _aiInput.Up = true;
             } 
-            else if (paddlePosition.y > _ball.transform.position.y)
+            else if (!goUp && shouldMove)
             {
+                _aiInput.Up = false;
                 _aiInput.Down = true;
+            }
+            else
+            {
+                _aiInput.ResetInput();
             }
         }
     }

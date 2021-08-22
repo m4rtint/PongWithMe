@@ -15,11 +15,11 @@ namespace PongWithMe
         private void Start()
         {
             var input = new PongInput(0);                
-            var player = new PlayerPaddle(input, 0, Direction.Up);
+            var player = new PlayerPaddle(input, 0, Direction.Right);
             _playerPaddles[0].Initialize(player);
             
             var ai = new AIInput();
-            var aiPaddle = new AIPaddle(ai, 1, Direction.Down, _ballBehaviour.gameObject);
+            var aiPaddle = new AIPaddle(ai, 1, Direction.Left, _ballBehaviour.gameObject);
             _playerPaddles[1].Initialize(aiPaddle);
         }
     }
