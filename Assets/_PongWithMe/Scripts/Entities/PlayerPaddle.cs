@@ -2,30 +2,31 @@ using UnityEngine;
 
 namespace PongWithMe
 {
-    public class PlayerPaddle
+    public interface IPaddle
+    {
+        IInput Input { get; }
+        Direction PaddleDirection { get; }
+        Color PlayerColor { get; }
+    }
+    
+    public class PlayerPaddle : IPaddle
     {
         public int PlayerNumber;
         
         private IInput _playerInput;
         private Direction _direction;
         
-        public IInput PlayerInput => _playerInput;
+        public IInput Input => _playerInput;
         public Direction PaddleDirection => _direction;
         public Color PlayerColor => ColorPalette.PlayerColor(PlayerNumber);
         
-        public PlayerPaddle(IInput input, int number = 0, Direction direction = Direction.Left)
+        public PlayerPaddle(IInput input, int playerNumber, Direction direction = Direction.Left)
         {
-            PlayerNumber = number;
+            PlayerNumber = playerNumber;
             _playerInput = input;
             _direction = direction;
         }
     }
 
-    public struct PlayerProperties
-    {
-        public int PlayerNumber;
-        public Color PlayerColor;
-        public Direction PlayerDirection;
-    }
 }
 

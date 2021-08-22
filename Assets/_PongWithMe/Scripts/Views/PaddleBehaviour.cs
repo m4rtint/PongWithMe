@@ -7,13 +7,18 @@ namespace PongWithMe
         [SerializeField]
         private float _speed = 0.2f;
 
-        private PlayerPaddle _player = null;
+        private IPaddle _player = null;
         private PaddleMovementBehaviour _movementBehaviour = null;
         
-        public void Initialize(PlayerPaddle playerPaddle)
+        public void Initialize(IPaddle playerPaddle)
         {
             _player = playerPaddle;
-            _movementBehaviour.Initialize(playerPaddle.PlayerInput, playerPaddle.PaddleDirection, _speed);
+            _movementBehaviour.Initialize(playerPaddle.Input, playerPaddle.PaddleDirection, _speed);
+            if (playerPaddle is AIPaddle paddle)
+            {
+                var ai = gameObject.AddComponent<AIPaddleBehaviour>();
+                ai.Initialize(paddle);
+            }
         }
 
         private void Awake()

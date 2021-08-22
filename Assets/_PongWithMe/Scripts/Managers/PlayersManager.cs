@@ -5,16 +5,22 @@ namespace PongWithMe
     public class PlayersManager : MonoBehaviour
     {
         [SerializeField] private PaddleBehaviour[] _playerPaddles = null;
-
+        // THIS SHOULD BE INJECTED IN
+        [SerializeField] private BallBehaviour _ballBehaviour = null;
+        public void Initialize(BallBehaviour ball)
+        {
+            
+        }
+        
         private void Start()
         {
-            /// Placeholder - players made somewhere else
-            for (int i = 0; i < _playerPaddles.Length; i++)
-            {
-                var input = new PongInput(i);
-                var player = new PlayerPaddle(input, i, (Direction) i);
-                _playerPaddles[i].Initialize(player);
-            }
+            var input = new PongInput(0);                
+            var player = new PlayerPaddle(input, 0, Direction.Left);
+            _playerPaddles[0].Initialize(player);
+            
+            var ai = new AIInput();
+            var aiPaddle = new AIPaddle(ai, 1, Direction.Right, _ballBehaviour.gameObject);
+            _playerPaddles[1].Initialize(aiPaddle);
         }
     }
 }
