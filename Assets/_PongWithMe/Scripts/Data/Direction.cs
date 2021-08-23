@@ -5,8 +5,8 @@ namespace PongWithMe
 {
     public enum Direction
     {
-        Up,
-        Down,
+        Top,
+        Bottom,
         Left,
         Right
     }
