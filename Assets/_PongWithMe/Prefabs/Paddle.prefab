@@ -73,6 +73,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 0.1
+  _rectangle: {fileID: 2061503327767969308}
 --- !u!114 &839277914599357570
 MonoBehaviour:
   m_ObjectHideFlags: 0
