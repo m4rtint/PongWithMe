@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Shapes;
 using UnityEngine;
 
@@ -5,6 +6,8 @@ namespace PongWithMe
 {
     public class PaddleBehaviour : MonoBehaviour
     {
+        private const float DEATH_ANIMATION_DURATION = 0.5F;
+        
         [SerializeField]
         private float _speed = 0.2f;
         [SerializeField] 
@@ -24,6 +27,7 @@ namespace PongWithMe
             }
 
             SetupStyle();
+            _player.OnIsActiveUpdated += HandleIsActiveUpdated;
         }
 
         private void SetupStyle()
@@ -35,6 +39,22 @@ namespace PongWithMe
         {
             _movementBehaviour = GetComponent<PaddleMovementBehaviour>();
         }
+
+        private void OnDestroy()
+        {
+            _player.OnIsActiveUpdated -= HandleIsActiveUpdated;
+        }
+
+        #region Delegate
+
+        private void HandleIsActiveUpdated(bool active)
+        {
+            if (!active)
+            {
+                transform.DOScale(Vector3.zero, DEATH_ANIMATION_DURATION).SetEase(Ease.InBack);
+            }
+        }
+        #endregion
     }
 }
 

@@ -12,15 +12,27 @@ namespace PongWithMe
         private readonly Direction _paddleDirection;
         private readonly float _tolerance;
         private readonly float _moveLimit;
+        private bool _isActive = false;
 
         private bool IsMovementVertical => _paddleDirection == Direction.Left || _paddleDirection == Direction.Right;
 
+        public event Action<bool> OnIsActiveUpdated;
+
         public IInput Input => _input;
         public Direction PaddleDirection => _paddleDirection;
-
         public Color PlayerColor => ColorPalette.PlayerColor(_playerNumber);
 
         public int PlayerNumber => _playerNumber;
+        
+        public bool IsActive
+        {
+            get => _isActive;
+            set
+            {
+                _isActive = value;
+                OnIsActiveUpdated?.Invoke(value);
+            }
+        }
 
         public AIPaddle(IInput input, 
             int playerNumber, 

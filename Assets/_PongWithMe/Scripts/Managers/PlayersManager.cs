@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace PongWithMe
@@ -12,15 +14,28 @@ namespace PongWithMe
         
         private IBall _ball = null;
         private List<IPaddle> _players = new List<IPaddle>();
+        private IPlayerLives _playerLives = null;
 
         public List<IPaddle> Players => _players;
 
-        public void Initialize(IBall ball)
+        public void Initialize(IBall ball, IPlayerLives lives)
         {
+            _playerLives = lives;
+            _playerLives.OnBrickBreak += HandleOnBrickBreak;
             _ball = ball;
             SetupPlayers();
         }
-        
+
+        private void HandleOnBrickBreak(int brickOwner, int score)
+        {
+            if (score > 0)
+            {
+                return;
+            }
+
+            _players.First(player => player.PlayerNumber == brickOwner).IsActive = false;
+        }
+
         private void SetupPlayers()
         {
             var input = new PongInput(0);                
@@ -42,6 +57,11 @@ namespace PongWithMe
             var aiPaddle3 = new AIPaddle(ai3, 3, Direction.Right, _ball);
             _players.Add(aiPaddle3);
             _rightPaddle.Initialize(aiPaddle3);
+        }
+
+        private void OnDestroy()
+        {
+            _playerLives.OnBrickBreak-= HandleOnBrickBreak;
         }
     }
 }

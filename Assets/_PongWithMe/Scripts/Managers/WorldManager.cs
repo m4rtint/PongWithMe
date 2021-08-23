@@ -21,8 +21,6 @@ namespace PongWithMe
         private void Start()
         {
             new ColorPalette();
-            // Players
-            _playersManager.Initialize(_ballBehaviour);
             
             //Board
             var boardGenerator = new BoardGenerator(AMOUNT_OF_PLAYERS);
@@ -32,6 +30,9 @@ namespace PongWithMe
             
             // Ball
             _ballBehaviour.Initialize();
+            
+            // Players
+            _playersManager.Initialize(_ballBehaviour, _playerLives);
 
             // Goals
             _goalsManager.Initialize(_playerLives);

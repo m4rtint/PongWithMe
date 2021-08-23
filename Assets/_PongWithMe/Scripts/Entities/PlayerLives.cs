@@ -1,13 +1,13 @@
 using System;
 using System.Linq;
 using PerigonGames;
-using UnityEngine;
 
 namespace PongWithMe
 {
     public interface IPlayerLives
     {
-        void BreakBrickOwnedBy(int player);
+        void ForceBrickBreakOwnedBy(int player);
+        event Action<int, int> OnBrickBreak;
     }
     
     public class PlayerLives : IPlayerLives
@@ -29,7 +29,7 @@ namespace PongWithMe
         {
             return _brickLives.Count(brick => brick.PlayerOwned == player && brick.IsActive);
         }
-        
+
         #region Delegate
 
         private void HandleOnBrickInactive(Brick brick, bool isActivate)
@@ -41,13 +41,12 @@ namespace PongWithMe
         
         #region Interface
         
-        public void BreakBrickOwnedBy(int player)
+        public void ForceBrickBreakOwnedBy(int player)
         {
             var arrayOfPlayerLives = _brickLives.Where(brick => brick.PlayerOwned == player && brick.IsActive).ToArray();
             var random = new RandomUtility();
             if (random.NextTryGetElement(arrayOfPlayerLives, out var brick))
             {
-                Debug.Log($"Break Player {player}");
                 brick.IsActive = false;
             }
         }

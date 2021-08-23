@@ -62,7 +62,7 @@ namespace PongWithMe
         #region Delegate
         private void HandleOnGoalHit(IPaddle paddle)
         {
-            _playerLives.BreakBrickOwnedBy(paddle.PlayerNumber);
+            _playerLives.ForceBrickBreakOwnedBy(paddle.PlayerNumber);
         }
         #endregion
     }
