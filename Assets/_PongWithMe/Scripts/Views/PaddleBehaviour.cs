@@ -20,14 +20,18 @@ namespace PongWithMe
         {
             _player = playerPaddle;
             _movementBehaviour.Initialize(playerPaddle.Input, playerPaddle.PaddleDirection, _speed);
+            setupAIIfNeeded(playerPaddle);
+            SetupStyle();
+            _player.OnIsActiveUpdated += HandleIsActiveUpdated;
+        }
+
+        private void setupAIIfNeeded(IPaddle playerPaddle)
+        {
             if (playerPaddle is AIPaddle paddle)
             {
                 var ai = gameObject.AddComponent<AIPaddleBehaviour>();
                 ai.Initialize(paddle);
             }
-
-            SetupStyle();
-            _player.OnIsActiveUpdated += HandleIsActiveUpdated;
         }
 
         private void SetupStyle()
