@@ -20,6 +20,8 @@ namespace PongWithMe
 
         public Color PlayerColor => ColorPalette.PlayerColor(_playerNumber);
 
+        public int PlayerNumber => _playerNumber;
+
         public AIPaddle(IInput input, 
             int playerNumber, 
             Direction direction, 

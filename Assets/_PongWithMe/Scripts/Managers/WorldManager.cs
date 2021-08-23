@@ -17,14 +17,21 @@ namespace PongWithMe
         private void Start()
         {
             new ColorPalette();
+            // Players
             _playersManager.Initialize(_ballBehaviour);
-            SetupGoals();
             
+            //Board
             var boardGenerator = new BoardGenerator(AMOUNT_OF_PLAYERS);
             _playerLives = new PlayerLives(boardGenerator.Bricks);
             _board = new Board(boardGenerator.Bricks);
             _bricksBehaviour.Initialize(_board);
+            
+            // Ball
             _ballBehaviour.Initialize();
+
+            // Goals
+            _goalsManager.Initialize(_playerLives);
+            SetupGoals();
         }
 
         private void SetupGoals()

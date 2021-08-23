@@ -10,6 +10,13 @@ namespace PongWithMe
         [SerializeField] private GoalBehaviour _bottomGoal = null;
         [SerializeField] private GoalBehaviour _rightGoal = null;
 
+        private IPlayerLives _playerLives = null;
+        
+        public void Initialize(IPlayerLives playerLives)
+        {
+            _playerLives = playerLives;
+        }
+        
         public void Set(IPaddle paddle)
         {
             switch (paddle.PaddleDirection)
@@ -31,5 +38,32 @@ namespace PongWithMe
                     break;
             }
         }
+
+        #region Mono
+        private void Awake()
+        {
+            _topGoal.OnGoalHit += HandleOnGoalHit;
+            _bottomGoal.OnGoalHit += HandleOnGoalHit;
+            _leftGoal.OnGoalHit += HandleOnGoalHit;
+            _rightGoal.OnGoalHit += HandleOnGoalHit;
+        }
+
+        private void OnDestroy()
+        {
+            _topGoal.OnGoalHit -= HandleOnGoalHit;
+            _bottomGoal.OnGoalHit -= HandleOnGoalHit;
+            _leftGoal.OnGoalHit -= HandleOnGoalHit;
+            _rightGoal.OnGoalHit -= HandleOnGoalHit;
+        }
+        
+        #endregion
+        
+        
+        #region Delegate
+        private void HandleOnGoalHit(IPaddle paddle)
+        {
+            _playerLives.BreakBrickOwnedBy(paddle.PlayerNumber);
+        }
+        #endregion
     }
 }

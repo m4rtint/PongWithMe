@@ -8,6 +8,8 @@ namespace PongWithMe
     {
         private IPaddle _player = null;
         private SpriteRenderer _renderer = null;
+
+        public event Action<IPaddle> OnGoalHit;
         
         public void Set(IPaddle player)
         {
@@ -27,9 +29,9 @@ namespace PongWithMe
 
         private void OnCollisionEnter2D(Collision2D other)
         {
-            if (other.collider.TryGetComponent<BallBehaviour>(out var ball))
+            if (other.collider.TryGetComponent<BallBehaviour>(out _))
             {
-                // Minus health   
+                OnGoalHit?.Invoke(_player);
             }
         }
     }

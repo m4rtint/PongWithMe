@@ -1,12 +1,18 @@
 using System;
 using System.Linq;
+using PerigonGames;
 
 namespace PongWithMe
 {
-    public class PlayerLives
+    public interface IPlayerLives
+    {
+        void BreakBrickOwnedBy(int player);
+    }
+    
+    public class PlayerLives : IPlayerLives
     {
         private readonly Brick[] _brickLives;
-
+        
         public event Action<int, int> OnBrickBreak;
 
         public PlayerLives(Brick[] bricks)
@@ -29,6 +35,19 @@ namespace PongWithMe
         {
             var playerLives = GetPlayerLives(brick.PlayerOwned);
             OnBrickBreak?.Invoke(brick.PlayerOwned, playerLives);
+        }
+        #endregion
+        
+        #region Interface
+        
+        public void BreakBrickOwnedBy(int player)
+        {
+            var arrayOfPlayerLives = _brickLives.Where(x => x.PlayerOwned == player).ToArray();
+            var random = new RandomUtility();
+            if (random.NextTryGetElement(arrayOfPlayerLives, out var brick))
+            {
+                brick.IsActive = false;
+            }
         }
         #endregion
     }

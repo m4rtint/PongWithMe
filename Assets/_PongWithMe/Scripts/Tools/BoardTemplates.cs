@@ -1,6 +1,6 @@
 namespace PongWithMe
 {
-    public class BoardTemplates
+    public static class BoardTemplates
     {
         public static bool[] OddBricks(int size)
         {
