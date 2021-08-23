@@ -50,7 +50,7 @@ namespace PongWithMe
 
         private Brick GenerateBrickToPlayer(Vector3 position, int player)
         {
-            var brick = new Brick {Position = position, BrickColor = ColorPalette.PlayerColor(player)};
+            var brick = new Brick {Position = position, BrickColor = ColorPalette.PlayerColor(player), PlayerOwned = player};
             return brick;
         }
 

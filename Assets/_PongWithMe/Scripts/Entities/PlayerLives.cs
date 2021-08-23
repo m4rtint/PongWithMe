@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using PerigonGames;
+using UnityEngine;
 
 namespace PongWithMe
 {
@@ -42,10 +43,12 @@ namespace PongWithMe
         
         public void BreakBrickOwnedBy(int player)
         {
-            var arrayOfPlayerLives = _brickLives.Where(x => x.PlayerOwned == player).ToArray();
+            
+            var arrayOfPlayerLives = _brickLives.Where(brick => brick.PlayerOwned == player && brick.IsActive).ToArray();
             var random = new RandomUtility();
             if (random.NextTryGetElement(arrayOfPlayerLives, out var brick))
             {
+                Debug.Log($"Break Player {player}");
                 brick.IsActive = false;
             }
         }
