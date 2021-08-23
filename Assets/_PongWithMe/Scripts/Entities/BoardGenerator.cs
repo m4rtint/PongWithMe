@@ -11,23 +11,18 @@ namespace PongWithMe
         private const float POSITION_LIMIT = 3f;
         private const float PADDING = 0.5f;
         
-        private readonly Brick[] _bricks = new Brick[]{};
-        private readonly int _numberOfPlayers = 0;
-        
-        private int _maxNumberOfBricks = 0;
-
+        private readonly Brick[] _bricks;
         public Brick[] Bricks => _bricks;
 
 
         // The a template of the look of the bricks will be passed in in the future
         public BoardGenerator(int amountOfPlayers, bool[] boardTemplate = null)
         {
-            _numberOfPlayers = amountOfPlayers;
-            SetMaxNumberOfBricks();
-            boardTemplate ??= BoardTemplates.OddBricks(_maxNumberOfBricks);
+            var maxNumberOfBricks = SetMaxNumberOfBricks();
+            boardTemplate ??= BoardTemplates.OddBricks(maxNumberOfBricks);
             ValidateBoard(amountOfPlayers, boardTemplate);
             var separatedLives = SeparateLives(amountOfPlayers, boardTemplate);
-            var playerOrder = GeneratePlayerBrickOrder(separatedLives);
+            var playerOrder = GeneratePlayerBrickOrder(separatedLives, amountOfPlayers);
             _bricks = BuildBoard(playerOrder, boardTemplate);
         }
 
@@ -59,13 +54,13 @@ namespace PongWithMe
             return brick;
         }
 
-        private Stack<int> GeneratePlayerBrickOrder(int[] separatedLives)
+        private Stack<int> GeneratePlayerBrickOrder(int[] separatedLives, int numberOfPlayers)
         {
             var randomGenerator = new RandomUtility();
             var stackOfPlayerLives = new Stack<int>();
-            while (separatedLives.Count(x => x == 0) != _numberOfPlayers)
+            while (separatedLives.Count(x => x == 0) != numberOfPlayers)
             {
-                var nextPlayer = randomGenerator.NextInt(0, _numberOfPlayers);
+                var nextPlayer = randomGenerator.NextInt(0, numberOfPlayers);
                 if (separatedLives[nextPlayer] > 0)
                 {
                     separatedLives[nextPlayer]--;
@@ -88,10 +83,10 @@ namespace PongWithMe
             return playerLives;
         }
 
-        private void SetMaxNumberOfBricks()
+        private int SetMaxNumberOfBricks()
         {
             var oneSideOfBoard =((POSITION_LIMIT * 2) / PADDING) + 1;
-            _maxNumberOfBricks = (int) Math.Ceiling(Math.Pow(oneSideOfBoard, 2));
+            return (int) Math.Ceiling(Math.Pow(oneSideOfBoard, 2));
         }
 
         private void ValidateBoard(int numberOfPlayers, bool[] boardTemplate)

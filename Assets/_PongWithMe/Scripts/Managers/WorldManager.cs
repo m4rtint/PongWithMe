@@ -4,6 +4,8 @@ namespace PongWithMe
 {
     public class WorldManager : MonoBehaviour
     {
+        private const int AMOUNT_OF_PLAYERS = 4;
+        
         [SerializeField] private BricksBehaviour _bricksBehaviour = null;
         [SerializeField] private BallBehaviour _ballBehaviour = null;
         
@@ -13,7 +15,7 @@ namespace PongWithMe
         private void Start()
         {
             new ColorPalette();
-            var boardGenerator = new BoardGenerator(2);
+            var boardGenerator = new BoardGenerator(AMOUNT_OF_PLAYERS);
             _playerLives = new PlayerLives(boardGenerator.Bricks);
             _board = new Board(boardGenerator.Bricks);
             _bricksBehaviour.Initialize(_board);
