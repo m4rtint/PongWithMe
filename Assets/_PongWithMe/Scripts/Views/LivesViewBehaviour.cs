@@ -7,6 +7,8 @@ namespace PongWithMe
 {
     public class LivesViewBehaviour : MonoBehaviour
     {
+        private const string PLAYER_LIVES_TEXT = "{0} Lives";
+        
         [SerializeField] private TMP_Text _topLivesPosition = null;
         [SerializeField] private TMP_Text _rightLivesPosition = null;
         [SerializeField] private TMP_Text _bottomLivesPosition = null;
@@ -65,7 +67,7 @@ namespace PongWithMe
 
         private void SetLivesText(TMP_Text textView, int score)
         {
-            textView.SetText("{0} Lives", score);
+            textView.SetText(PLAYER_LIVES_TEXT, score);
         }
 
         private void OnDestroy()
