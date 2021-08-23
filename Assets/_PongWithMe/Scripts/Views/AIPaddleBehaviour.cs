@@ -12,9 +12,9 @@ namespace PongWithMe
             _paddle = paddle;
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
-            _paddle.OnFixedUpdate(transform.position);
+            _paddle.OnUpdate(transform.position);
         }
     }
 }

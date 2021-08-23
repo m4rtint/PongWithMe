@@ -11,6 +11,7 @@ namespace PongWithMe
         private readonly IInput _input;
         private readonly Direction _paddleDirection;
         private readonly float _tolerance;
+        private readonly float _moveLimit;
 
         private bool IsMovementVertical => _paddleDirection == Direction.Left || _paddleDirection == Direction.Right;
 
@@ -23,7 +24,8 @@ namespace PongWithMe
             int playerNumber, 
             Direction direction, 
             IBall ball,
-            AIDifficulty.Difficulty difficulty = AIDifficulty.Difficulty.EASY)
+            AIDifficulty.Difficulty difficulty = AIDifficulty.Difficulty.HARD, 
+            float moveLimit = PaddleMovementBehaviour.MOVE_LIMIT)
         {
             if (ball == null)
             {
@@ -36,9 +38,10 @@ namespace PongWithMe
             _input = input;
             _aiInput = input as AIInput;
             _paddleDirection = direction;
+            _moveLimit = moveLimit;
         }
 
-        public void OnFixedUpdate(Vector3 position)
+        public void OnUpdate(Vector3 position)
         {
             if (IsMovementVertical)
             {
@@ -68,6 +71,7 @@ namespace PongWithMe
             else
             {
                 _aiInput.ResetInput();
+                MoveAwayIfUnderPaddle(paddlePosition);
             }
         }
 
@@ -89,6 +93,82 @@ namespace PongWithMe
             else
             {
                 _aiInput.ResetInput();
+                MoveAwayIfUnderPaddle(paddlePosition);
+            }
+        }
+
+        private void MoveAwayIfUnderPaddle(Vector3 paddlePosition)
+        {
+            switch (_paddleDirection)
+            {
+                case Direction.Top:
+                case Direction.Bottom:
+                    if (IsUnderPaddle(paddlePosition))
+                    {
+                        MoveAwayFromBall(paddlePosition);
+                    }
+                    break;
+                case Direction.Left:
+                case Direction.Right:
+                    if (IsUnderPaddle(paddlePosition))
+                    {
+                        MoveAwayFromBall(paddlePosition);
+                    }
+                    break;
+                default:
+                    PanicHelper.Panic(new Exception("Paddle should always have a direction"));
+                    return;
+            }
+        }
+
+        private bool IsUnderPaddle(Vector3 paddlePosition)
+        {
+            switch (_paddleDirection)
+            {
+                case Direction.Top:
+                    return _ball.GetPosition.y > paddlePosition.y;
+                case Direction.Bottom:
+                    return _ball.GetPosition.y < paddlePosition.y;
+                case Direction.Left:
+                    return _ball.GetPosition.x < paddlePosition.x;
+                case Direction.Right:
+                    return _ball.GetPosition.x > paddlePosition.x;
+                default:
+                    PanicHelper.Panic(new Exception("Paddle should always have a direction"));
+                    return false;
+            }
+        }
+
+        private void MoveAwayFromBall(Vector3 paddlePosition)
+        {
+            switch (_paddleDirection)
+            {
+                case Direction.Top:
+                case Direction.Bottom:
+                    if (paddlePosition.x < _moveLimit / 2)
+                    {
+                        _aiInput.Right = true;
+                    }
+                    else
+                    {
+                        _aiInput.Left = true;
+                    }
+
+                    break;
+                case Direction.Left:
+                case Direction.Right:
+                    if (paddlePosition.y < _moveLimit / 2)
+                    {
+                        _aiInput.Up = true;
+                    }
+                    else
+                    {
+                        _aiInput.Down = true;
+                    }
+                    break;
+                default:
+                    PanicHelper.Panic(new Exception("Paddle should always have a direction"));
+                    break;
             }
         }
     }

@@ -4,7 +4,7 @@ namespace PongWithMe
 {
     public class PaddleMovementBehaviour : MonoBehaviour
     {
-        private const float MOVE_LIMIT = 3F;
+        public const float MOVE_LIMIT = 3F;
         
         private float _speed = 0.2f;
         private IInput _playerInput = null;
