@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace PongWithMe
@@ -10,6 +11,9 @@ namespace PongWithMe
         [SerializeField] private BallBehaviour _ballBehaviour = null;
         [SerializeField] private PlayersManager _playersManager = null;
         [SerializeField] private GoalsManager _goalsManager = null;
+        
+        [Title("User Interface")]
+        [SerializeField] private LivesViewBehaviour _livesView = null;
         
         private Board _board = null;
         private PlayerLives _playerLives = null;
@@ -32,6 +36,9 @@ namespace PongWithMe
             // Goals
             _goalsManager.Initialize(_playerLives);
             SetupGoals();
+            
+            // Interface
+            _livesView.Initialize(_playerLives, _playersManager.Players);
         }
 
         private void SetupGoals()

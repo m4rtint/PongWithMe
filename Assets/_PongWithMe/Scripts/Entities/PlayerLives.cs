@@ -43,7 +43,6 @@ namespace PongWithMe
         
         public void BreakBrickOwnedBy(int player)
         {
-            
             var arrayOfPlayerLives = _brickLives.Where(brick => brick.PlayerOwned == player && brick.IsActive).ToArray();
             var random = new RandomUtility();
             if (random.NextTryGetElement(arrayOfPlayerLives, out var brick))

@@ -304,6 +304,7 @@ MonoBehaviour:
   _ballBehaviour: {fileID: 73626016}
   _playersManager: {fileID: 129268814}
   _goalsManager: {fileID: 596599355}
+  _livesView: {fileID: 631710154}
 --- !u!1001 &39775905
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1447,10 +1448,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c9a6bd1d864e4f8385a9011d7aa0c17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _topLivesPosition: {fileID: 0}
-  _rightLivesPosition: {fileID: 0}
-  _downLivesPosition: {fileID: 0}
-  _leftLivesPosition: {fileID: 0}
+  _topLivesPosition: {fileID: 568370954}
+  _rightLivesPosition: {fileID: 12602511}
+  _bottomLivesPosition: {fileID: 2140990081}
+  _leftLivesPosition: {fileID: 944535072}
 --- !u!1001 &676989550
 PrefabInstance:
   m_ObjectHideFlags: 0
