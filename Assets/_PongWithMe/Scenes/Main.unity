@@ -302,6 +302,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bricksBehaviour: {fileID: 258274324}
   _ballBehaviour: {fileID: 73626016}
+  _playersManager: {fileID: 129268814}
 --- !u!1 &54314499
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,12 +486,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbdab4cac01a29143a1a1b173e5bcd02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerPaddles:
-  - {fileID: 1721664193}
-  - {fileID: 1205879740}
-  - {fileID: 882775437}
-  - {fileID: 94928649}
-  _ballBehaviour: {fileID: 73626016}
+  _topPaddle: {fileID: 1721664193}
+  _leftPaddle: {fileID: 1205879740}
+  _bottomPaddle: {fileID: 882775437}
+  _rightPaddle: {fileID: 94928649}
 --- !u!1 &167090931
 GameObject:
   m_ObjectHideFlags: 0

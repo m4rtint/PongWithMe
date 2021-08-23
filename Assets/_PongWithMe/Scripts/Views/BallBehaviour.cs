@@ -2,12 +2,19 @@ using UnityEngine;
 
 namespace PongWithMe
 {
-    public class BallBehaviour : MonoBehaviour
+    public interface IBall
+    {
+        Vector3 GetPosition { get; }    
+    }
+    
+    public class BallBehaviour : MonoBehaviour, IBall
     {
         [SerializeField] private float _maxForce = 10f;
         [SerializeField] private float _minForce = 5f;
         private Rigidbody2D _rigidbody = null;
-
+        
+        public Vector3 GetPosition => transform.position;
+        
         public void Initialize()
         {
             _rigidbody.AddForce(Vector3.one * _minForce);    

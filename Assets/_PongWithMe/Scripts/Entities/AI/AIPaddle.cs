@@ -6,7 +6,7 @@ namespace PongWithMe
     public class AIPaddle : IPaddle
     {
         private readonly int _playerNumber;
-        private readonly GameObject _ball;
+        private readonly IBall _ball;
         private readonly AIInput _aiInput;
         private readonly IInput _input;
         private readonly Direction _paddleDirection;
@@ -22,8 +22,8 @@ namespace PongWithMe
         public AIPaddle(IInput input, 
             int playerNumber, 
             Direction direction, 
-            GameObject ball,
-            AIDifficulty.Difficulty difficulty = AIDifficulty.Difficulty.HARD)
+            IBall ball,
+            AIDifficulty.Difficulty difficulty = AIDifficulty.Difficulty.EASY)
         {
             if (ball == null)
             {
@@ -52,7 +52,7 @@ namespace PongWithMe
 
         private void HandleHorizontalMovement(Vector3 paddlePosition)
         {
-            var displacement = paddlePosition.x - _ball.transform.position.x;
+            var displacement = paddlePosition.x - _ball.GetPosition.x;
             var goLeft = displacement < 0;
             var shouldMove = Mathf.Abs(displacement) > _tolerance;
             if (goLeft && shouldMove)
@@ -73,7 +73,7 @@ namespace PongWithMe
 
         private void HandleVertical(Vector3 paddlePosition)
         {
-            var displacement = paddlePosition.y - _ball.transform.position.y;
+            var displacement = paddlePosition.y - _ball.GetPosition.y;
             var goUp = displacement < 0;
             var shouldMove = Mathf.Abs(displacement) > _tolerance;
             if (goUp && shouldMove)
