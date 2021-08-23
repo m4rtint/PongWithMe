@@ -26,24 +26,8 @@ namespace PongWithMe
         {
             foreach (var paddle in players)
             {
-                switch (paddle.PaddleDirection)
-                {
-                    case Direction.Top:
-                        _topLivesPosition.color = paddle.PlayerColor;
-                        break;
-                    case Direction.Bottom:
-                        _bottomLivesPosition.color = paddle.PlayerColor;
-                        break;
-                    case Direction.Left:
-                        _leftLivesPosition.color = paddle.PlayerColor;
-                        break;
-                    case Direction.Right:
-                        _rightLivesPosition.color = paddle.PlayerColor;
-                        break;
-                    default:
-                        PanicHelper.Panic(new Exception("Paddle should always have a direction"));
-                        return;
-                }
+                var label = GetLivesTextLabel(paddle.PaddleDirection);
+                label.color = paddle.PlayerColor;
             }
         }
 
@@ -57,23 +41,25 @@ namespace PongWithMe
         
         private void HandleOnScoreUpdate(Direction direction, int score)
         {
+            var label = GetLivesTextLabel(direction);
+            SetLivesText(label, score);
+        }
+
+        private TMP_Text GetLivesTextLabel(Direction direction)
+        {
             switch (direction)
             {
                 case Direction.Top:
-                    SetLivesText(_topLivesPosition, score);
-                    break;
+                    return _topLivesPosition;
                 case Direction.Bottom:
-                    SetLivesText(_bottomLivesPosition, score);
-                    break;
+                    return _bottomLivesPosition;
                 case Direction.Left:
-                    SetLivesText(_leftLivesPosition, score);
-                    break;
+                    return _leftLivesPosition;
                 case Direction.Right:
-                    SetLivesText(_rightLivesPosition, score);
-                    break;
+                    return _rightLivesPosition;
                 default:
                     PanicHelper.Panic(new Exception("Paddle should always have a direction"));
-                    return;
+                    return _topLivesPosition;
             }
         }
 
@@ -85,45 +71,6 @@ namespace PongWithMe
         private void OnDestroy()
         {
             _viewModel.OnScoreUpdate -= HandleOnScoreUpdate;
-        }
-    }
-
-    public class LivesViewModel
-    {
-        private PlayerLives _playersLives = null;
-        private List<IPaddle> _players = null;
-
-        public event Action<Direction, int> OnScoreUpdate;
-
-        public LivesViewModel(PlayerLives lives, List<IPaddle> players)
-        {
-            _players = players;
-            _playersLives = lives;
-            _playersLives.OnBrickBreak += HandleOnBrickBreak;
-        }
-
-        public int NumberOfLivesFor(int owner)
-        {
-            return _playersLives.GetPlayerLives(owner);
-        }
-
-        private void HandleOnBrickBreak(int brickOwnerNumber, int numberOfLives)
-        {
-            var paddle = GetPlayerPaddle(brickOwnerNumber);
-            OnScoreUpdate?.Invoke(paddle.PaddleDirection, numberOfLives);
-        }
-        
-        private IPaddle GetPlayerPaddle(int brickOwnerNumber) 
-        {
-            foreach (var player in _players)
-            {
-                if (player.PlayerNumber == brickOwnerNumber)
-                {
-                    return player;
-                }
-            }
-
-            return null;
         }
     }
 }
