@@ -5,15 +5,18 @@ namespace PongWithMe
     public class PaddleMovementBehaviour : MonoBehaviour
     {
         public const float MOVE_LIMIT = 3F;
+        private const float ROTATION_AMOUNT = 20f;
         
         private float _speed = 0.2f;
         private IInput _playerInput = null;
         private Direction _direction;
+        private float _rotationAngle = 0;
 
         private bool IsPlacementHorizontal => _direction == Direction.Left || _direction == Direction.Right;
 
         public void Initialize(IInput input, Direction direction, float speed = 0.2f)
-        {
+        {            
+            _rotationAngle = transform.localRotation.eulerAngles.z;
             _playerInput = input;
             _direction = direction;
             _speed = speed;
@@ -21,6 +24,7 @@ namespace PongWithMe
 
         private void Update()
         {
+            ResetRotation();
             if (IsPlacementHorizontal)
             {
                 HandleVerticalMovement();
@@ -43,6 +47,15 @@ namespace PongWithMe
                 MovePositionBy(Vector3.right);
             }
 
+            if (_playerInput.IsPressingDown())
+            {
+                RotateBodyPositive();
+            } 
+            else if (_playerInput.IsPressingUp())
+            {
+                RotateBodyNegative();
+            }
+
             ClampHorizontalMovementIfNeeded();
         }
         
@@ -57,8 +70,32 @@ namespace PongWithMe
             {
                 MovePositionBy(Vector3.down);
             }
+            
+            if (_playerInput.IsPressingLeft())
+            {
+                RotateBodyPositive();
+            } 
+            else if (_playerInput.IsPressingRight())
+            {
+                RotateBodyNegative();
+            }
 
             ClampVerticalMovementIfNeeded();
+        }
+
+        private void RotateBodyPositive()
+        {
+            transform.localRotation = Quaternion.Euler(0, 0, _rotationAngle + ROTATION_AMOUNT);
+        }
+
+        private void RotateBodyNegative()
+        {
+            transform.localRotation = Quaternion.Euler(0, 0, _rotationAngle - ROTATION_AMOUNT);
+        }
+
+        private void ResetRotation()
+        {
+            transform.localRotation = Quaternion.Euler(0, 0, _rotationAngle);
         }
 
         private void MovePositionBy(Vector3 moveAmount)

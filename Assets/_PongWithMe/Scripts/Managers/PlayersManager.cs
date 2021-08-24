@@ -39,31 +39,30 @@ namespace PongWithMe
         private void SetupPlayers()
         {
             var input = new PongInput(0);                
-            var player = new PlayerPaddle(input, 0, Direction.Top);
+            var player = new PlayerPaddle(input, 0, Direction.Left);
             _players.Add(player);
-            _topPaddle.Initialize(player);
+            _leftPaddle.Initialize(player);
             
             var input2 = new PongInput(1);  
-            var player2 = new PlayerPaddle(input2, 1, Direction.Bottom);
+            var player2 = new PlayerPaddle(input2, 1, Direction.Right);
             _players.Add(player2);
-            _bottomPaddle.Initialize(player2);
+            _rightPaddle.Initialize(player2);
             
             var ai = new AIInput();
-            var aiPaddle = new AIPaddle(ai, 2, Direction.Left, _ball);
+            var aiPaddle = new AIPaddle(ai, 2, Direction.Top, _ball);
             _players.Add(aiPaddle);
-            _leftPaddle.Initialize(aiPaddle);
+            _topPaddle.Initialize(aiPaddle);
             /*
             var ai2 = new AIInput();
             var aiPaddle2 = new AIPaddle(ai2, 2, Direction.Bottom, _ball);
             _players.Add(aiPaddle2);
             _bottomPaddle.Initialize(aiPaddle2);
             */
-
             
             var ai3 = new AIInput();
-            var aiPaddle3 = new AIPaddle(ai3, 3, Direction.Right, _ball);
+            var aiPaddle3 = new AIPaddle(ai3, 3, Direction.Bottom, _ball);
             _players.Add(aiPaddle3);
-            _rightPaddle.Initialize(aiPaddle3);
+            _bottomPaddle.Initialize(aiPaddle3);
         }
 
         private void OnDestroy()
