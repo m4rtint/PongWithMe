@@ -1,11 +1,15 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace PongWithMe
 {
-    public class PlayersManager : MonoBehaviour
+    public interface IWinningPlayer
+    {
+        IPaddle GetWinningPlayer();
+    }
+    
+    public class PlayersManager : MonoBehaviour, IWinningPlayer
     {
         [SerializeField] private PaddleBehaviour _topPaddle = null;
         [SerializeField] private PaddleBehaviour _leftPaddle = null;
@@ -24,6 +28,25 @@ namespace PongWithMe
             _playerLives.OnBrickBreak += HandleOnBrickBreak;
             _ball = ball;
             SetupPlayers();
+        }
+
+        public IPaddle GetWinningPlayer()
+        {
+            var playersAlive = 0;
+            foreach (var paddle in _players)
+            {
+                if (paddle.IsActive)
+                {
+                    playersAlive++;
+                }
+            }
+
+            if (playersAlive > 1)
+            {
+                return null;
+            }
+
+            return _players.FirstOrDefault(paddle => paddle.IsActive);
         }
 
         private void HandleOnBrickBreak(int brickOwner, int score)
@@ -69,6 +92,8 @@ namespace PongWithMe
         {
             _playerLives.OnBrickBreak-= HandleOnBrickBreak;
         }
+
+
     }
 }
 

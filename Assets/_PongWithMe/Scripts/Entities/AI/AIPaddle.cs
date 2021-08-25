@@ -12,7 +12,7 @@ namespace PongWithMe
         private readonly Direction _paddleDirection;
         private readonly float _tolerance;
         private readonly float _moveLimit;
-        private bool _isActive = false;
+        private bool _isActive = true;
 
         private bool IsMovementVertical => _paddleDirection == Direction.Left || _paddleDirection == Direction.Right;
 

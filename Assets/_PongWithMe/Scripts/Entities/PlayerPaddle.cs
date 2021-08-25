@@ -19,7 +19,7 @@ namespace PongWithMe
         private readonly int _playerNumber;
         private IInput _playerInput;
         private Direction _direction;
-        private bool _isActive = false;
+        private bool _isActive = true;
 
         public event Action<bool> OnIsActiveUpdated;
         

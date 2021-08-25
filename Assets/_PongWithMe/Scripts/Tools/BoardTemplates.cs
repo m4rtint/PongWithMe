@@ -15,5 +15,16 @@ namespace PongWithMe
             
             return array;
         }
+        
+        
+        public static bool[] FourLives(int size)
+        {
+            var array = new bool[size];
+            array[0] = true;
+            array[1] = true;
+            array[2] = true;
+            array[3] = true;
+            return array;
+        }
     }
 }

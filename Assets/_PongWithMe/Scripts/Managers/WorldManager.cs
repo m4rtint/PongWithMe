@@ -49,7 +49,7 @@ namespace PongWithMe
             
             // Interface
             _livesView.Initialize(_playerLives, _playersManager.Players);
-            _gameOverView.Initialize();
+            _gameOverView.Initialize(_playersManager);
         }
 
         private void OnDestroy()

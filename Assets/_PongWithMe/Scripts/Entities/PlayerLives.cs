@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using PerigonGames;
 
@@ -15,7 +14,7 @@ namespace PongWithMe
     {
         private readonly Brick[] _brickLives;
         private readonly int _amountOfPlayers;
-        
+
         public event Action<int, int> OnBrickBreak;
 
         public PlayerLives(Brick[] bricks, int amountOfPlayers)
