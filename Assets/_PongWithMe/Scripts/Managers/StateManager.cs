@@ -6,6 +6,7 @@ namespace PongWithMe
     {
         Play,
         Animating,
+        EndGame,
         GameOver
     }
 

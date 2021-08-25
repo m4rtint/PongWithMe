@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using PerigonGames;
 
@@ -13,12 +14,14 @@ namespace PongWithMe
     public class PlayerLives : IPlayerLives
     {
         private readonly Brick[] _brickLives;
+        private readonly int _amountOfPlayers;
         
         public event Action<int, int> OnBrickBreak;
 
-        public PlayerLives(Brick[] bricks)
+        public PlayerLives(Brick[] bricks, int amountOfPlayers)
         {
             _brickLives = bricks;
+            _amountOfPlayers = amountOfPlayers;
             foreach (var brick in bricks)
             {
                 brick.OnBrickIsActiveSet += HandleOnBrickInactive;
@@ -30,12 +33,30 @@ namespace PongWithMe
             return _brickLives.Count(brick => brick.PlayerOwned == player && brick.IsActive);
         }
 
+        private bool HasGameEnded()
+        {
+            var playersAlive = 0;
+            for (int i = 0; i < _amountOfPlayers; i++)
+            {
+                if (GetPlayerLives(i) > 0)
+                {
+                    playersAlive++;
+                }
+            }
+
+            return playersAlive == 1;
+        }
+
         #region Delegate
 
         private void HandleOnBrickInactive(Brick brick, bool isActivate)
         {
             var playerLives = GetPlayerLives(brick.PlayerOwned);
             OnBrickBreak?.Invoke(brick.PlayerOwned, playerLives);
+            if (HasGameEnded())
+            {
+                StateManager.Instance.SetState(State.EndGame);
+            }
         }
         #endregion
         

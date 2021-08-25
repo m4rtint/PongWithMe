@@ -55,7 +55,9 @@ namespace PongWithMe
         {
             if (!active)
             {
-                transform.DOScale(Vector3.zero, DEATH_ANIMATION_DURATION).SetEase(Ease.InBack);
+                transform.DOScale(Vector3.zero, DEATH_ANIMATION_DURATION)
+                    .SetEase(Ease.InBack)
+                    .SetUpdate(true);
             }
         }
         #endregion

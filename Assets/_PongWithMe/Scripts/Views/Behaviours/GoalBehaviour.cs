@@ -22,7 +22,9 @@ namespace PongWithMe
 
         private void HandleIsActiveUpdated(bool active)
         {
-            _renderer.DOColor(Color.clear, COLOR_CHANGE_ANIMATION_DURATION).OnComplete(() =>
+            _renderer.DOColor(Color.clear, COLOR_CHANGE_ANIMATION_DURATION)
+                .SetUpdate(true)
+                .OnComplete(() =>
             {
                 transform.localScale = Vector3.zero;
             });

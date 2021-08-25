@@ -1,5 +1,4 @@
 using System;
-using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -16,6 +15,7 @@ namespace PongWithMe
         
         [Title("User Interface")]
         [SerializeField] private LivesViewBehaviour _livesView = null;
+        [SerializeField] private GameOverViewBehaviour _gameOverView = null;
         
         private Board _board = null;
         private PlayerLives _playerLives = null;
@@ -33,7 +33,7 @@ namespace PongWithMe
             
             //Board
             var boardGenerator = new BoardGenerator(AMOUNT_OF_PLAYERS);
-            _playerLives = new PlayerLives(boardGenerator.Bricks);
+            _playerLives = new PlayerLives(boardGenerator.Bricks, AMOUNT_OF_PLAYERS);
             _board = new Board(boardGenerator.Bricks);
             _bricksBehaviour.Initialize(_board);
             
@@ -49,6 +49,7 @@ namespace PongWithMe
             
             // Interface
             _livesView.Initialize(_playerLives, _playersManager.Players);
+            _gameOverView.Initialize();
         }
 
         private void OnDestroy()
@@ -65,9 +66,22 @@ namespace PongWithMe
         }
 
         [Button]
-        public void ChangeState(bool play)
+        public void SetPlayState()
         {
-            HandleStateChanges(play ? State.Play : State.Animating);
+            _stateManager.SetState(State.Play);
+        }
+
+        [Button]
+        public void SetAnimatingState()
+        {
+            _stateManager.SetState(State.Animating);
+        }
+
+        [Button]
+        public void SetEndGameState()
+        {
+            _stateManager.SetState(State.EndGame);
+
         }
         
         private void HandleStateChanges(State state)
@@ -75,10 +89,13 @@ namespace PongWithMe
             switch (state)
             {
                 case State.Play:
-                    DOTween.To(()=> Time.timeScale, x=> Time.timeScale = x, 1, 2.0f).SetEase(Ease.InQuad).SetUpdate(true);
+                    TimeScaleController.PlayTimeScale();
                     break;
                 case State.Animating:
-                    DOTween.To(()=> Time.timeScale, x=> Time.timeScale = x, 0, 2.0f).SetEase(Ease.OutExpo).SetUpdate(true);
+                    TimeScaleController.PauseTimeScale();
+                    break;
+                case State.EndGame:
+                    TimeScaleController.EndGameTimeScale();
                     break;
                 case State.GameOver:
                     break;
@@ -87,6 +104,6 @@ namespace PongWithMe
                     break;
             }   
         }
-    } 
+    }
 }
 
