@@ -72,7 +72,10 @@ namespace PongWithMe
 
         private void OnDestroy()
         {
-            _viewModel.OnScoreUpdate -= HandleOnScoreUpdate;
+            if (_viewModel != null)
+            {
+                _viewModel.OnScoreUpdate -= HandleOnScoreUpdate;
+            }
         }
     }
 }

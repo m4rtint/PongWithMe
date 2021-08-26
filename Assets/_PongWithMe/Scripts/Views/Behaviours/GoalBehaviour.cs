@@ -32,7 +32,9 @@ namespace PongWithMe
 
         private void SetupStyle()
         {
-            _renderer.color = _player.PlayerColor;
+            var sequence = DOTween.Sequence();
+            sequence.Append(_renderer.DOColor(Color.clear, 0.5f));
+            sequence.Append(_renderer.DOColor(_player.PlayerColor, 0.5f));
         }
 
         private void Awake()

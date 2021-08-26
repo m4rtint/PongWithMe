@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace PongWithMe
@@ -17,7 +18,15 @@ namespace PongWithMe
             _playerLives = playerLives;
         }
         
-        public void Set(IPaddle paddle)
+        public void Set(List<IPaddle> players) 
+        {
+            foreach (var player in players)
+            {
+                Set(player);
+            }
+        }
+        
+        private void Set(IPaddle paddle)
         {
             switch (paddle.PaddleDirection)
             {

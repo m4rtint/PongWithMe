@@ -12,6 +12,7 @@ namespace PongWithMe
         [SerializeField] private BallBehaviour _ballBehaviour = null;
         [SerializeField] private PlayersManager _playersManager = null;
         [SerializeField] private GoalsManager _goalsManager = null;
+        [SerializeField] private MutatorBehaviour _mutatorBehaviour = null;
         
         [Title("User Interface")]
         [SerializeField] private LivesViewBehaviour _livesView = null;
@@ -45,8 +46,12 @@ namespace PongWithMe
 
             // Goals
             _goalsManager.Initialize(_playerLives);
-            SetupGoals();
+            _goalsManager.Set(_playersManager.Players);
             
+            // Mutator
+            var mutatorManager = new MutatorManager(_playersManager.Players, _goalsManager);
+            _mutatorBehaviour.Initialize(mutatorManager);
+
             // Interface
             _livesView.Initialize(_playerLives, _playersManager.Players);
             _gameOverView.Initialize(_playersManager);
@@ -57,33 +62,6 @@ namespace PongWithMe
             _stateManager.OnStateChanged -= HandleStateChanges;
         }
 
-        private void SetupGoals()
-        {
-            foreach (var player in _playersManager.Players)
-            {
-                _goalsManager.Set(player);
-            }
-        }
-
-        [Button]
-        public void SetPlayState()
-        {
-            _stateManager.SetState(State.Play);
-        }
-
-        [Button]
-        public void SetAnimatingState()
-        {
-            _stateManager.SetState(State.Animating);
-        }
-
-        [Button]
-        public void SetEndGameState()
-        {
-            _stateManager.SetState(State.EndGame);
-
-        }
-        
         private void HandleStateChanges(State state)
         {
             switch (state)
