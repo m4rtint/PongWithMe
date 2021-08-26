@@ -20,33 +20,4 @@ namespace PongWithMe
             mutator.ActivateMutator();
         }
     }
-
-    public abstract class BaseMutator
-    {
-        public abstract void ActivateMutator();
-    }
-
-    public class RotatePaddles : BaseMutator
-    {
-        private GoalsManager _goalsManager = null;
-        private List<IPaddle> _players = null;
-        
-        public RotatePaddles(
-            GoalsManager goalsManager,
-            List<IPaddle> players)
-        {
-            _goalsManager = goalsManager;
-            _players = players;
-        }
-
-        private void RotatePlayerDirection()
-        {
-            
-        }
-        
-        public override void ActivateMutator()
-        {
-            Debug.Log("Activate Rotator");
-        }
-    }
 }

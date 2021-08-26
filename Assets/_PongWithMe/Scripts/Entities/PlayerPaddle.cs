@@ -7,7 +7,7 @@ namespace PongWithMe
     {
         int PlayerNumber { get; }
         IInput Input { get; }
-        Direction PaddleDirection { get; }
+        Direction PaddleDirection { get; set; }
         Color PlayerColor { get; }
         bool IsActive { get; set; }
 
@@ -24,10 +24,16 @@ namespace PongWithMe
         public event Action<bool> OnIsActiveUpdated;
         
         public IInput Input => _playerInput;
-        public Direction PaddleDirection => _direction;
+
         public Color PlayerColor => ColorPalette.PlayerColor(_playerNumber);
         public int PlayerNumber => _playerNumber;
 
+        public Direction PaddleDirection
+        {
+            get => _direction;
+            set => _direction = value;
+        }
+        
         public bool IsActive
         {
             get => _isActive;
