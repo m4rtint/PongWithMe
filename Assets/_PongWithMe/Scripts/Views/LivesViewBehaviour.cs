@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
@@ -20,6 +21,7 @@ namespace PongWithMe
         {
             _viewModel = new LivesViewModel(lives, players);
             _viewModel.OnScoreUpdate += HandleOnScoreUpdate;
+            _viewModel.OnPlayerDirectionChanged += HandleOnDirectionChanged;
             SetupStyle(players);
             SetupScore(players);
         }
@@ -39,6 +41,30 @@ namespace PongWithMe
             {
                 HandleOnScoreUpdate(player.PaddleDirection, _viewModel.NumberOfLivesFor(player.PlayerNumber));
             }
+        }
+
+        private void HandleOnDirectionChanged(List<IPaddle> players)
+        {
+            SetupStyle(players);
+            SetupScore(players);
+            HideAndShowAnimation(_bottomLivesPosition);
+            HideAndShowAnimation(_topLivesPosition);
+            HideAndShowAnimation(_leftLivesPosition);
+            HideAndShowAnimation(_rightLivesPosition);
+        }
+
+        private void HideAndShowAnimation(TMP_Text label)
+        {
+            var animationDuration = 1.0f;
+            label.transform.DOScale(Vector3.zero, animationDuration).SetEase(Ease.InBack)
+                .SetUpdate(true)
+                .OnComplete(() =>
+                {
+                    label.transform
+                        .DOScale(Vector3.one, animationDuration)
+                        .SetUpdate(true)
+                        .SetEase(Ease.OutBack);
+                });
         }
         
         private void HandleOnScoreUpdate(Direction direction, int score)

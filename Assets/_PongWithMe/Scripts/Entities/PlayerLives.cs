@@ -8,6 +8,7 @@ namespace PongWithMe
     {
         void ForceBrickBreakOwnedBy(int player);
         event Action<int, int> OnBrickBreak;
+        int GetPlayerLives(int player);
     }
     
     public class PlayerLives : IPlayerLives

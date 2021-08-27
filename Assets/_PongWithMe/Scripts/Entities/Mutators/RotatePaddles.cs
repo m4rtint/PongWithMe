@@ -27,9 +27,10 @@ namespace PongWithMe
         
         public override void ActivateMutator()
         {
-            RotatePlayerDirection(true);
+            var coinFlip = _randomUtility.CoinFlip();
+            RotatePlayerDirection(coinFlip);
             _goalsManager.Set(_players);
-            _paddleRotator.RotatePaddles(true).OnComplete(() =>
+            _paddleRotator.RotatePaddles(coinFlip).OnComplete(() =>
             {
                 StateManager.Instance.SetState(State.Play);
             });

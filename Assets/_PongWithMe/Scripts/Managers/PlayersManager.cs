@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
-using DG.Tweening.Core;
 using UnityEngine;
 
 namespace PongWithMe
@@ -106,10 +105,12 @@ namespace PongWithMe
 
     public partial class PlayersManager : IPaddleRotationMutator
     {
+        private const float RIGHT_ANGLE = 90F;
+        
         public Tween RotatePaddles(bool isClockwiseDirection, float rotationDuration = 2f)
         {
-            var rotateBy = isClockwiseDirection ? -90 : 90;
-            var rotationEndValue = new Vector3(0, 0, rotateBy);
+            var rotateBy = isClockwiseDirection ? -RIGHT_ANGLE : RIGHT_ANGLE;
+            var rotationEndValue = Vector3.forward * rotateBy;
             return transform.DORotate(
                 rotationEndValue,
                 rotationDuration, 
