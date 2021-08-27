@@ -49,7 +49,10 @@ namespace PongWithMe
             _goalsManager.Set(_playersManager.Players);
             
             // Mutator
-            var mutatorManager = new MutatorManager(_playersManager.Players, _goalsManager);
+            var mutatorManager = new MutatorManager(
+                _playersManager.Players, 
+                _playersManager, 
+                _goalsManager);
             _mutatorBehaviour.Initialize(mutatorManager);
 
             // Interface

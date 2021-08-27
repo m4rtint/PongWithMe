@@ -19,7 +19,7 @@ namespace PongWithMe
         public BoardGenerator(int amountOfPlayers, bool[] boardTemplate = null)
         {
             var maxNumberOfBricks = SetMaxNumberOfBricks();
-            boardTemplate ??= BoardTemplates.FourLives(maxNumberOfBricks);
+            boardTemplate ??= BoardTemplates.OddBricks(maxNumberOfBricks);
             ValidateBoard(amountOfPlayers, boardTemplate);
             var separatedLives = SeparateLives(amountOfPlayers, boardTemplate);
             var playerOrder = GeneratePlayerBrickOrder(separatedLives, amountOfPlayers);

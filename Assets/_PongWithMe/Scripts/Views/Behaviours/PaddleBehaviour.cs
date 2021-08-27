@@ -23,6 +23,7 @@ namespace PongWithMe
             setupAIIfNeeded(playerPaddle);
             SetupStyle();
             _player.OnIsActiveUpdated += HandleIsActiveUpdated;
+            _player.OnDirectionChanged += HandleOnDirectionChanged;
         }
 
         private void setupAIIfNeeded(IPaddle playerPaddle)
@@ -59,6 +60,11 @@ namespace PongWithMe
                     .SetEase(Ease.InBack)
                     .SetUpdate(true);
             }
+        }
+
+        private void HandleOnDirectionChanged(Direction direction)
+        {
+            _movementBehaviour.Set(direction);
         }
         #endregion
     }

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
+using DG.Tweening.Core;
 using UnityEngine;
 
 namespace PongWithMe
@@ -8,8 +10,13 @@ namespace PongWithMe
     {
         IPaddle GetWinningPlayer();
     }
+
+    public interface IPaddleRotationMutator
+    {
+        Tween RotatePaddles(bool isClockwiseDirection, float rotationDuration = 2f);
+    }
     
-    public class PlayersManager : MonoBehaviour, IWinningPlayer
+    public partial class PlayersManager : MonoBehaviour
     {
         [SerializeField] private PaddleBehaviour _topPaddle = null;
         [SerializeField] private PaddleBehaviour _leftPaddle = null;
@@ -28,25 +35,6 @@ namespace PongWithMe
             _playerLives.OnBrickBreak += HandleOnBrickBreak;
             _ball = ball;
             SetupPlayers();
-        }
-
-        public IPaddle GetWinningPlayer()
-        {
-            var playersAlive = 0;
-            foreach (var paddle in _players)
-            {
-                if (paddle.IsActive)
-                {
-                    playersAlive++;
-                }
-            }
-
-            if (playersAlive > 1)
-            {
-                return null;
-            }
-
-            return _players.FirstOrDefault(paddle => paddle.IsActive);
         }
 
         private void HandleOnBrickBreak(int brickOwner, int score)
@@ -92,8 +80,40 @@ namespace PongWithMe
         {
             _playerLives.OnBrickBreak-= HandleOnBrickBreak;
         }
+    }
 
+    public partial class PlayersManager : IWinningPlayer
+    {
+        public IPaddle GetWinningPlayer()
+        {
+            var playersAlive = 0;
+            foreach (var paddle in _players)
+            {
+                if (paddle.IsActive)
+                {
+                    playersAlive++;
+                }
+            }
 
+            if (playersAlive > 1)
+            {
+                return null;
+            }
+
+            return _players.FirstOrDefault(paddle => paddle.IsActive);
+        }
+    }
+
+    public partial class PlayersManager : IPaddleRotationMutator
+    {
+        public Tween RotatePaddles(bool isClockwiseDirection, float rotationDuration = 2f)
+        {
+            var rotationEndValue = new Vector3(0, 0, -90);
+            return transform.DORotate(
+                rotationEndValue,
+                rotationDuration)
+                .SetUpdate(true);
+        }
     }
 }
 

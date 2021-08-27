@@ -305,6 +305,7 @@ MonoBehaviour:
   _ballBehaviour: {fileID: 73626016}
   _playersManager: {fileID: 129268814}
   _goalsManager: {fileID: 596599355}
+  _mutatorBehaviour: {fileID: 1652211122}
   _livesView: {fileID: 631710154}
   _gameOverView: {fileID: 324643731}
 --- !u!114 &29074067

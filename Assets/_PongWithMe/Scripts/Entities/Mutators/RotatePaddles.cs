@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using UnityEngine;
+using DG.Tweening;
+using PerigonGames;
 
 namespace PongWithMe
 {
@@ -9,26 +10,39 @@ namespace PongWithMe
         
         private GoalsManager _goalsManager = null;
         private List<IPaddle> _players = null;
-
+        private IRandomUtility _randomUtility = null;
+        private IPaddleRotationMutator _paddleRotator = null;
+        
         public RotatePaddles(
             GoalsManager goalsManager,
-            List<IPaddle> players)
+            List<IPaddle> players,
+            IPaddleRotationMutator rotationMutator,
+            IRandomUtility random = null)
         {
             _goalsManager = goalsManager;
             _players = players;
+            _paddleRotator = rotationMutator;
+            _randomUtility = random ?? new RandomUtility();
         }
-
-        private void RotatePlayerClockWiseDirection()
+        
+        public override void ActivateMutator()
+        {
+            RotatePlayerDirection(true);
+            _goalsManager.Set(_players);
+            _paddleRotator.RotatePaddles(true).OnComplete(() =>
+            {
+                StateManager.Instance.SetState(State.Play);
+            });
+        }
+        
+        private void RotatePlayerDirection(bool isRotateClockwise)
         {
             foreach (var player in _players)
             {
-                player.PaddleDirection = RotateDirectionClockWise(player.PaddleDirection);
+                player.PaddleDirection = isRotateClockwise
+                    ? RotateDirectionClockWise(player.PaddleDirection)
+                    : RotateDirectionAntiClockWise(player.PaddleDirection);
             }
-        }
-
-        public override void ActivateMutator()
-        {
-            Debug.Log("Activate Rotator");
         }
 
         private Direction RotateDirectionClockWise(Direction direction)

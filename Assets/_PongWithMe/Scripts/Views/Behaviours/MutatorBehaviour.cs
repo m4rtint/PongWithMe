@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace PongWithMe
@@ -23,7 +24,7 @@ namespace PongWithMe
 
         private void StartCountDown()
         {
-            var duration = 0.25f;
+            var duration = 0.1f;
             var large = Vector3.one * 1.3f;
             Sequence seq = DOTween.Sequence();
             seq.Append(transform.DOScale(large, duration));
@@ -34,6 +35,7 @@ namespace PongWithMe
             seq.Append(transform.DOScale(Vector3.one, duration));
             seq.OnComplete(() =>
             {
+                StateManager.Instance.SetState(State.Animating);
                 _mutatorManager.PickMutatorToActivate();
             });
         }

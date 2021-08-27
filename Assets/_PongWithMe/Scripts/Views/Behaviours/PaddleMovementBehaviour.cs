@@ -22,8 +22,19 @@ namespace PongWithMe
             _speed = speed;
         }
 
+        public void Set(Direction direction)
+        {
+            _direction = direction;
+            //_rotationAngle -= 90;
+        }
+
         private void Update()
         {
+            if (StateManager.Instance.GetState() != State.Play)
+            {
+                return;
+            }
+            
             ResetRotation();
             if (IsPlacementHorizontal)
             {

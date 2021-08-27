@@ -12,6 +12,8 @@ namespace PongWithMe
         bool IsActive { get; set; }
 
         event Action<bool> OnIsActiveUpdated;
+
+        event Action<Direction> OnDirectionChanged;
     }
     
     public class PlayerPaddle : IPaddle
@@ -22,6 +24,8 @@ namespace PongWithMe
         private bool _isActive = true;
 
         public event Action<bool> OnIsActiveUpdated;
+
+        public event Action<Direction> OnDirectionChanged;
         
         public IInput Input => _playerInput;
 
@@ -31,7 +35,11 @@ namespace PongWithMe
         public Direction PaddleDirection
         {
             get => _direction;
-            set => _direction = value;
+            set
+            {
+                _direction = value;
+                OnDirectionChanged?.Invoke(value);
+            }
         }
         
         public bool IsActive

@@ -18,12 +18,17 @@ namespace PongWithMe
         private bool IsMovementVertical => _paddleDirection == Direction.Left || _paddleDirection == Direction.Right;
 
         public event Action<bool> OnIsActiveUpdated;
+        public event Action<Direction> OnDirectionChanged;
 
         public IInput Input => _input;
         public Direction PaddleDirection
         {
             get => _paddleDirection;
-            set => _paddleDirection = value;
+            set
+            {
+                _paddleDirection = value;
+                OnDirectionChanged?.Invoke(value);
+            }
         }
 
         public Color PlayerColor => ColorPalette.PlayerColor(_playerNumber);
@@ -63,6 +68,11 @@ namespace PongWithMe
 
         public void OnUpdate(Vector3 position)
         {
+            if (StateManager.Instance.GetState() != State.Play)
+            {
+                return;
+            }
+            
             if (IsMovementVertical)
             {
                 HandleVertical(position);

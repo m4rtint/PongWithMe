@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace PongWithMe
 {
@@ -8,10 +7,11 @@ namespace PongWithMe
         private List<BaseMutator> _listOfMutators = new List<BaseMutator>();
 
         public MutatorManager(
-            List<IPaddle> players, 
+            List<IPaddle> players,
+            IPaddleRotationMutator paddleRotator,
             GoalsManager goalsManager)
         {
-            _listOfMutators.Add(new RotatePaddles(goalsManager, players));
+            _listOfMutators.Add(new RotatePaddles(goalsManager, players, paddleRotator));
         }
 
         public void PickMutatorToActivate()
