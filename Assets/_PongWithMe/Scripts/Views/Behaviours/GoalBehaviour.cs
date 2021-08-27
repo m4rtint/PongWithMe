@@ -7,7 +7,7 @@ namespace PongWithMe
     [RequireComponent(typeof(SpriteRenderer))]
     public class GoalBehaviour : MonoBehaviour
     {
-        private const float COLOR_CHANGE_ANIMATION_DURATION = 0.5F;
+        private const float COLOR_CHANGE_ANIMATION_DURATION = 1.0F;
         private IPaddle _player = null;
         private SpriteRenderer _renderer = null;
 
@@ -27,19 +27,27 @@ namespace PongWithMe
 
         private void HandleIsActiveUpdated(bool active)
         {
-            _renderer.DOColor(Color.clear, COLOR_CHANGE_ANIMATION_DURATION)
-                .SetUpdate(true)
-                .OnComplete(() =>
+            if (!active)
             {
-                transform.localScale = Vector3.zero;
-            });
+                _renderer.DOColor(Color.clear, COLOR_CHANGE_ANIMATION_DURATION)
+                    .SetUpdate(true)
+                    .OnComplete(() =>
+                    {
+                        transform.localScale = Vector3.zero;
+                    });
+            }
         }
 
         private void SetupStyle()
         {
-            _renderer.DOColor(Color.clear, 1.0f).SetUpdate(true).OnComplete(() =>
+            transform.localScale = _player.IsActive ? Vector3.one : Vector3.zero;
+
+            _renderer.DOColor(Color.clear, COLOR_CHANGE_ANIMATION_DURATION).SetUpdate(true).OnComplete(() =>
             {
-                _renderer.DOColor(_player.PlayerColor, 1.0f).SetUpdate(true);
+                if (_player.IsActive)
+                {
+                    _renderer.DOColor(_player.PlayerColor, COLOR_CHANGE_ANIMATION_DURATION).SetUpdate(true);
+                }
             });
         }
 

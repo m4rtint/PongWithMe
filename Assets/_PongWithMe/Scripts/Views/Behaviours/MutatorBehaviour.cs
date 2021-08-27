@@ -1,31 +1,26 @@
 using DG.Tweening;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace PongWithMe
 {
     public class MutatorBehaviour : MonoBehaviour
     {
+        private const float ANIMATE_MUTATOR_DURATION = 0.5F;
         [SerializeField] private float _countDownToAppear = 50f;
         
         private MutatorManager _mutatorManager = null;
+        private IStateManager _stateManager = null;
         
         private bool _canActivate = false;
         private bool _isShown = false;
         private float _elapsedTime = 0;
         
-        public void Initialize(MutatorManager mutatorManager)
+        public void Initialize(MutatorManager mutatorManager, IStateManager stateManager = null)
         {
             _mutatorManager = mutatorManager;
             _elapsedTime = _countDownToAppear;
             transform.localScale = Vector3.zero;
-        }
-
-        [Button]
-        public void ActivateMutator()
-        {
-            StateManager.Instance.SetState(State.Animating);
-            _mutatorManager.PickMutatorToActivate();
+            _stateManager = stateManager ?? StateManager.Instance;
         }
         
         private void OnTriggerEnter2D(Collider2D other)
@@ -51,13 +46,19 @@ namespace PongWithMe
         {
             _canActivate = true;
             _isShown = true;
-            transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack);
+            transform.DOScale(Vector3.one, ANIMATE_MUTATOR_DURATION).SetEase(Ease.OutBack);
         }
 
         private void HideMutatorOnBoard()
         {
             _isShown = false;
-            transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InBack);
+            transform.DOScale(Vector3.zero, ANIMATE_MUTATOR_DURATION).SetEase(Ease.InBack);
+        }
+        
+        private void ActivateMutator()
+        {
+            _stateManager.SetState(State.Animating);
+            _mutatorManager.PickMutatorToActivate();
         }
 
         private void StartCountDown()
