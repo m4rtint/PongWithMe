@@ -11,6 +11,7 @@ namespace PongWithMe
         private readonly IInput _input;
         private readonly float _tolerance;
         private readonly float _moveLimit;
+        private readonly IStateManager _stateManager;
         
         private bool _isActive = true;
         private Direction _paddleDirection;
@@ -50,7 +51,8 @@ namespace PongWithMe
             Direction direction, 
             IBall ball,
             AIDifficulty.Difficulty difficulty = AIDifficulty.Difficulty.HARD, 
-            float moveLimit = PaddleMovementBehaviour.MOVE_LIMIT)
+            float moveLimit = PaddleMovementBehaviour.MOVE_LIMIT,
+            IStateManager stateManager = null)
         {
             if (ball == null)
             {
@@ -64,11 +66,12 @@ namespace PongWithMe
             _aiInput = input as AIInput;
             _paddleDirection = direction;
             _moveLimit = moveLimit;
+            _stateManager = stateManager ?? StateManager.Instance;
         }
 
         public void OnUpdate(Vector3 position)
         {
-            if (StateManager.Instance.GetState() != State.Play)
+            if (_stateManager.GetState() != State.Play)
             {
                 return;
             }

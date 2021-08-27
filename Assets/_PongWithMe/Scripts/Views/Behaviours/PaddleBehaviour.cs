@@ -21,7 +21,7 @@ namespace PongWithMe
         public void Initialize(IPaddle playerPaddle)
         {
             _player = playerPaddle;
-            _movementBehaviour.Initialize(playerPaddle.Input, playerPaddle.PaddleDirection, _speed);
+            _movementBehaviour.Initialize(playerPaddle.Input, playerPaddle.PaddleDirection, speed: _speed);
             SetupAIIfNeeded(playerPaddle);
             SetupStyle();
             _player.OnIsActiveUpdated += HandleIsActiveUpdated;
