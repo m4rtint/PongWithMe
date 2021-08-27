@@ -15,6 +15,11 @@ namespace PongWithMe
         
         public void Set(IPaddle player)
         {
+            if (_player != null)
+            {
+                _player.OnIsActiveUpdated -= HandleIsActiveUpdated;
+            }
+            
             _player = player;
             _player.OnIsActiveUpdated += HandleIsActiveUpdated;
             SetupStyle();

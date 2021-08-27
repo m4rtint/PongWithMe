@@ -22,13 +22,13 @@ namespace PongWithMe
         {
             _player = playerPaddle;
             _movementBehaviour.Initialize(playerPaddle.Input, playerPaddle.PaddleDirection, _speed);
-            setupAIIfNeeded(playerPaddle);
+            SetupAIIfNeeded(playerPaddle);
             SetupStyle();
             _player.OnIsActiveUpdated += HandleIsActiveUpdated;
             _player.OnDirectionChanged += HandleOnDirectionChanged;
         }
 
-        private void setupAIIfNeeded(IPaddle playerPaddle)
+        private void SetupAIIfNeeded(IPaddle playerPaddle)
         {
             if (playerPaddle is AIPaddle paddle)
             {

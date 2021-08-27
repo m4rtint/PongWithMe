@@ -108,10 +108,12 @@ namespace PongWithMe
     {
         public Tween RotatePaddles(bool isClockwiseDirection, float rotationDuration = 2f)
         {
-            var rotationEndValue = new Vector3(0, 0, -90);
+            var rotateBy = isClockwiseDirection ? -90 : 90;
+            var rotationEndValue = new Vector3(0, 0, rotateBy);
             return transform.DORotate(
                 rotationEndValue,
-                rotationDuration)
+                rotationDuration, 
+                RotateMode.WorldAxisAdd)
                 .SetUpdate(true);
         }
     }
