@@ -20,7 +20,9 @@ namespace PongWithMe
 
         public void PickMutatorToActivate()
         {
-            var mutator = _listOfMutators[1];
+            var mutator = _listOfMutators[0];
+            
+            //TODO - the tween needs to be handled else where
             StateManager.Instance.SetState(State.Animating);
             TimeScaleController.AnimatingTimeScale().OnComplete(() =>
             {

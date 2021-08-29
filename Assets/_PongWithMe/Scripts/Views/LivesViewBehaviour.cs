@@ -9,6 +9,7 @@ namespace PongWithMe
     public class LivesViewBehaviour : MonoBehaviour
     {
         private const string PLAYER_LIVES_TEXT = "{0} Lives";
+        private const float ANIMATION_DURATION = 0.5f;
         
         [SerializeField] private TMP_Text _topLivesPosition = null;
         [SerializeField] private TMP_Text _rightLivesPosition = null;
@@ -30,43 +31,52 @@ namespace PongWithMe
         {
             foreach (var paddle in players)
             {
-                var label = GetLivesTextLabel(paddle.PaddleDirection);
-                label.color = paddle.PlayerColor;
+                SetupStyleFor(paddle);
             }
+        }
+
+        private void SetupStyleFor(IPaddle player)
+        {
+            var label = GetLivesTextLabel(player.PaddleDirection);
+            label.color = player.PlayerColor;
         }
 
         private void SetupScore(List<IPaddle> players)
         {
             foreach (var player in players)
-            {
+            {    
                 HandleIndividualLiveUpdate(player.PaddleDirection, _viewModel.NumberOfLivesFor(player.PlayerNumber));
             }
         }
 
-
-        private void SwapPlayerScoreAnimation(TMP_Text label)
+        private Tween MinimizePlayerScoreAnimation(TMP_Text label)
         {
-            var animationDuration = 1.0f;
-            label.transform.DOScale(Vector3.zero, animationDuration).SetEase(Ease.InBack)
+            return label.transform.DOScale(Vector3.zero, ANIMATION_DURATION).SetEase(Ease.InBack).SetUpdate(true);
+        }
+
+        private Tween MaximizePlayerScoreAnimation(TMP_Text label)
+        {
+            return label.transform
+                .DOScale(Vector3.one, ANIMATION_DURATION)
                 .SetUpdate(true)
-                .OnComplete(() =>
-                {
-                    label.transform
-                        .DOScale(Vector3.one, animationDuration)
-                        .SetUpdate(true)
-                        .SetEase(Ease.OutBack);
-                });
+                .SetEase(Ease.OutBack);
         }
         
         #region Delegates
         private void HandleOnPlayerLivesUpdated(List<IPaddle> players)
         {
-            SetupStyle(players);
-            SetupScore(players);
-            SwapPlayerScoreAnimation(_bottomLivesPosition);
-            SwapPlayerScoreAnimation(_topLivesPosition);
-            SwapPlayerScoreAnimation(_leftLivesPosition);
-            SwapPlayerScoreAnimation(_rightLivesPosition);
+            foreach (var player in players)
+            {
+                var label = GetLivesTextLabel(player.PaddleDirection);
+                var sequence = DOTween.Sequence();
+                sequence.Append(MinimizePlayerScoreAnimation(label)).SetUpdate(true);
+                sequence.AppendCallback(() =>
+                {
+                    SetupStyleFor(player);
+                    HandleIndividualLiveUpdate(player.PaddleDirection, _viewModel.NumberOfLivesFor(player.PlayerNumber));
+                });
+                sequence.Append(MaximizePlayerScoreAnimation(label));
+            }
         }
         
         private void HandleIndividualLiveUpdate(Direction direction, int score)

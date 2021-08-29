@@ -107,7 +107,7 @@ namespace PongWithMe
     {
         private const float RIGHT_ANGLE = 90F;
         
-        public Tween RotatePaddles(bool isClockwiseDirection, float rotationDuration = 2f)
+        public Tween RotatePaddles(bool isClockwiseDirection, float rotationDuration = 1f)
         {
             var rotateBy = isClockwiseDirection ? -RIGHT_ANGLE : RIGHT_ANGLE;
             var rotationEndValue = Vector3.forward * rotateBy;
