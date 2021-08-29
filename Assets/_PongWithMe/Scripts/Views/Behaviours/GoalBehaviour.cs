@@ -1,5 +1,6 @@
 using System;
 using DG.Tweening;
+using PerigonGames;
 using UnityEngine;
 
 namespace PongWithMe
@@ -27,21 +28,36 @@ namespace PongWithMe
 
         private void HandleIsActiveUpdated(bool active)
         {
-            if (!active)
+            if (active)
             {
-                _renderer.DOColor(Color.clear, COLOR_CHANGE_ANIMATION_DURATION)
-                    .SetUpdate(true)
-                    .OnComplete(() =>
-                    {
-                        transform.localScale = Vector3.zero;
-                    });
+                ActivateGoal();
             }
+            else
+            {
+                DeactivateGoal();
+            }
+        }
+
+        private void ActivateGoal()
+        {
+            transform.ResetScale();
+            _renderer.DOColor(_player.PlayerColor, COLOR_CHANGE_ANIMATION_DURATION)
+                .SetUpdate(true);
+        }
+
+        private void DeactivateGoal()
+        {
+            _renderer.DOColor(Color.clear, COLOR_CHANGE_ANIMATION_DURATION)
+                .SetUpdate(true)
+                .OnComplete(() =>
+                {
+                    transform.localScale = Vector3.zero;
+                });
         }
 
         private void SetupStyle()
         {
             transform.localScale = _player.IsActive ? Vector3.one : Vector3.zero;
-
             _renderer.DOColor(Color.clear, COLOR_CHANGE_ANIMATION_DURATION).SetUpdate(true).OnComplete(() =>
             {
                 if (_player.IsActive)

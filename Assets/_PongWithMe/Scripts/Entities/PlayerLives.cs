@@ -8,6 +8,8 @@ namespace PongWithMe
     {
         void ForceBrickBreakOwnedBy(int player);
         event Action<int, int> OnBrickBreak;
+        void ForceUpdatePlayerScores();
+        event Action OnForcePlayerScoresUpdate; 
         int GetPlayerLives(int player);
     }
     
@@ -17,6 +19,7 @@ namespace PongWithMe
         private readonly int _amountOfPlayers;
 
         public event Action<int, int> OnBrickBreak;
+        public event Action OnForcePlayerScoresUpdate;
 
         public PlayerLives(Brick[] bricks, int amountOfPlayers)
         {
@@ -31,6 +34,11 @@ namespace PongWithMe
         public int GetPlayerLives(int player)
         {
             return _brickLives.Count(brick => brick.PlayerOwned == player && brick.IsActive);
+        }
+        
+        public void ForceUpdatePlayerScores()
+        {
+            OnForcePlayerScoresUpdate?.Invoke();
         }
 
         private bool HasGameEnded()

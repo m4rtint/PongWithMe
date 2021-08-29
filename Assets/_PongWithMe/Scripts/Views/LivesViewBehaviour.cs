@@ -9,6 +9,7 @@ namespace PongWithMe
     public class LivesViewBehaviour : MonoBehaviour
     {
         private const string PLAYER_LIVES_TEXT = "{0} Lives";
+        private const float ANIMATION_DURATION = 0.5f;
         
         [SerializeField] private TMP_Text _topLivesPosition = null;
         [SerializeField] private TMP_Text _rightLivesPosition = null;
@@ -20,8 +21,8 @@ namespace PongWithMe
         public void Initialize(PlayerLives lives, List<IPaddle> players)
         {
             _viewModel = new LivesViewModel(lives, players);
-            _viewModel.OnScoreUpdate += HandleOnScoreUpdate;
-            _viewModel.OnPlayerDirectionChanged += HandleOnDirectionChanged;
+            _viewModel.OnScoreUpdate += HandleIndividualLiveUpdate;
+            _viewModel.OnPlayerLivesUpdated += HandleOnPlayerLivesUpdated;
             SetupStyle(players);
             SetupScore(players);
         }
@@ -30,48 +31,61 @@ namespace PongWithMe
         {
             foreach (var paddle in players)
             {
-                var label = GetLivesTextLabel(paddle.PaddleDirection);
-                label.color = paddle.PlayerColor;
+                SetupStyleFor(paddle);
             }
+        }
+
+        private void SetupStyleFor(IPaddle player)
+        {
+            var label = GetLivesTextLabel(player.PaddleDirection);
+            label.color = player.PlayerColor;
         }
 
         private void SetupScore(List<IPaddle> players)
         {
             foreach (var player in players)
-            {
-                HandleOnScoreUpdate(player.PaddleDirection, _viewModel.NumberOfLivesFor(player.PlayerNumber));
+            {    
+                HandleIndividualLiveUpdate(player.PaddleDirection, _viewModel.NumberOfLivesFor(player.PlayerNumber));
             }
         }
 
-        private void HandleOnDirectionChanged(List<IPaddle> players)
+        private Tween MinimizePlayerScoreAnimation(TMP_Text label)
         {
-            SetupStyle(players);
-            SetupScore(players);
-            HideAndShowAnimation(_bottomLivesPosition);
-            HideAndShowAnimation(_topLivesPosition);
-            HideAndShowAnimation(_leftLivesPosition);
-            HideAndShowAnimation(_rightLivesPosition);
+            return label.transform.DOScale(Vector3.zero, ANIMATION_DURATION).SetEase(Ease.InBack).SetUpdate(true);
         }
 
-        private void HideAndShowAnimation(TMP_Text label)
+        private Tween MaximizePlayerScoreAnimation(TMP_Text label)
         {
-            var animationDuration = 1.0f;
-            label.transform.DOScale(Vector3.zero, animationDuration).SetEase(Ease.InBack)
+            return label.transform
+                .DOScale(Vector3.one, ANIMATION_DURATION)
                 .SetUpdate(true)
-                .OnComplete(() =>
-                {
-                    label.transform
-                        .DOScale(Vector3.one, animationDuration)
-                        .SetUpdate(true)
-                        .SetEase(Ease.OutBack);
-                });
+                .SetEase(Ease.OutBack);
         }
         
-        private void HandleOnScoreUpdate(Direction direction, int score)
+        #region Delegates
+        private void HandleOnPlayerLivesUpdated(List<IPaddle> players)
+        {
+            foreach (var player in players)
+            {
+                var label = GetLivesTextLabel(player.PaddleDirection);
+                var sequence = DOTween.Sequence();
+                sequence.Append(MinimizePlayerScoreAnimation(label)).SetUpdate(true);
+                sequence.AppendCallback(() =>
+                {
+                    SetupStyleFor(player);
+                    HandleIndividualLiveUpdate(player.PaddleDirection, _viewModel.NumberOfLivesFor(player.PlayerNumber));
+                });
+                sequence.Append(MaximizePlayerScoreAnimation(label));
+            }
+        }
+        
+        private void HandleIndividualLiveUpdate(Direction direction, int score)
         {
             var label = GetLivesTextLabel(direction);
             SetLivesText(label, score);
         }
+        
+        #endregion
 
         private TMP_Text GetLivesTextLabel(Direction direction)
         {
@@ -100,7 +114,7 @@ namespace PongWithMe
         {
             if (_viewModel != null)
             {
-                _viewModel.OnScoreUpdate -= HandleOnScoreUpdate;
+                _viewModel.OnScoreUpdate -= HandleIndividualLiveUpdate;
             }
         }
     }

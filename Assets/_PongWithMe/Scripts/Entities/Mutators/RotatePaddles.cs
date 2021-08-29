@@ -30,9 +30,11 @@ namespace PongWithMe
             var coinFlip = _randomUtility.CoinFlip();
             RotatePlayerDirection(coinFlip);
             _goalsManager.Set(_players);
-            _paddleRotator.RotatePaddles(coinFlip).OnComplete(() =>
+            _paddleRotator.RotatePaddles(coinFlip, 1.0f)
+                .SetEase(Ease.OutSine)
+                .OnComplete(() =>
             {
-                StateManager.Instance.SetState(State.Play);
+                _stateManager.SetState(State.Play);
             });
         }
         

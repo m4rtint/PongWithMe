@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Shapes;
 using UnityEngine;
 
@@ -41,7 +42,15 @@ namespace PongWithMe
 
         private void HandleOnBrickColorSet(Brick brick, Color color)
         {
-            _shape.Color = color;
+            transform.DOScale(Vector3.zero, 0.5f)
+                .SetUpdate(true)
+                .SetEase(Ease.InBack).OnComplete(() =>
+                {
+                    _shape.Color = color;
+                    transform.DOScale(Vector3.one, 0.5f)
+                        .SetUpdate(true)
+                        .SetEase(Ease.OutBack);
+                });
         }
 
         private void HandleOnBrickPositionSet(Brick brick, Vector3 position)

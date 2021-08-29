@@ -5,12 +5,13 @@ namespace PongWithMe
 {
     public static class TimeScaleController
     {
+        private const float ANIMATING_TWEEN_DURATION = 0.5F;
         private const float TIMESCALE_TWEEN_DURATION = 2F;
         private const float ENDGAME_TIMESCALE_TWEEN_DURATION = 1F;
 
-        public static Tween PauseTimeScale()
+        public static Tween AnimatingTimeScale()
         {
-            return DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0, 0.5F)
+            return DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0, ANIMATING_TWEEN_DURATION)
                 .SetEase(Ease.OutQuint)
                 .SetUpdate(true);
         }
