@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using DG.Tweening;
+using PerigonGames;
 
 namespace PongWithMe
 {
@@ -22,7 +23,7 @@ namespace PongWithMe
 
         public void PickMutatorToActivate()
         {
-            var mutator = _listOfMutators[2];
+            var mutator = PickRandomMutator();
             
             //TODO - the tween needs to be handled else where
             StateManager.Instance.SetState(State.Animating);
@@ -30,6 +31,20 @@ namespace PongWithMe
             {
                 mutator.ActivateMutator();
             });
+        }
+
+        private BaseMutator PickRandomMutator()
+        {
+            var random = new RandomUtility();
+            var index = random.NextInt(0, _listOfMutators.Count);
+            BaseMutator mutator = null;
+            do
+            {
+                mutator = _listOfMutators.NullableGetElementAt(index);
+            } 
+            while (!mutator.CanActivate());
+
+            return mutator;
         }
     }
 }

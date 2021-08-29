@@ -33,11 +33,14 @@ namespace PongWithMe
 
         private void FixedUpdate()
         {
-            _elapsedTime -= Time.fixedDeltaTime;
-            if (_elapsedTime < 0 && !_isShown)
+            if (!_isShown)
             {
-                ShowMutatorOnBoard();
-                _elapsedTime = _countDownToAppear;
+                _elapsedTime -= Time.fixedDeltaTime;
+                if (_elapsedTime  < 0)
+                {
+                    ShowMutatorOnBoard();
+                    _elapsedTime = _countDownToAppear;
+                }
             }
         }
 
