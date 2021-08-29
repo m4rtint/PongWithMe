@@ -5,15 +5,25 @@ using UnityEngine;
 
 namespace PongWithMe
 {
-    [RequireComponent(typeof(SpriteRenderer))]
     public class GoalBehaviour : MonoBehaviour
     {
         private const float COLOR_CHANGE_ANIMATION_DURATION = 1.0F;
-        private IPaddle _player = null;
-        private SpriteRenderer _renderer = null;
-
-        public event Action<IPaddle> OnGoalHit;
         
+        [SerializeField]
+        private SpriteRenderer _renderer = null;
+        [SerializeField] 
+        private ForceFieldBehaviour _forceFieldBehaviour = null;
+        
+        private IPaddle _player = null;
+        private ForceField _forceField = null;
+        public event Action<IPaddle> OnGoalHit;
+
+        public void Initialize()
+        {
+            _forceField = new ForceField();
+            _forceFieldBehaviour.Initialize(_forceField);
+        }
+
         public void Set(IPaddle player)
         {
             if (_player != null)
@@ -24,6 +34,11 @@ namespace PongWithMe
             _player = player;
             _player.OnIsActiveUpdated += HandleIsActiveUpdated;
             SetupStyle();
+        }
+        
+        public void ActivateForceField(int lives)
+        {
+            _forceField.IncrementLivesBy(lives);
         }
 
         private void HandleIsActiveUpdated(bool active)
@@ -66,12 +81,7 @@ namespace PongWithMe
                 }
             });
         }
-
-        private void Awake()
-        {
-            _renderer = GetComponent<SpriteRenderer>();
-        }
-
+#region Mono
         private void OnCollisionEnter2D(Collision2D other)
         {
             if (other.collider.TryGetComponent<BallBehaviour>(out _))
@@ -79,6 +89,8 @@ namespace PongWithMe
                 OnGoalHit?.Invoke(_player);
             }
         }
+#endregion
+
     }
 }
 

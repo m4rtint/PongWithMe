@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace PongWithMe
@@ -6,6 +5,7 @@ namespace PongWithMe
     public interface IBall
     {
         Vector3 GetPosition { get; }    
+        Direction LastHitFrom { get; }
     }
     
     public class BallBehaviour : MonoBehaviour, IBall
@@ -13,7 +13,11 @@ namespace PongWithMe
         [SerializeField] private float _maxForce = 10f;
         [SerializeField] private float _minForce = 5f;
         [SerializeField] private TrailRenderer _renderer = null;
+        
         private Rigidbody2D _rigidbody = null;
+        private Direction _lastHitFrom = Direction.Left;
+
+        public Direction LastHitFrom => _lastHitFrom;
 
         public Vector3 GetPosition => transform.position;
         
@@ -43,9 +47,10 @@ namespace PongWithMe
 
         private void OnCollisionEnter2D(Collision2D other)
         {
-            if (other.gameObject.TryGetComponent<PaddleBehaviour>(out var ball))
+            if (other.gameObject.TryGetComponent<PaddleBehaviour>(out var paddle))
             {
-                _renderer.startColor = ball.PaddleColor;
+                _lastHitFrom = paddle.PaddleDirection;
+                _renderer.startColor = paddle.PaddleColor;
                 _renderer.endColor = Color.white;
             }
         }

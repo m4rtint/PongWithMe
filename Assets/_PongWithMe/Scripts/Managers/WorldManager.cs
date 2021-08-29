@@ -54,6 +54,7 @@ namespace PongWithMe
                 _playersManager, 
                 _goalsManager,
                 _playerLives,
+                _ballBehaviour,
                 _board.Bricks);
             _mutatorBehaviour.Initialize(mutatorManager);
 

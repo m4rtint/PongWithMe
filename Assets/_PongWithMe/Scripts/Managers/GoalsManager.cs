@@ -16,6 +16,10 @@ namespace PongWithMe
         public void Initialize(IPlayerLives playerLives)
         {
             _playerLives = playerLives;
+            _topGoal.Initialize();
+            _leftGoal.Initialize();
+            _rightGoal.Initialize();
+            _bottomGoal.Initialize();
         }
         
         public void Set(List<IPaddle> players) 
@@ -25,26 +29,34 @@ namespace PongWithMe
                 Set(player);
             }
         }
+
+        public void ActivateForceField(Direction direction, int forceFieldLives)
+        {
+            var goal = GetGoal(direction);
+            goal.ActivateForceField(forceFieldLives);
+        }
         
         private void Set(IPaddle paddle)
         {
-            switch (paddle.PaddleDirection)
+            var goal = GetGoal(paddle.PaddleDirection);
+            goal.Set(paddle);
+        }
+
+        private GoalBehaviour GetGoal(Direction direction)
+        {
+            switch (direction)
             {
                 case Direction.Top:
-                    _topGoal.Set(paddle);
-                    break;
-                case Direction.Bottom:
-                    _bottomGoal.Set(paddle);
-                    break;
-                case Direction.Left:
-                    _leftGoal.Set(paddle);
-                    break;
+                    return _topGoal;
                 case Direction.Right:
-                    _rightGoal.Set(paddle);
-                    break;
+                    return _rightGoal;
+                case Direction.Bottom:
+                    return _bottomGoal;
+                case Direction.Left:
+                    return _leftGoal;
                 default:
                     PanicHelper.Panic(new Exception("Paddles sent in through Goals Manager must have a direction."));
-                    break;
+                    return null;
             }
         }
 

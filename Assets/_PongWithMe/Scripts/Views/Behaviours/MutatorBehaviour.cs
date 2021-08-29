@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace PongWithMe
@@ -9,18 +10,16 @@ namespace PongWithMe
         [SerializeField] private float _countDownToAppear = 50f;
         
         private MutatorManager _mutatorManager = null;
-        private IStateManager _stateManager = null;
         
         private bool _canActivate = false;
         private bool _isShown = false;
         private float _elapsedTime = 0;
         
-        public void Initialize(MutatorManager mutatorManager, IStateManager stateManager = null)
+        public void Initialize(MutatorManager mutatorManager)
         {
             _mutatorManager = mutatorManager;
             _elapsedTime = _countDownToAppear;
             transform.localScale = Vector3.zero;
-            _stateManager = stateManager ?? StateManager.Instance;
         }
         
         private void OnTriggerEnter2D(Collider2D other)
@@ -60,6 +59,7 @@ namespace PongWithMe
             _mutatorManager.PickMutatorToActivate();
         }
 
+        [Button]
         private void StartCountDown()
         {
             // Placeholder as to how to inform the player mutator about to happen

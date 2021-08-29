@@ -12,15 +12,17 @@ namespace PongWithMe
             IPaddleRotationMutator paddleRotator,
             GoalsManager goalsManager,
             IPlayerLives playerLives,
+            IBall ball,
             Brick[] bricks)
         {
             _listOfMutators.Add(new RotatePaddles(goalsManager, players, paddleRotator));
             _listOfMutators.Add(new RebalanceLives(players, bricks, playerLives));
+            _listOfMutators.Add(new ActivateForceField(ball, goalsManager, players));
         }
 
         public void PickMutatorToActivate()
         {
-            var mutator = _listOfMutators[0];
+            var mutator = _listOfMutators[2];
             
             //TODO - the tween needs to be handled else where
             StateManager.Instance.SetState(State.Animating);

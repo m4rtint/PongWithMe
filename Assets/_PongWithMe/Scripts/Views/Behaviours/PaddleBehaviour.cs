@@ -17,6 +17,7 @@ namespace PongWithMe
         private PaddleMovementBehaviour _movementBehaviour = null;
 
         public Color PaddleColor => _player.PlayerColor;
+        public Direction PaddleDirection => _player.PaddleDirection;
         
         public void Initialize(IPaddle playerPaddle)
         {
