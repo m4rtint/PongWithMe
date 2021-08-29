@@ -52,7 +52,9 @@ namespace PongWithMe
             var mutatorManager = new MutatorManager(
                 _playersManager.Players, 
                 _playersManager, 
-                _goalsManager);
+                _goalsManager,
+                _playerLives,
+                _board.Bricks);
             _mutatorBehaviour.Initialize(mutatorManager);
 
             // Interface
@@ -73,7 +75,6 @@ namespace PongWithMe
                     TimeScaleController.PlayTimeScale();
                     break;
                 case State.Animating:
-                    TimeScaleController.PauseTimeScale();
                     break;
                 case State.EndGame:
                     TimeScaleController.EndGameTimeScale();

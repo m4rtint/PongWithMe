@@ -9,13 +9,14 @@ namespace PongWithMe
         private List<IPaddle> _players = null;
 
         public event Action<Direction, int> OnScoreUpdate;
-        public event Action<List<IPaddle>> OnPlayerDirectionChanged;
+        public event Action<List<IPaddle>> OnPlayerLivesUpdated;
 
         public LivesViewModel(IPlayerLives lives, List<IPaddle> players)
         {
             _players = players;
             _playersLives = lives;
             _playersLives.OnBrickBreak += HandleOnBrickBreak;
+            _playersLives.OnForcePlayerScoresUpdate += HandleOnScoreRebalanced;
             foreach (var player in players)
             {
                 player.OnDirectionChanged += HandlePlayerDirectionChanged;
@@ -35,7 +36,12 @@ namespace PongWithMe
 
         private void HandlePlayerDirectionChanged(Direction direction)
         {
-            OnPlayerDirectionChanged?.Invoke(_players);
+            OnPlayerLivesUpdated?.Invoke(_players);
+        }
+
+        private void HandleOnScoreRebalanced()
+        {
+            OnPlayerLivesUpdated?.Invoke(_players);
         }
 
         private IPaddle GetPlayerPaddle(int brickOwnerNumber)

@@ -21,7 +21,7 @@ namespace PongWithMe
             var maxNumberOfBricks = SetMaxNumberOfBricks();
             boardTemplate ??= BoardTemplates.OddBricks(maxNumberOfBricks);
             ValidateBoard(amountOfPlayers, boardTemplate);
-            var separatedLives = SeparateLives(amountOfPlayers, boardTemplate);
+            var separatedLives = BalancedLives(amountOfPlayers, boardTemplate);
             var playerOrder = GeneratePlayerBrickOrder(separatedLives, amountOfPlayers);
             _bricks = BuildBoard(playerOrder, boardTemplate);
         }
@@ -71,7 +71,7 @@ namespace PongWithMe
             return stackOfPlayerLives;
         }
 
-        private int[] SeparateLives(int amountOfPlayers, bool[] boardTemplate)
+        private int[] BalancedLives(int amountOfPlayers, bool[] boardTemplate)
         {
             int numberOfActiveBricks = boardTemplate.Count(x => x);
             int[] playerLives = new int[amountOfPlayers];

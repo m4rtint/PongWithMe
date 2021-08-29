@@ -32,7 +32,7 @@ namespace PongWithMe
             _goalsManager.Set(_players);
             _paddleRotator.RotatePaddles(coinFlip).OnComplete(() =>
             {
-                StateManager.Instance.SetState(State.Play);
+                _stateManager.SetState(State.Play);
             });
         }
         

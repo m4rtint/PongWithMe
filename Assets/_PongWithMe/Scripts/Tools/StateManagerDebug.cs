@@ -15,6 +15,7 @@ namespace PongWithMe
         public void SetAnimatingState()
         {
             StateManager.Instance.SetState(State.Animating);
+            TimeScaleController.AnimatingTimeScale();
         }
 
         [Button]

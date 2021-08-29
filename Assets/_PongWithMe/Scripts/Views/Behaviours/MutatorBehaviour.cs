@@ -57,7 +57,6 @@ namespace PongWithMe
         
         private void ActivateMutator()
         {
-            _stateManager.SetState(State.Animating);
             _mutatorManager.PickMutatorToActivate();
         }
 

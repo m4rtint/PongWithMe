@@ -20,8 +20,8 @@ namespace PongWithMe
         public void Initialize(PlayerLives lives, List<IPaddle> players)
         {
             _viewModel = new LivesViewModel(lives, players);
-            _viewModel.OnScoreUpdate += HandleOnScoreUpdate;
-            _viewModel.OnPlayerDirectionChanged += HandleOnDirectionChanged;
+            _viewModel.OnScoreUpdate += HandleIndividualLiveUpdate;
+            _viewModel.OnPlayerLivesUpdated += HandleOnPlayerLivesUpdated;
             SetupStyle(players);
             SetupScore(players);
         }
@@ -39,21 +39,12 @@ namespace PongWithMe
         {
             foreach (var player in players)
             {
-                HandleOnScoreUpdate(player.PaddleDirection, _viewModel.NumberOfLivesFor(player.PlayerNumber));
+                HandleIndividualLiveUpdate(player.PaddleDirection, _viewModel.NumberOfLivesFor(player.PlayerNumber));
             }
         }
 
-        private void HandleOnDirectionChanged(List<IPaddle> players)
-        {
-            SetupStyle(players);
-            SetupScore(players);
-            HideAndShowAnimation(_bottomLivesPosition);
-            HideAndShowAnimation(_topLivesPosition);
-            HideAndShowAnimation(_leftLivesPosition);
-            HideAndShowAnimation(_rightLivesPosition);
-        }
 
-        private void HideAndShowAnimation(TMP_Text label)
+        private void SwapPlayerScoreAnimation(TMP_Text label)
         {
             var animationDuration = 1.0f;
             label.transform.DOScale(Vector3.zero, animationDuration).SetEase(Ease.InBack)
@@ -67,11 +58,24 @@ namespace PongWithMe
                 });
         }
         
-        private void HandleOnScoreUpdate(Direction direction, int score)
+        #region Delegates
+        private void HandleOnPlayerLivesUpdated(List<IPaddle> players)
+        {
+            SetupStyle(players);
+            SetupScore(players);
+            SwapPlayerScoreAnimation(_bottomLivesPosition);
+            SwapPlayerScoreAnimation(_topLivesPosition);
+            SwapPlayerScoreAnimation(_leftLivesPosition);
+            SwapPlayerScoreAnimation(_rightLivesPosition);
+        }
+        
+        private void HandleIndividualLiveUpdate(Direction direction, int score)
         {
             var label = GetLivesTextLabel(direction);
             SetLivesText(label, score);
         }
+        
+        #endregion
 
         private TMP_Text GetLivesTextLabel(Direction direction)
         {
@@ -100,7 +104,7 @@ namespace PongWithMe
         {
             if (_viewModel != null)
             {
-                _viewModel.OnScoreUpdate -= HandleOnScoreUpdate;
+                _viewModel.OnScoreUpdate -= HandleIndividualLiveUpdate;
             }
         }
     }

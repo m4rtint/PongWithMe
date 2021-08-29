@@ -56,12 +56,12 @@ namespace PongWithMe
 
         private void HandleIsActiveUpdated(bool active)
         {
-            if (!active)
-            {
-                transform.DOScale(Vector3.zero, DEATH_ANIMATION_DURATION)
-                    .SetEase(Ease.InBack)
+            var size = active ? Vector3.one : Vector3.zero;
+            var ease = active ? Ease.OutBack : Ease.InBack;
+            transform.DOScale(size, DEATH_ANIMATION_DURATION)
+                    .SetEase(ease)
                     .SetUpdate(true);
-            }
+            
         }
 
         private void HandleOnDirectionChanged(Direction direction)
