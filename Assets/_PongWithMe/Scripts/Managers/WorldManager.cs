@@ -13,6 +13,9 @@ namespace PongWithMe
         [SerializeField] private PlayersManager _playersManager = null;
         [SerializeField] private GoalsManager _goalsManager = null;
         [SerializeField] private MutatorBehaviour _mutatorBehaviour = null;
+
+        [Title("Mutators")] 
+        [SerializeField] private SplattersBehaviour _splattersBehaviour = null;
         
         [Title("User Interface")]
         [SerializeField] private LivesViewBehaviour _livesView = null;
@@ -51,13 +54,16 @@ namespace PongWithMe
             _goalsManager.Set(_playersManager.Players);
             
             // Mutator
+            _splattersBehaviour.Initialize();
+            
             var mutatorManager = new MutatorManager(
                 _playersManager.Players, 
                 _playersManager, 
                 _goalsManager,
                 _playerLives,
                 _ballBehaviour,
-                _board.Bricks);
+                _board.Bricks, 
+                _splattersBehaviour.Splatters);
             _mutatorBehaviour.Initialize(mutatorManager);
 
             // Interface

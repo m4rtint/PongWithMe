@@ -14,11 +14,13 @@ namespace PongWithMe
             GoalsManager goalsManager,
             IPlayerLives playerLives,
             IBall ball,
-            Brick[] bricks)
+            Brick[] bricks,
+            Splatter splatter)
         {
             _listOfMutators.Add(new RotatePaddles(goalsManager, players, paddleRotator));
             _listOfMutators.Add(new RebalanceLives(players, bricks, playerLives));
             _listOfMutators.Add(new ActivateForceField(ball, goalsManager, players));
+            _listOfMutators.Add(new SplatterBoard(splatter));
         }
 
         public void PickMutatorToActivate()
