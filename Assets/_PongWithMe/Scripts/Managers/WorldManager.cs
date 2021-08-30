@@ -30,6 +30,7 @@ namespace PongWithMe
             Application.targetFrameRate = 60;
             QualitySettings.vSyncCount = 0;
             _stateManager = StateManager.Instance;
+            _stateManager.SetState(State.PreGame);
         }
 
         private void Start()
@@ -80,6 +81,9 @@ namespace PongWithMe
         {
             switch (state)
             {
+                case State.StartGame:
+                    _stateManager.SetState(State.Play);
+                    break;
                 case State.Play:
                     TimeScaleController.PlayTimeScale();
                     break;

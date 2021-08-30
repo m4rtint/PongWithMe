@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace PongWithMe
@@ -16,24 +17,16 @@ namespace PongWithMe
         
         private Rigidbody2D _rigidbody = null;
         private Direction _lastHitFrom = Direction.Left;
+        private IStateManager _stateManager = null;
 
         public Direction LastHitFrom => _lastHitFrom;
 
         public Vector3 GetPosition => transform.position;
         
-        public void Initialize()
+        public void Initialize(IStateManager stateManager = null)
         {
-            _rigidbody.AddForce(Vector3.one * _minForce);    
-        }
-        
-        private void Awake()
-        {
-            _rigidbody = GetComponent<Rigidbody2D>();
-        }
-
-        private void FixedUpdate()
-        {
-            ClampVelocity();
+            _stateManager = stateManager ?? StateManager.Instance;
+            _stateManager.OnStateChanged += HandleStateChange;
         }
 
         private void ClampVelocity()
@@ -43,6 +36,35 @@ namespace PongWithMe
             var speed = velocity.magnitude;
             var clampedSpeed = Mathf.Clamp(speed, _minForce, _maxForce);
             _rigidbody.velocity = normalizedDirection * clampedSpeed;
+        }
+        #region Delegate
+
+        private void HandleStateChange(State state)
+        {
+            if (state == State.StartGame)
+            {
+                _rigidbody.AddForce(Vector3.one * _minForce);
+            }
+        }
+        #endregion
+        
+        #region Mono
+        private void Awake()
+        {
+            _rigidbody = GetComponent<Rigidbody2D>();
+        }
+
+        private void FixedUpdate()
+        {
+            if (_stateManager.GetState() == State.Play)
+            {
+                ClampVelocity();
+            }
+        }
+
+        private void OnDestroy()
+        {
+            _stateManager.OnStateChanged -= HandleStateChange;
         }
 
         private void OnCollisionEnter2D(Collision2D other)
@@ -54,6 +76,7 @@ namespace PongWithMe
                 _renderer.endColor = Color.white;
             }
         }
+        #endregion
     }
 }
 

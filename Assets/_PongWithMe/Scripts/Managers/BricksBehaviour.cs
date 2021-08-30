@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace PongWithMe
@@ -16,13 +17,21 @@ namespace PongWithMe
 
         private void SetupBricks()
         {
+            float timeToWait = 0;
             foreach (var brick in _board.Bricks)
             {
                 var brickBehaviour = _pool.PopPooledObject(BrickPool.KEY);
                 brickBehaviour.gameObject.SetActive(true);
                 brickBehaviour.Initialize(brick);
-                brick.BrickColor = brick.BrickColor;
+                StartCoroutine(SetBrickColor(brick, timeToWait));
+                timeToWait += 0.02f;
             }
+        }
+
+        private IEnumerator SetBrickColor(Brick brick, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            brick.BrickColor = brick.BrickColor;
         }
 
         private void Awake()
