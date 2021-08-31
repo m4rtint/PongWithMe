@@ -9,6 +9,7 @@ namespace PongWithMe
         Play,
         Animating,
         EndGame,
+        ShowScore,
         GameOver
     }
 

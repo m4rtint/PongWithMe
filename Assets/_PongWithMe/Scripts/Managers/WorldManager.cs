@@ -92,6 +92,8 @@ namespace PongWithMe
                 case State.EndGame:
                     TimeScaleController.EndGameTimeScale();
                     break;
+                case State.ShowScore:
+                    break;
                 case State.GameOver:
                     break;
                 default:
