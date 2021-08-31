@@ -20,6 +20,7 @@ namespace PongWithMe
         [Title("User Interface")]
         [SerializeField] private LivesViewBehaviour _livesView = null;
         [SerializeField] private GameOverViewBehaviour _gameOverView = null;
+        [SerializeField] private ScorePanelViewBehaviour _scorePanelView = null;
         
         private Board _board = null;
         private PlayerLives _playerLives = null;
@@ -70,6 +71,7 @@ namespace PongWithMe
             // Interface
             _livesView.Initialize(_playerLives, _playersManager.Players);
             _gameOverView.Initialize(_playersManager);
+            _scorePanelView.Initialize(_playersManager.Players, _playersManager, lives: 3);
         }
 
         private void OnDestroy()
@@ -81,6 +83,8 @@ namespace PongWithMe
         {
             switch (state)
             {
+                case State.PreGame:
+                    break;
                 case State.StartGame:
                     _stateManager.SetState(State.Play);
                     break;
@@ -93,7 +97,6 @@ namespace PongWithMe
                     TimeScaleController.EndGameTimeScale();
                     break;
                 case State.ShowScore:
-                    break;
                 case State.GameOver:
                     break;
                 default:

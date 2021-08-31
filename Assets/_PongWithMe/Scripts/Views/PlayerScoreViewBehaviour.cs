@@ -27,10 +27,24 @@ namespace PongWithMe
             SetupSquares(lives);
         }
 
-        public void WinNextSquare()
+        public Tween WinNextSquare()
         {
-            _winSquares[_currentWins].transform.DOScale(Vector3.one, SHOW_SQUARE_ANIMATION).SetEase(Ease.OutBack);
+            var square = _winSquares[_currentWins];
+            square.color = _ownedByImage.color;
+            var tween = square.transform
+                .DOScale(Vector3.one, SHOW_SQUARE_ANIMATION)
+                .SetEase(Ease.OutBack);
+            UpdateCurrentWins();
+            return tween;
+        }
+
+        private void UpdateCurrentWins()
+        {
             _currentWins++;
+            if (_currentWins >= _winSquares.Count)
+            {
+                StateManager.Instance.SetState(State.GameOver);
+            }
         }
 
         private void SetupSquares(int lives)

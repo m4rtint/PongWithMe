@@ -23,5 +23,11 @@ namespace PongWithMe
         {
             StateManager.Instance.SetState(State.EndGame);
         }
+
+        [Button]
+        public void ShowEndGameScore()
+        {
+            StateManager.Instance.SetState(State.ShowScore);
+        }
     }
 }

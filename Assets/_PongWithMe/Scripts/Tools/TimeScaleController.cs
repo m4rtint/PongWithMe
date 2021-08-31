@@ -28,7 +28,7 @@ namespace PongWithMe
             return DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0, ENDGAME_TIMESCALE_TWEEN_DURATION)
                 .SetEase(Ease.InQuad)
                 .SetUpdate(true)
-                .OnComplete(() => { StateManager.Instance.SetState(State.GameOver); });
+                .OnComplete(() => { StateManager.Instance.SetState(State.ShowScore); });
         }
     }
 }
