@@ -6,6 +6,11 @@ namespace PongWithMe
 {
     public class ScorePanelViewBehaviour : MonoBehaviour
     {
+        private const float DELAY_SCORE_DISPLAY = 1.5F;
+        private const float SHOW_HIDE_SCOREBOARD_DURATION = 1.0F;
+        private const float SHOW_WIN_SQUARE_DELAY = 1.0F;
+        private const float DELAY_HIDE_SCORE_DISPLAY = 2F;
+        
         [SerializeField]
         private PlayerScoreViewBehaviour[] _playerScorePanels = null;
 
@@ -35,19 +40,18 @@ namespace PongWithMe
 
             transform.localScale = Vector3.zero;
         }
-
+        
         private void PlayerWin(IPaddle paddle)
         {
-            transform.DOScale(Vector3.one, 1.0f).SetUpdate(true).OnComplete(() =>
+            var sequence = DOTween.Sequence();
+            sequence.SetDelay(DELAY_SCORE_DISPLAY);
+            sequence.Append(transform.DOScale(Vector3.one, SHOW_HIDE_SCOREBOARD_DURATION)).SetUpdate(true);
+            var scoreView = _dictionaryScores[paddle];
+            sequence.Append(scoreView.WinNextSquare().SetDelay(SHOW_WIN_SQUARE_DELAY));
+            sequence.Append(transform.DOScale(Vector3.zero, SHOW_HIDE_SCOREBOARD_DURATION).SetDelay(DELAY_HIDE_SCORE_DISPLAY));
+            sequence.OnComplete(() =>
             {
-                var scoreView = _dictionaryScores[paddle];
-                scoreView.WinNextSquare().SetUpdate(true).OnComplete(() =>
-                {
-                    transform.DOScale(Vector3.zero, 1.0f).SetUpdate(true).SetDelay(2f).OnComplete(() =>
-                    {
-                        _stateManager.SetState(State.PreGame);
-                    });
-                });
+                _stateManager.SetState(State.PreGame);
             });
         }
 
