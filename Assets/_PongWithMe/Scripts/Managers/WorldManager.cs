@@ -77,6 +77,9 @@ namespace PongWithMe
             _playerLives.CleanUp();
             _bricksBehaviour.CleanUp();
             _ballBehaviour.CleanUp();
+            _playersManager.CleanUp();
+            
+            _splattersBehaviour.CleanUp();
         }
 
         private void Reset()
@@ -85,6 +88,10 @@ namespace PongWithMe
             _playerLives.Reset(bricks);
             _bricksBehaviour.Reset(bricks);
             _ballBehaviour.Reset();
+            _playersManager.Reset();
+            
+            _goalsManager.Reset(_playersManager.Players);
+            _splattersBehaviour.Reset();
         }
 
         private void OnDestroy()

@@ -4,7 +4,7 @@ namespace PongWithMe
 {
     public class Splatter
     {
-        private float _timeToLive = 0;
+        private readonly float _timeToLive = 0;
         private float _elapsedTime = 0;
         private bool _isActive = false;
 
@@ -28,6 +28,12 @@ namespace PongWithMe
         {
             _elapsedTime = _timeToLive;
             IsActive = true;
+        }
+
+        public void Reset()
+        {
+            _elapsedTime = _timeToLive;
+            IsActive = false;
         }
 
         public void Update(float deltaTime)

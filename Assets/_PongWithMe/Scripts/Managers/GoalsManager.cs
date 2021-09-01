@@ -35,6 +35,16 @@ namespace PongWithMe
             var goal = GetGoal(direction);
             goal.ActivateForceField(forceFieldLives);
         }
+
+        public void Reset(List<IPaddle> players)
+        {
+            _topGoal.Reset();
+            _leftGoal.Reset();
+            _bottomGoal.Reset();
+            _rightGoal.Reset();
+
+            Set(players);
+        }
         
         private void Set(IPaddle paddle)
         {

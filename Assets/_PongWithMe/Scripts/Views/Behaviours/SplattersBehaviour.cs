@@ -24,6 +24,17 @@ namespace PongWithMe
             _splatter.OnActivateChanged += HandleOnActivate;
         }
 
+        public void CleanUp()
+        {
+            ResetColor();
+            ResetScale();
+        }
+
+        public void Reset()
+        {
+            _splatter.Reset();
+        }
+
         private void HandleOnActivate(bool state)
         {
             if (state)

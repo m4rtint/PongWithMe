@@ -81,6 +81,12 @@ namespace PongWithMe
             }
         }
 
+        public void Reset()
+        {            
+            IsActive = false;
+            _currentlives = 0;
+        }
+
         public void IncrementLivesBy(int lives)
         {
             _currentlives += lives;

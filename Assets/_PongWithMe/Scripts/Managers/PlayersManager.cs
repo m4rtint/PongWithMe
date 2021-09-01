@@ -22,10 +22,11 @@ namespace PongWithMe
         [SerializeField] private PaddleBehaviour _bottomPaddle = null;
         [SerializeField] private PaddleBehaviour _rightPaddle = null;
         
-        private IBall _ball = null;
-        private List<IPaddle> _players = new List<IPaddle>();
+        // Dependencies
+        private IBall _ball = null;        
         private IPlayerLives _playerLives = null;
 
+        private List<IPaddle> _players = new List<IPaddle>();
         public List<IPaddle> Players => _players;
 
         public void Initialize(IBall ball, IPlayerLives lives)
@@ -34,6 +35,24 @@ namespace PongWithMe
             _playerLives.OnBrickBreak += HandleOnBrickBreak;
             _ball = ball;
             SetupPlayers();
+        }
+
+        public void CleanUp()
+        {
+
+        }
+
+        public void Reset()
+        {
+            _players[0].PaddleDirection = Direction.Left;
+            _players[1].PaddleDirection = Direction.Right;
+            _players[2].PaddleDirection = Direction.Top;
+            _players[3].PaddleDirection = Direction.Bottom;
+            
+            _leftPaddle.Reset();
+            _topPaddle.Reset();
+            _rightPaddle.Reset();
+            _bottomPaddle.Reset();
         }
 
         private void HandleOnBrickBreak(int brickOwner, int score)
@@ -62,6 +81,7 @@ namespace PongWithMe
             var aiPaddle = new AIPaddle(ai, 2, Direction.Top, _ball);
             _players.Add(aiPaddle);
             _topPaddle.Initialize(aiPaddle);
+            
             /*
             var ai2 = new AIInput();
             var aiPaddle2 = new AIPaddle(ai2, 2, Direction.Bottom, _ball);

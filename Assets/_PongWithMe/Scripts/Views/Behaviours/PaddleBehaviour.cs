@@ -16,17 +16,25 @@ namespace PongWithMe
         private IPaddle _player = null;
         private PaddleMovementBehaviour _movementBehaviour = null;
 
+        private Vector3 _originalSpawn = Vector3.zero;
+
         public Color PaddleColor => _player.PlayerColor;
         public Direction PaddleDirection => _player.PaddleDirection;
         
         public void Initialize(IPaddle playerPaddle)
         {
             _player = playerPaddle;
-            _movementBehaviour.Initialize(playerPaddle.Input, playerPaddle.PaddleDirection, speed: _speed);
+            _movementBehaviour.Initialize(_player.Input, _player.PaddleDirection, speed: _speed);
             SetupAIIfNeeded(playerPaddle);
             SetupStyle();
             _player.OnIsActiveUpdated += HandleIsActiveUpdated;
             _player.OnDirectionChanged += HandleOnDirectionChanged;
+        }
+
+        public void Reset()
+        {
+            transform.position = _originalSpawn;
+            _movementBehaviour.Set(_player.PaddleDirection);
         }
 
         private void SetupAIIfNeeded(IPaddle playerPaddle)
@@ -46,6 +54,7 @@ namespace PongWithMe
         private void Awake()
         {
             _movementBehaviour = GetComponent<PaddleMovementBehaviour>();
+            _originalSpawn = transform.localPosition;
         }
 
         private void OnDestroy()
@@ -62,7 +71,6 @@ namespace PongWithMe
             transform.DOScale(size, DEATH_ANIMATION_DURATION)
                     .SetEase(ease)
                     .SetUpdate(true);
-            
         }
 
         private void HandleOnDirectionChanged(Direction direction)

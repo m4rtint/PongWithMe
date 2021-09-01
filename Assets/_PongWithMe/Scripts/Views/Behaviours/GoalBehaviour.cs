@@ -41,6 +41,11 @@ namespace PongWithMe
             _forceField.IncrementLivesBy(lives);
         }
 
+        public void Reset()
+        {
+            _forceField.Reset();
+        }
+
         private void HandleIsActiveUpdated(bool active)
         {
             if (active)
