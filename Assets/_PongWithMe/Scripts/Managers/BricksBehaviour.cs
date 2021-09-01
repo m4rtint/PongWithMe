@@ -6,25 +6,33 @@ namespace PongWithMe
     [RequireComponent(typeof(BrickPool))]
     public class BricksBehaviour : MonoBehaviour
     {
+        private const float RATE_OF_SPAWN = 0.02F;
         private BrickPool _pool = null;
-        private Board _board = null;
 
-        public void Initialize(Board board)
+        public void Initialize(Brick[] bricks)
         {
-            _board = board;
-            SetupBricks();
+            SetupBricks(bricks);
+        }
+        
+        public void CleanUp()
+        {
+            _pool.CleanUp();
         }
 
-        private void SetupBricks()
+        public void Reset(Brick[] bricks)
+        { 
+            SetupBricks(bricks);
+        }
+        
+
+        private void SetupBricks(Brick[] bricks)
         {
             float timeToWait = 0;
-            foreach (var brick in _board.Bricks)
+            foreach (var brick in bricks)
             {
-                var brickBehaviour = _pool.PopPooledObject(BrickPool.KEY);
-                brickBehaviour.gameObject.SetActive(true);
-                brickBehaviour.Initialize(brick);
+                _pool.SpawnBrickWith(brick);
                 StartCoroutine(SetBrickColor(brick, timeToWait));
-                timeToWait += 0.02f;
+                timeToWait += RATE_OF_SPAWN;
             }
         }
 

@@ -85,7 +85,7 @@ namespace PongWithMe
         {
             component.gameObject.SetActive(false);
             
-            Queue<T> poolQueue;
+            Queue<T> poolQueue = new Queue<T>();
             if (m_poolDictionary.TryGetValue(poolKey, out poolQueue))
             {
                 poolQueue.Enqueue(component);

@@ -22,7 +22,6 @@ namespace PongWithMe
         [SerializeField] private GameOverViewBehaviour _gameOverView = null;
         [SerializeField] private ScorePanelViewBehaviour _scorePanelView = null;
         
-        private Board _board = null;
         private PlayerLives _playerLives = null;
         private IStateManager _stateManager = null;
 
@@ -40,10 +39,9 @@ namespace PongWithMe
             _stateManager.OnStateChanged += HandleStateChanges;
             
             //Board
-            var boardGenerator = new BoardGenerator(AMOUNT_OF_PLAYERS);
-            _playerLives = new PlayerLives(boardGenerator.Bricks, AMOUNT_OF_PLAYERS);
-            _board = new Board(boardGenerator.Bricks);
-            _bricksBehaviour.Initialize(_board);
+            var bricks = BoardFactory.Build(AMOUNT_OF_PLAYERS);
+            _playerLives = new PlayerLives(bricks, AMOUNT_OF_PLAYERS);
+            _bricksBehaviour.Initialize(bricks);
             
             // Ball
             _ballBehaviour.Initialize();
@@ -64,7 +62,7 @@ namespace PongWithMe
                 _goalsManager,
                 _playerLives,
                 _ballBehaviour,
-                _board.Bricks, 
+                bricks, 
                 _splattersBehaviour.Splatters);
             _mutatorBehaviour.Initialize(mutatorManager);
 
@@ -72,6 +70,21 @@ namespace PongWithMe
             _livesView.Initialize(_playerLives, _playersManager.Players);
             _gameOverView.Initialize(_playersManager);
             _scorePanelView.Initialize(_playersManager.Players, _playersManager, lives: 3);
+        }
+
+        private void CleanUp()
+        {
+            _playerLives.CleanUp();
+            _bricksBehaviour.CleanUp();
+            _ballBehaviour.CleanUp();
+        }
+
+        private void Reset()
+        {
+            var bricks = BoardFactory.Build(AMOUNT_OF_PLAYERS);
+            _playerLives.Reset(bricks);
+            _bricksBehaviour.Reset(bricks);
+            _ballBehaviour.Reset();
         }
 
         private void OnDestroy()
@@ -84,6 +97,8 @@ namespace PongWithMe
             switch (state)
             {
                 case State.PreGame:
+                    CleanUp();
+                    Reset();
                     break;
                 case State.StartGame:
                     _stateManager.SetState(State.Play);

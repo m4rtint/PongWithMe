@@ -6,27 +6,23 @@ using UnityEngine;
 
 namespace PongWithMe 
 {
-    public class BoardGenerator
+    public static class BoardFactory
     {
         private const float POSITION_LIMIT = 3f;
         private const float PADDING = 0.5f;
-        
-        private readonly Brick[] _bricks;
-        public Brick[] Bricks => _bricks;
-
 
         // The a template of the look of the bricks will be passed in in the future
-        public BoardGenerator(int amountOfPlayers, bool[] boardTemplate = null)
+        public static Brick[] Build(int amountOfPlayers, bool[] boardTemplate = null)
         {
             var maxNumberOfBricks = SetMaxNumberOfBricks();
             boardTemplate ??= BoardTemplates.OddBricks(maxNumberOfBricks);
             ValidateBoard(amountOfPlayers, boardTemplate);
             var separatedLives = BalancedLives(amountOfPlayers, boardTemplate);
             var playerOrder = GeneratePlayerBrickOrder(separatedLives, amountOfPlayers);
-            _bricks = BuildBoard(playerOrder, boardTemplate);
+            return BuildBoard(playerOrder, boardTemplate);
         }
 
-        private Brick[] BuildBoard(Stack<int> playerOrder, bool[] boardTemplate)
+        private static Brick[] BuildBoard(Stack<int> playerOrder, bool[] boardTemplate)
         {
             var bricks = new List<Brick>();
             var index = 0;
@@ -48,13 +44,13 @@ namespace PongWithMe
             return bricks.ToArray();
         }
 
-        private Brick GenerateBrickToPlayer(Vector3 position, int player)
+        private static Brick GenerateBrickToPlayer(Vector3 position, int player)
         {
             var brick = new Brick {Position = position, BrickColor = ColorPalette.PlayerColor(player), PlayerOwned = player};
             return brick;
         }
 
-        private Stack<int> GeneratePlayerBrickOrder(int[] separatedLives, int numberOfPlayers)
+        private static Stack<int> GeneratePlayerBrickOrder(int[] separatedLives, int numberOfPlayers)
         {
             var randomGenerator = new RandomUtility();
             var stackOfPlayerLives = new Stack<int>();
@@ -71,7 +67,7 @@ namespace PongWithMe
             return stackOfPlayerLives;
         }
 
-        private int[] BalancedLives(int amountOfPlayers, bool[] boardTemplate)
+        private static int[] BalancedLives(int amountOfPlayers, bool[] boardTemplate)
         {
             int numberOfActiveBricks = boardTemplate.Count(x => x);
             int[] playerLives = new int[amountOfPlayers];
@@ -83,13 +79,13 @@ namespace PongWithMe
             return playerLives;
         }
 
-        private int SetMaxNumberOfBricks()
+        private static int SetMaxNumberOfBricks()
         {
             var oneSideOfBoard =((POSITION_LIMIT * 2) / PADDING) + 1;
             return (int) Math.Ceiling(Math.Pow(oneSideOfBoard, 2));
         }
 
-        private void ValidateBoard(int numberOfPlayers, bool[] boardTemplate)
+        private static void ValidateBoard(int numberOfPlayers, bool[] boardTemplate)
         {
             var numberOfActiveBricks = boardTemplate.Count(b => b);
             var remainder = numberOfActiveBricks % numberOfPlayers;

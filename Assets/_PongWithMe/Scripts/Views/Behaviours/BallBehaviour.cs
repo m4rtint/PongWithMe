@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace PongWithMe
@@ -18,6 +17,7 @@ namespace PongWithMe
         private Rigidbody2D _rigidbody = null;
         private Direction _lastHitFrom = Direction.Left;
         private IStateManager _stateManager = null;
+        private Vector3 _spawnPosition = Vector3.zero;
 
         public Direction LastHitFrom => _lastHitFrom;
 
@@ -27,6 +27,16 @@ namespace PongWithMe
         {
             _stateManager = stateManager ?? StateManager.Instance;
             _stateManager.OnStateChanged += HandleStateChange;
+        }
+
+        public void CleanUp()
+        {
+            transform.position = Vector3.zero;
+        }
+
+        public void Reset()
+        {
+            transform.position = _spawnPosition;
         }
 
         private void ClampVelocity()
@@ -52,6 +62,7 @@ namespace PongWithMe
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody2D>();
+            _spawnPosition = transform.position;
         }
 
         private void FixedUpdate()

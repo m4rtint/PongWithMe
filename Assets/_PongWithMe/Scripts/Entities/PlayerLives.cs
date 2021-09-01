@@ -15,20 +15,17 @@ namespace PongWithMe
     
     public class PlayerLives : IPlayerLives
     {
-        private readonly Brick[] _brickLives;
         private readonly int _amountOfPlayers;
 
         public event Action<int, int> OnBrickBreak;
         public event Action OnForcePlayerScoresUpdate;
+        
+        private Brick[] _brickLives;
 
         public PlayerLives(Brick[] bricks, int amountOfPlayers)
         {
-            _brickLives = bricks;
             _amountOfPlayers = amountOfPlayers;
-            foreach (var brick in bricks)
-            {
-                brick.OnBrickIsActiveSet += HandleOnBrickInactive;
-            }
+            Reset(bricks);
         }
 
         public int GetPlayerLives(int player)
@@ -39,6 +36,23 @@ namespace PongWithMe
         public void ForceUpdatePlayerScores()
         {
             OnForcePlayerScoresUpdate?.Invoke();
+        }
+
+        public void CleanUp()
+        {
+            foreach (var brick in _brickLives)
+            {
+                brick.OnBrickIsActiveSet -= HandleOnBrickInactive;
+            }
+        }
+
+        public void Reset(Brick[] bricks)
+        {
+            _brickLives = bricks;
+            foreach (var brick in bricks)
+            {
+                brick.OnBrickIsActiveSet += HandleOnBrickInactive;
+            }
         }
 
         private bool HasGameEnded()
