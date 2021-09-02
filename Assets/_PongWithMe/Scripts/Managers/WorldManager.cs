@@ -6,8 +6,8 @@ namespace PongWithMe
 {
     public class WorldManager : MonoBehaviour
     {
-        private const int AMOUNT_OF_PLAYERS = 3;
-        private const int AMOUNT_OF_WINS = 1;
+        private const int AMOUNT_OF_PLAYERS = 4;
+        private const int AMOUNT_OF_WINS = 3;
         private string emily = "Play with emily";
         
         [SerializeField] private BricksBehaviour _bricksBehaviour = null;

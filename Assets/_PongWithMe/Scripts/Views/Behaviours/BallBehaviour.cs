@@ -39,6 +39,7 @@ namespace PongWithMe
         {
             transform.position = _spawnPosition;
             _renderer.Clear();
+            SetTrailColor(Color.white);
         }
 
         private void ClampVelocity()
@@ -57,6 +58,12 @@ namespace PongWithMe
             {
                 _rigidbody.AddForce(Vector3.one * _minForce);
             }
+        }
+
+        private void SetTrailColor(Color color)
+        {
+            _renderer.startColor = color;
+            _renderer.endColor = Color.white;
         }
         #endregion
         
@@ -85,8 +92,7 @@ namespace PongWithMe
             if (other.gameObject.TryGetComponent<PaddleBehaviour>(out var paddle))
             {
                 _lastHitFrom = paddle.PaddleDirection;
-                _renderer.startColor = paddle.PaddleColor;
-                _renderer.endColor = Color.white;
+                SetTrailColor(paddle.PaddleColor);
             }
         }
         #endregion
