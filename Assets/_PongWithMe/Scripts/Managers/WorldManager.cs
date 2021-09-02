@@ -6,7 +6,8 @@ namespace PongWithMe
 {
     public class WorldManager : MonoBehaviour
     {
-        private const int AMOUNT_OF_PLAYERS = 4;
+        private const int AMOUNT_OF_PLAYERS = 3;
+        private const int AMOUNT_OF_WINS = 1;
         private string emily = "Play with emily";
         
         [SerializeField] private BricksBehaviour _bricksBehaviour = null;
@@ -70,7 +71,7 @@ namespace PongWithMe
             // Interface
             _livesView.Initialize(_playerLives, _playersManager.Players);
             _gameOverView.Initialize(_playersManager);
-            _scorePanelView.Initialize(_playersManager.Players, _playersManager, lives: 3);
+            _scorePanelView.Initialize(_playersManager.Players, _playersManager, AMOUNT_OF_WINS);
             
             _stateManager.SetState(State.PreGame);
         }

@@ -20,6 +20,8 @@ namespace PongWithMe
 
         private List<Image> _winSquares = new List<Image>();
         private int _currentWins = 0;
+
+        public int CurrentWins => _currentWins;
         
         public void Initialize(Color color, int lives)
         {
@@ -41,10 +43,6 @@ namespace PongWithMe
         private void UpdateCurrentWins()
         {
             _currentWins++;
-            if (_currentWins >= _winSquares.Count)
-            {
-                StateManager.Instance.SetState(State.GameOver);
-            }
         }
 
         private void SetupSquares(int lives)
