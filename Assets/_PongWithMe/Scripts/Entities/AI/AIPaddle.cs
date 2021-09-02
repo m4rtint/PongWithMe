@@ -18,6 +18,7 @@ namespace PongWithMe
 
         private bool IsMovementVertical => _paddleDirection == Direction.Left || _paddleDirection == Direction.Right;
 
+
         public event Action<bool> OnIsActiveUpdated;
         public event Action<Direction> OnDirectionChanged;
 
@@ -68,6 +69,16 @@ namespace PongWithMe
             _moveLimit = moveLimit;
             _stateManager = stateManager ?? StateManager.Instance;
         }
+        
+        public void Reset()
+        {
+            IsActive = true;
+        }
+
+        public void CleanUp()
+        {
+            IsActive = false;
+        }
 
         public void OnUpdate(Vector3 position)
         {
@@ -75,7 +86,7 @@ namespace PongWithMe
             {
                 return;
             }
-            
+
             if (IsMovementVertical)
             {
                 HandleVertical(position);
@@ -85,7 +96,7 @@ namespace PongWithMe
                 HandleHorizontalMovement(position);
             }
         }
-
+        
         private void HandleHorizontalMovement(Vector3 paddlePosition)
         {
             var displacement = paddlePosition.x - _ball.GetPosition.x;

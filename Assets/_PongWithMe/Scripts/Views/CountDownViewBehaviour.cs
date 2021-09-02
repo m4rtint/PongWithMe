@@ -16,13 +16,13 @@ namespace PongWithMe
         {
             _countDownLabel = GetComponent<TMP_Text>();
             _stateManager = StateManager.Instance;
+            _stateManager.OnStateChanged += HandleStateChange;
         }
         
-        private void Start(){            
+        private void Start()
+        {            
             _countDownLabel.transform.localScale = Vector3.zero;
-            StartCountingDown();
         }
-        
 
         private void StartCountingDown()
         {
@@ -55,6 +55,14 @@ namespace PongWithMe
         private void SetLabelValue(int value)
         {
             _countDownLabel.text = value.ToString();
+        }
+
+        private void HandleStateChange(State state)
+        {
+            if (state == State.PreGame)
+            {
+                StartCountingDown();
+            }
         }
     }
 }

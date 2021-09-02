@@ -8,10 +8,12 @@ namespace PongWithMe
     {
         private const float RATE_OF_SPAWN = 0.02F;
         private BrickPool _pool = null;
+        private Board _board = null;
 
-        public void Initialize(Brick[] bricks)
+        public void Initialize(Board board)
         {
-            SetupBricks(bricks);
+            _board = board;
+            SetupBricks();
         }
         
         public void CleanUp()
@@ -19,16 +21,16 @@ namespace PongWithMe
             _pool.CleanUp();
         }
 
-        public void Reset(Brick[] bricks)
+        public void Reset()
         { 
-            SetupBricks(bricks);
+            SetupBricks();
         }
         
 
-        private void SetupBricks(Brick[] bricks)
+        private void SetupBricks()
         {
             float timeToWait = 0;
-            foreach (var brick in bricks)
+            foreach (var brick in _board.Bricks)
             {
                 _pool.SpawnBrickWith(brick);
                 StartCoroutine(SetBrickColor(brick, timeToWait));

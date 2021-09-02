@@ -7,6 +7,7 @@ namespace PongWithMe
     public class WorldManager : MonoBehaviour
     {
         private const int AMOUNT_OF_PLAYERS = 4;
+        private string emily = "Play with emily";
         
         [SerializeField] private BricksBehaviour _bricksBehaviour = null;
         [SerializeField] private BallBehaviour _ballBehaviour = null;
@@ -21,8 +22,9 @@ namespace PongWithMe
         [SerializeField] private LivesViewBehaviour _livesView = null;
         [SerializeField] private GameOverViewBehaviour _gameOverView = null;
         [SerializeField] private ScorePanelViewBehaviour _scorePanelView = null;
-        
+
         private PlayerLives _playerLives = null;
+        private Board _board = null;
         private IStateManager _stateManager = null;
 
         private void Awake()
@@ -30,18 +32,18 @@ namespace PongWithMe
             Application.targetFrameRate = 60;
             QualitySettings.vSyncCount = 0;
             _stateManager = StateManager.Instance;
-            _stateManager.SetState(State.PreGame);
+            _stateManager.OnStateChanged += HandleStateChanges;
         }
 
         private void Start()
         {
             new ColorPalette();
-            _stateManager.OnStateChanged += HandleStateChanges;
             
             //Board
             var bricks = BoardFactory.Build(AMOUNT_OF_PLAYERS);
-            _playerLives = new PlayerLives(bricks, AMOUNT_OF_PLAYERS);
-            _bricksBehaviour.Initialize(bricks);
+            _board = new Board(bricks);
+            _playerLives = new PlayerLives(_board, AMOUNT_OF_PLAYERS);
+            _bricksBehaviour.Initialize(_board);
             
             // Ball
             _ballBehaviour.Initialize();
@@ -51,7 +53,6 @@ namespace PongWithMe
 
             // Goals
             _goalsManager.Initialize(_playerLives);
-            _goalsManager.Set(_playersManager.Players);
             
             // Mutator
             _splattersBehaviour.Initialize();
@@ -62,7 +63,7 @@ namespace PongWithMe
                 _goalsManager,
                 _playerLives,
                 _ballBehaviour,
-                bricks, 
+                _board, 
                 _splattersBehaviour.Splatters);
             _mutatorBehaviour.Initialize(mutatorManager);
 
@@ -70,10 +71,13 @@ namespace PongWithMe
             _livesView.Initialize(_playerLives, _playersManager.Players);
             _gameOverView.Initialize(_playersManager);
             _scorePanelView.Initialize(_playersManager.Players, _playersManager, lives: 3);
+            
+            _stateManager.SetState(State.PreGame);
         }
 
         private void CleanUp()
         {
+            _board.CleanUp();
             _playerLives.CleanUp();
             _bricksBehaviour.CleanUp();
             _ballBehaviour.CleanUp();
@@ -85,8 +89,9 @@ namespace PongWithMe
         private void Reset()
         {
             var bricks = BoardFactory.Build(AMOUNT_OF_PLAYERS);
-            _playerLives.Reset(bricks);
-            _bricksBehaviour.Reset(bricks);
+            _board.Reset(bricks);
+            _playerLives.Reset();
+            _bricksBehaviour.Reset();
             _ballBehaviour.Reset();
             _playersManager.Reset();
             
@@ -104,6 +109,7 @@ namespace PongWithMe
             switch (state)
             {
                 case State.PreGame:
+                    TimeScaleController.PlayTimeScale();
                     CleanUp();
                     Reset();
                     break;

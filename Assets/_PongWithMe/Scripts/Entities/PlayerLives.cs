@@ -19,18 +19,18 @@ namespace PongWithMe
 
         public event Action<int, int> OnBrickBreak;
         public event Action OnForcePlayerScoresUpdate;
-        
-        private Brick[] _brickLives;
 
-        public PlayerLives(Brick[] bricks, int amountOfPlayers)
+        private Board _board;
+
+        public PlayerLives(Board board, int amountOfPlayers)
         {
             _amountOfPlayers = amountOfPlayers;
-            Reset(bricks);
+            _board = board;
         }
 
         public int GetPlayerLives(int player)
         {
-            return _brickLives.Count(brick => brick.PlayerOwned == player && brick.IsActive);
+            return _board.Bricks.Count(brick => brick.PlayerOwned == player && brick.IsActive);
         }
         
         public void ForceUpdatePlayerScores()
@@ -40,16 +40,15 @@ namespace PongWithMe
 
         public void CleanUp()
         {
-            foreach (var brick in _brickLives)
+            foreach (var brick in _board.Bricks)
             {
                 brick.OnBrickIsActiveSet -= HandleOnBrickInactive;
             }
         }
 
-        public void Reset(Brick[] bricks)
+        public void Reset()
         {
-            _brickLives = bricks;
-            foreach (var brick in bricks)
+            foreach (var brick in _board.Bricks)
             {
                 brick.OnBrickIsActiveSet += HandleOnBrickInactive;
             }
@@ -86,7 +85,7 @@ namespace PongWithMe
         
         public void ForceBrickBreakOwnedBy(int player)
         {
-            var arrayOfPlayerLives = _brickLives.Where(brick => brick.PlayerOwned == player && brick.IsActive).ToArray();
+            var arrayOfPlayerLives = _board.Bricks.Where(brick => brick.PlayerOwned == player && brick.IsActive).ToArray();
             var random = new RandomUtility();
             if (random.NextTryGetElement(arrayOfPlayerLives, out var brick))
             {

@@ -28,7 +28,7 @@ namespace PongWithMe
     {
         private static readonly StateManager _instance = new StateManager();
 
-        private State _gameState = State.Play;
+        private State _gameState = State.PreGame;
         public event Action<State> OnStateChanged;
 
         public static StateManager Instance => _instance;

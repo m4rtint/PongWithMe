@@ -32,11 +32,13 @@ namespace PongWithMe
         public void CleanUp()
         {
             transform.position = Vector3.zero;
+            _rigidbody.velocity = Vector3.zero;
         }
 
         public void Reset()
         {
             transform.position = _spawnPosition;
+            _renderer.Clear();
         }
 
         private void ClampVelocity()

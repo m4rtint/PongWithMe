@@ -11,8 +11,9 @@ namespace PongWithMe
         Color PlayerColor { get; }
         bool IsActive { get; set; }
 
-        event Action<bool> OnIsActiveUpdated;
+        void Reset();
 
+        event Action<bool> OnIsActiveUpdated;
         event Action<Direction> OnDirectionChanged;
     }
     
@@ -50,6 +51,11 @@ namespace PongWithMe
                 _isActive = value;
                 OnIsActiveUpdated?.Invoke(value);
             }
+        }
+
+        public void Reset()
+        {
+            IsActive = true;
         }
 
 

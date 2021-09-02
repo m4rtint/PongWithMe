@@ -9,20 +9,20 @@ namespace PongWithMe
         private const int NUMBER_OF_PLAYERS = 4;
         
         private List<IPaddle> _players = null;
-        private Brick[] _bricks = null;
+        private Board _board = null;
         private IPlayerLives _playerLives = null;
         private IRandomUtility _random = null;
 
-        private Brick[] ActiveBricks => _bricks.Where(brick => brick.IsActive).ToArray();
+        private Brick[] ActiveBricks => _board.Bricks.Where(brick => brick.IsActive).ToArray();
         
         public RebalanceLives(
             List<IPaddle> players, 
-            Brick[] bricks, 
+            Board board, 
             IPlayerLives playerLives,
             IRandomUtility randomUtility = null)
         {
             _players = players;
-            _bricks = bricks;
+            _board = board;
             _playerLives = playerLives;
             _random = randomUtility ?? new RandomUtility();
         }

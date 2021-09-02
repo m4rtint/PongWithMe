@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using Sirenix.Utilities;
 using UnityEngine;
 
 namespace PongWithMe
@@ -39,7 +40,7 @@ namespace PongWithMe
 
         public void CleanUp()
         {
-
+            transform.localRotation = Quaternion.identity;
         }
 
         public void Reset()
@@ -48,6 +49,8 @@ namespace PongWithMe
             _players[1].PaddleDirection = Direction.Right;
             _players[2].PaddleDirection = Direction.Top;
             _players[3].PaddleDirection = Direction.Bottom;
+            
+            _players.ForEach(player => player.Reset());
             
             _leftPaddle.Reset();
             _topPaddle.Reset();
