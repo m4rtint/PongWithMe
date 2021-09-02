@@ -21,6 +21,20 @@ namespace PongWithMe
             _elapsedTime = _countDownToAppear;
             transform.localScale = Vector3.zero;
         }
+
+        public void CleanUp()
+        {
+            _canActivate = false;
+            _isShown = false;
+            _elapsedTime = 0;
+        }
+
+        public void Reset()
+        {
+            _canActivate = true;
+            _isShown = false;
+            _elapsedTime = _countDownToAppear;
+        }
         
         private void OnTriggerEnter2D(Collider2D other)
         {

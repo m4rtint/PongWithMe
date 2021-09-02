@@ -84,6 +84,8 @@ namespace PongWithMe
             _playersManager.CleanUp();
             
             _splattersBehaviour.CleanUp();
+
+            _mutatorBehaviour.CleanUp();
         }
 
         private void Reset()
@@ -97,6 +99,7 @@ namespace PongWithMe
             
             _goalsManager.Reset(_playersManager.Players);
             _splattersBehaviour.Reset();
+            _mutatorBehaviour.Reset();
         }
 
         private void OnDestroy()
