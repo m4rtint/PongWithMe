@@ -27,6 +27,7 @@ namespace PongWithMe
             _canActivate = false;
             _isShown = false;
             _elapsedTime = 0;
+            transform.localScale = Vector3.zero;
         }
 
         public void Reset()
