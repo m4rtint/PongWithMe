@@ -7,6 +7,7 @@ namespace PongWithMe
     public class MutatorBehaviour : MonoBehaviour
     {
         private const float ANIMATE_MUTATOR_DURATION = 0.5F;
+        
         [SerializeField] private float _countDownToAppear = 50f;
         
         private MutatorManager _mutatorManager = null;

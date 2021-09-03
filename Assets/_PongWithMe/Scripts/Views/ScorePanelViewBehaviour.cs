@@ -7,7 +7,7 @@ namespace PongWithMe
     public class ScorePanelViewBehaviour : MonoBehaviour
     {
         private const float DELAY_SCORE_DISPLAY = 1.5F;
-        private const float SHOW_HIDE_SCOREBOARD_DURATION = 1.0F;
+        private const float SHOW_HIDE_SCOREBOARD_DURATION = 0.5F;
         private const float SHOW_WIN_SQUARE_DELAY = 1.0F;
         private const float DELAY_HIDE_SCORE_DISPLAY = 2F;
 

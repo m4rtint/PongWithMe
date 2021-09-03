@@ -37,7 +37,12 @@ namespace PongWithMe
                 _stateManager.SetState(State.Play);
             });
         }
-        
+
+        public override string Announcement()
+        {
+            return "ROTATION";
+        }
+
         private void RotatePlayerDirection(bool isRotateClockwise)
         {
             foreach (var player in _players)

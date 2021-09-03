@@ -61,12 +61,14 @@ namespace PongWithMe
         private void ActivateGoal()
         {
             transform.ResetScale();
+            _renderer.DOKill(true);
             _renderer.DOColor(_player.PlayerColor, COLOR_CHANGE_ANIMATION_DURATION)
                 .SetUpdate(true);
         }
 
         private void DeactivateGoal()
         {
+            _renderer.DOKill(true);
             _renderer.DOColor(Color.clear, COLOR_CHANGE_ANIMATION_DURATION)
                 .SetUpdate(true)
                 .OnComplete(() =>
@@ -78,13 +80,12 @@ namespace PongWithMe
         private void SetupStyle()
         {
             transform.localScale = _player.IsActive ? Vector3.one : Vector3.zero;
-            _renderer.DOColor(Color.clear, COLOR_CHANGE_ANIMATION_DURATION).SetUpdate(true).OnComplete(() =>
+            var sequence = DOTween.Sequence();
+            sequence.Append(_renderer.DOColor(Color.clear, COLOR_CHANGE_ANIMATION_DURATION)).SetUpdate(true);
+            if (_player.IsActive)
             {
-                if (_player.IsActive)
-                {
-                    _renderer.DOColor(_player.PlayerColor, COLOR_CHANGE_ANIMATION_DURATION).SetUpdate(true);
-                }
-            });
+                sequence.Append(_renderer.DOColor(_player.PlayerColor, COLOR_CHANGE_ANIMATION_DURATION));
+            }
         }
 #region Mono
         private void OnCollisionEnter2D(Collision2D other)

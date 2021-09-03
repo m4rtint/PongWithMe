@@ -30,6 +30,11 @@ namespace PongWithMe
             _goalsManager.ActivateForceField(lastHit, FORCE_FIELD_LIVES);
         }
 
+        public override string Announcement()
+        {
+            return "FORCE FIELD";
+        }
+
         private bool IsLastHitNotActive(Direction lastHit)
         {
             return _players.Any(player => player.PaddleDirection == lastHit && !player.IsActive);

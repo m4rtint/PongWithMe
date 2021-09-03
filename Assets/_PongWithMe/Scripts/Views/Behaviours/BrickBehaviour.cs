@@ -6,6 +6,7 @@ namespace PongWithMe
 {
     public class BrickBehaviour : MonoBehaviour
     {
+        private const float BRICK_BREAK_ANIMATION_DURATION = 0.5F;
         [SerializeField] private Disc _shape = null;
 
         private Brick _brick = null;
@@ -42,15 +43,13 @@ namespace PongWithMe
 
         private void HandleOnBrickColorSet(Brick brick, Color color)
         {
-            transform.DOScale(Vector3.zero, 0.5f)
-                .SetUpdate(true)
-                .SetEase(Ease.InBack).OnComplete(() =>
-                {
-                    _shape.Color = color;
-                    transform.DOScale(Vector3.one, 0.5f)
-                        .SetUpdate(true)
-                        .SetEase(Ease.OutBack);
-                });
+            var sequence = DOTween.Sequence();
+            sequence.Append(transform.DOScale(Vector3.zero, BRICK_BREAK_ANIMATION_DURATION).SetEase(Ease.InBack)).SetUpdate(true);
+            sequence.AppendCallback(() =>
+            {
+                _shape.Color = color;
+            });
+            sequence.Append(transform.DOScale(Vector3.one, BRICK_BREAK_ANIMATION_DURATION).SetEase(Ease.OutBack));
         }
 
         private void HandleOnBrickPositionSet(Brick brick, Vector3 position)

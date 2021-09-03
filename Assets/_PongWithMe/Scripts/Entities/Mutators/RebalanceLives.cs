@@ -34,6 +34,11 @@ namespace PongWithMe
             StateManager.Instance.SetState(State.Play);
         }
 
+        public override string Announcement()
+        {
+            return "REBALANCE";
+        }
+
         public override bool CanActivate()
         {
             return ActiveBricks.Length >= NUMBER_OF_PLAYERS;

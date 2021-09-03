@@ -14,5 +14,10 @@ namespace PongWithMe
         {
             _splatter.ActivateSplatters();
         }
+
+        public override string Announcement()
+        {
+            return "SPLATTER";
+        }
     }
 }

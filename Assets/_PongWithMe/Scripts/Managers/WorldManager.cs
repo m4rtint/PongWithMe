@@ -23,7 +23,8 @@ namespace PongWithMe
         [SerializeField] private LivesViewBehaviour _livesView = null;
         [SerializeField] private GameOverViewBehaviour _gameOverView = null;
         [SerializeField] private ScorePanelViewBehaviour _scorePanelView = null;
-
+        [SerializeField] private MutatorAnnouncementViewBehaviour _mutatorAnnouncementView = null;
+        
         private PlayerLives _playerLives = null;
         private Board _board = null;
         private IStateManager _stateManager = null;
@@ -72,7 +73,7 @@ namespace PongWithMe
             _livesView.Initialize(_playerLives, _playersManager.Players);
             _gameOverView.Initialize(_playersManager);
             _scorePanelView.Initialize(_playersManager.Players, _playersManager, AMOUNT_OF_WINS);
-            
+            _mutatorAnnouncementView.Initialize(mutatorManager);
             _stateManager.SetState(State.PreGame);
         }
 
@@ -87,6 +88,7 @@ namespace PongWithMe
             _splattersBehaviour.CleanUp();
 
             _mutatorBehaviour.CleanUp();
+            _mutatorAnnouncementView.CleanUp();
         }
 
         private void Reset()

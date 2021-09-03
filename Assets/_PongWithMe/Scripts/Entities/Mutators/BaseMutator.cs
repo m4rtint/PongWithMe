@@ -4,6 +4,7 @@ namespace PongWithMe
     {
         protected IStateManager _stateManager = null;
         public abstract void ActivateMutator();
+        public abstract string Announcement();
 
         protected BaseMutator(IStateManager stateManager = null)
         {

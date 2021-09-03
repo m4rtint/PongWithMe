@@ -133,7 +133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 1
   scaleMode: 0
-  color: {r: 0.32941177, g: 0.7568628, b: 0.9960785, a: 1}
+  color: {r: 0.9215687, g: 0.35686275, b: 0.35686275, a: 1}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
@@ -217,7 +217,7 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1135297787
+  m_SortingLayer: 1
+  m_SortingOrder: 50
   m_AdditionalVertexStreams: {fileID: 0}

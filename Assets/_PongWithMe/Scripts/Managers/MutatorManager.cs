@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using PerigonGames;
@@ -7,6 +8,8 @@ namespace PongWithMe
     public class MutatorManager
     {
         private readonly List<BaseMutator> _listOfMutators = new List<BaseMutator>();
+
+        public event Action<string> OnMutatorPicked;
 
         public MutatorManager(
             List<IPaddle> players,
@@ -26,6 +29,7 @@ namespace PongWithMe
         public void PickMutatorToActivate()
         {
             var mutator = PickRandomMutator();
+            OnMutatorPicked?.Invoke(mutator.Announcement());
             
             //TODO - the tween needs to be handled else where
             StateManager.Instance.SetState(State.Animating);
@@ -38,10 +42,10 @@ namespace PongWithMe
         private BaseMutator PickRandomMutator()
         {
             var random = new RandomUtility();
-            var index = random.NextInt(0, _listOfMutators.Count);
             BaseMutator mutator = null;
             do
             {
+                var index = random.NextInt(0, _listOfMutators.Count);
                 mutator = _listOfMutators.NullableGetElementAt(index);
             } 
             while (!mutator.CanActivate());
