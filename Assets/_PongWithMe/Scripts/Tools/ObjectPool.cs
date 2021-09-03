@@ -13,19 +13,6 @@ namespace PongWithMe
         protected Dictionary<int, Queue<T>> m_poolDictionary = null;
         private Transform m_parent = null;
 
-        #region Singleton
-        public static ObjectPool<T> Instance { get; private set; }
-
-        private void Awake()
-        {
-            if (Instance == null)
-            {
-                Instance = this;
-            }
-        }
-
-        #endregion
-
         /// <summary>
         /// Initialize the pooled of objects
         /// </summary>
@@ -79,6 +66,18 @@ namespace PongWithMe
             T pooledObj = poolQueue.Dequeue();
             
             return pooledObj;
+        }
+
+        public T InstantPopEnqueueObject(int poolKey)
+        {
+            var poppedObject = PopPooledObject(poolKey);
+            Queue<T> poolQueue = new Queue<T>();
+            if (m_poolDictionary.TryGetValue(poolKey, out poolQueue))
+            {
+                poolQueue.Enqueue(poppedObject);
+            }
+
+            return poppedObject;
         }
 
         public void Release(T component, int poolKey)

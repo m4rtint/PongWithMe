@@ -44,6 +44,9 @@ TagManager:
   - name: Board
     uniqueID: 1135297787
     locked: 0
+  - name: ParticleEffects
+    uniqueID: 3495109407
+    locked: 0
   - name: UserInterface
     uniqueID: 1178178489
     locked: 0

@@ -10,14 +10,17 @@ namespace PongWithMe
         [SerializeField] private Disc _shape = null;
 
         private Brick _brick = null;
+        private IBrickPopEffect _popEffectPool = null;
         
-        public void Initialize(Brick brick)
+        public void Initialize(Brick brick, IBrickPopEffect popEffectPool = null)
         {
+            _popEffectPool = popEffectPool ?? BrickPopEffectsPool.Instance;
             _brick = brick;
             _brick.OnBrickColorSet += HandleOnBrickColorSet;
             _brick.OnBrickPositionSet += HandleOnBrickPositionSet;
             _brick.OnBrickIsActiveSet += HandleBrickIsActiveSet;
             transform.position = _brick.Position;
+            transform.localScale = Vector3.zero;
         }
 
         private void OnDisable()
@@ -37,6 +40,15 @@ namespace PongWithMe
             {
                 _brick.IsActive = false;
             }
+        }
+
+        private void PlayBrickBreakParticleEffect(Color color)
+        {
+            var effect = _popEffectPool.GetEffect();
+            effect.SetColor(color);
+            effect.transform.position = transform.position;
+            effect.gameObject.SetActive(true);
+            effect.Play();
         }
 
         #region Delegate
@@ -59,6 +71,7 @@ namespace PongWithMe
 
         private void HandleBrickIsActiveSet(Brick brick, bool isActive)
         {
+            PlayBrickBreakParticleEffect(brick.BrickColor);
             gameObject.SetActive(isActive);
         }
         #endregion
