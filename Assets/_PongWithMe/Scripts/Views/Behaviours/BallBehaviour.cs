@@ -4,7 +4,8 @@ namespace PongWithMe
 {
     public interface IBall
     {
-        Vector3 GetPosition { get; }    
+        Vector3 GetPosition { get; }
+        void SetPosition(Vector3 position);
         Direction LastHitFrom { get; }
     }
     
@@ -18,7 +19,7 @@ namespace PongWithMe
         private Direction _lastHitFrom = Direction.Left;
         private IStateManager _stateManager = null;
         private Vector3 _spawnPosition = Vector3.zero;
-
+        
         public Direction LastHitFrom => _lastHitFrom;
 
         public Vector3 GetPosition => transform.position;
@@ -41,6 +42,12 @@ namespace PongWithMe
             _renderer.Clear();
             SetTrailColor(Color.white);
         }
+        
+        public void SetPosition(Vector3 position)
+        {
+            transform.position = position;
+        }
+
 
         private void ClampVelocity()
         {

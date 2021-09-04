@@ -18,7 +18,8 @@ namespace PongWithMe
 
         [Title("Mutators")] 
         [SerializeField] private SplattersBehaviour _splattersBehaviour = null;
-        
+        [SerializeField] private PortalsBehaviour _portalsBehaviour = null;
+
         [Title("User Interface")]
         [SerializeField] private LivesViewBehaviour _livesView = null;
         [SerializeField] private GameOverViewBehaviour _gameOverView = null;
@@ -40,7 +41,7 @@ namespace PongWithMe
         private void Start()
         {
             new ColorPalette();
-            
+
             //Board
             var bricks = BoardFactory.Build(AMOUNT_OF_PLAYERS);
             _board = new Board(bricks);
@@ -58,6 +59,7 @@ namespace PongWithMe
             
             // Mutator
             _splattersBehaviour.Initialize();
+            _portalsBehaviour.Initialize();
             
             var mutatorManager = new MutatorManager(
                 _playersManager.Players, 
@@ -66,7 +68,8 @@ namespace PongWithMe
                 _playerLives,
                 _ballBehaviour,
                 _board, 
-                _splattersBehaviour.Splatters);
+                _splattersBehaviour.Splatters,
+                _portalsBehaviour.Portals);
             _mutatorBehaviour.Initialize(mutatorManager);
 
             // Interface
@@ -86,6 +89,7 @@ namespace PongWithMe
             _playersManager.CleanUp();
             
             _splattersBehaviour.CleanUp();
+            _portalsBehaviour.CleanUp();
 
             _mutatorBehaviour.CleanUp();
             _mutatorAnnouncementView.CleanUp();
@@ -101,7 +105,9 @@ namespace PongWithMe
             _playersManager.Reset();
             
             _goalsManager.Reset(_playersManager.Players);
+            
             _splattersBehaviour.Reset();
+            _portalsBehaviour.Reset();
             _mutatorBehaviour.Reset();
         }
 

@@ -5,6 +5,8 @@ namespace PongWithMe
     {
         private Splatter _splatter = null;
 
+        public override string Announcement => "SPLATTER";
+
         public SplatterBoard(Splatter splatter)
         {
             _splatter = splatter;
@@ -13,11 +15,6 @@ namespace PongWithMe
         public override void ActivateMutator()
         {
             _splatter.ActivateSplatters();
-        }
-
-        public override string Announcement()
-        {
-            return "SPLATTER";
         }
     }
 }
