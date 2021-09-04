@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -32,6 +33,7 @@ namespace PongWithMe
 
         private void Awake()
         {
+            DOTween.SetTweensCapacity(200, 125);
             Application.targetFrameRate = 60;
             QualitySettings.vSyncCount = 0;
             _stateManager = StateManager.Instance;
