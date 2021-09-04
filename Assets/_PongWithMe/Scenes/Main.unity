@@ -785,7 +785,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3889954709024186331, guid: ef5b0a78ddb874ca88abcdb7a5169173, type: 3}
       propertyPath: m_Name
-      value: Teleporter_C
+      value: Portal_C
       objectReference: {fileID: 0}
     - target: {fileID: 6744375726121742130, guid: ef5b0a78ddb874ca88abcdb7a5169173, type: 3}
       propertyPath: m_RootOrder
@@ -2528,7 +2528,7 @@ GameObject:
   - component: {fileID: 839598911}
   - component: {fileID: 839598912}
   m_Layer: 0
-  m_Name: Teleporters
+  m_Name: Portals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2567,6 +2567,7 @@ MonoBehaviour:
   - {fileID: 1479515349}
   - {fileID: 1347998871}
   - {fileID: 301700418}
+  _timeToLive: 10
 --- !u!114 &882775437 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5644422326227880091, guid: 3eb3d6dd52ae51047a99760a8e4d9b23, type: 3}
@@ -5676,7 +5677,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3889954709024186331, guid: ef5b0a78ddb874ca88abcdb7a5169173, type: 3}
       propertyPath: m_Name
-      value: Teleporter_B
+      value: Portal_B
       objectReference: {fileID: 0}
     - target: {fileID: 6744375726121742130, guid: ef5b0a78ddb874ca88abcdb7a5169173, type: 3}
       propertyPath: m_RootOrder
@@ -6373,7 +6374,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3889954709024186331, guid: ef5b0a78ddb874ca88abcdb7a5169173, type: 3}
       propertyPath: m_Name
-      value: Teleporter_A
+      value: Portal_A
       objectReference: {fileID: 0}
     - target: {fileID: 6744375726121742130, guid: ef5b0a78ddb874ca88abcdb7a5169173, type: 3}
       propertyPath: m_RootOrder

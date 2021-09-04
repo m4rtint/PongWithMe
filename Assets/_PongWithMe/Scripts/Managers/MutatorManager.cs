@@ -47,7 +47,7 @@ namespace PongWithMe
             BaseMutator mutator = null;
             do
             {
-                var index = 4;//random.NextInt(0, _listOfMutators.Count);
+                var index = random.NextInt(0, _listOfMutators.Count);
                 mutator = _listOfMutators.NullableGetElementAt(index);
             } 
             while (!mutator.CanActivate());
