@@ -10,6 +10,8 @@ namespace PongWithMe
         private IBall _ball = null;
         private GoalsManager _goalsManager = null;
         private List<IPaddle> _players = null;
+
+        public override string Announcement => "FORCE FIELD";
         
         public ActivateForceField(IBall ball, GoalsManager goalsManager, List<IPaddle> players)
         {
@@ -28,11 +30,6 @@ namespace PongWithMe
             }
             
             _goalsManager.ActivateForceField(lastHit, FORCE_FIELD_LIVES);
-        }
-
-        public override string Announcement()
-        {
-            return "FORCE FIELD";
         }
 
         private bool IsLastHitNotActive(Direction lastHit)

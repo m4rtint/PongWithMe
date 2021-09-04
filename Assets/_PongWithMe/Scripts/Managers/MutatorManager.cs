@@ -18,18 +18,20 @@ namespace PongWithMe
             IPlayerLives playerLives,
             IBall ball,
             Board board,
-            Splatter splatter)
+            Splatter splatter,
+            Portals portals)
         {
             _listOfMutators.Add(new RotatePaddles(goalsManager, players, paddleRotator));
             _listOfMutators.Add(new RebalanceLives(players, board, playerLives));
             _listOfMutators.Add(new ActivateForceField(ball, goalsManager, players));
             _listOfMutators.Add(new SplatterBoard(splatter));
+            _listOfMutators.Add(new PortalsMutator(portals));
         }
 
         public void PickMutatorToActivate()
         {
             var mutator = PickRandomMutator();
-            OnMutatorPicked?.Invoke(mutator.Announcement());
+            OnMutatorPicked?.Invoke(mutator.Announcement);
             
             //TODO - the tween needs to be handled else where
             StateManager.Instance.SetState(State.Animating);
@@ -45,7 +47,7 @@ namespace PongWithMe
             BaseMutator mutator = null;
             do
             {
-                var index = random.NextInt(0, _listOfMutators.Count);
+                var index = 4;//random.NextInt(0, _listOfMutators.Count);
                 mutator = _listOfMutators.NullableGetElementAt(index);
             } 
             while (!mutator.CanActivate());

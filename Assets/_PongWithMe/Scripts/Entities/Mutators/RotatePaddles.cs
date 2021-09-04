@@ -12,7 +12,9 @@ namespace PongWithMe
         private List<IPaddle> _players = null;
         private IRandomUtility _randomUtility = null;
         private IPaddleRotationMutator _paddleRotator = null;
-        
+
+        public override string Announcement => "ROTATION";
+
         public RotatePaddles(
             GoalsManager goalsManager,
             List<IPaddle> players,
@@ -36,11 +38,6 @@ namespace PongWithMe
             {
                 _stateManager.SetState(State.Play);
             });
-        }
-
-        public override string Announcement()
-        {
-            return "ROTATION";
         }
 
         private void RotatePlayerDirection(bool isRotateClockwise)

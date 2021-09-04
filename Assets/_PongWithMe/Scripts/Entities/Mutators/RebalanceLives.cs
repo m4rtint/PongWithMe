@@ -13,6 +13,8 @@ namespace PongWithMe
         private IPlayerLives _playerLives = null;
         private IRandomUtility _random = null;
 
+        public override string Announcement => "REBALANCE";
+
         private Brick[] ActiveBricks => _board.Bricks.Where(brick => brick.IsActive).ToArray();
         
         public RebalanceLives(
@@ -32,11 +34,6 @@ namespace PongWithMe
         {
             Rebalance();
             StateManager.Instance.SetState(State.Play);
-        }
-
-        public override string Announcement()
-        {
-            return "REBALANCE";
         }
 
         public override bool CanActivate()
