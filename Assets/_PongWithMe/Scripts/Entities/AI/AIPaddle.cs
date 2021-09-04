@@ -75,11 +75,6 @@ namespace PongWithMe
             IsActive = true;
         }
 
-        public void CleanUp()
-        {
-            IsActive = false;
-        }
-
         public void OnUpdate(Vector3 position)
         {
             if (_stateManager.GetState() != State.Play)
@@ -188,6 +183,25 @@ namespace PongWithMe
             switch (_paddleDirection)
             {
                 case Direction.Top:
+                    if (paddlePosition.x < _moveLimit / 2)
+                    {
+                        _aiInput.Right = true;
+                    }
+                    else
+                    {
+                        _aiInput.Left = true;
+                    }
+                    
+                    if (_ball.GetPosition.x > paddlePosition.x)
+                    {
+                        _aiInput.Up = true;
+                    }
+                    else
+                    {
+                        _aiInput.Down = true;
+                    }
+
+                    break;
                 case Direction.Bottom:
                     if (paddlePosition.x < _moveLimit / 2)
                     {
@@ -196,6 +210,15 @@ namespace PongWithMe
                     else
                     {
                         _aiInput.Left = true;
+                    }
+
+                    if (_ball.GetPosition.x > paddlePosition.x)
+                    {
+                        _aiInput.Down = true;
+                    }
+                    else
+                    {
+                        _aiInput.Up = true;
                     }
 
                     break;
@@ -209,6 +232,17 @@ namespace PongWithMe
                     {
                         _aiInput.Down = true;
                     }
+                    
+                    if (_ball.GetPosition.y > paddlePosition.y)
+                    {
+                        _aiInput.Up = true;
+                    }
+                    else
+                    {
+                        _aiInput.Down = true;
+                    }
+                    
+                    _aiInput.Left = true;
                     break;
                 default:
                     PanicHelper.Panic(new Exception("Paddle should always have a direction"));
