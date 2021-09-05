@@ -13,6 +13,7 @@ namespace PongWithMe
     {
         [SerializeField] private float _maxForce = 10f;
         [SerializeField] private float _minForce = 5f;
+        [SerializeField] private Vector2 _startingForce = new Vector2(1f, 0.1f);
         [SerializeField] private TrailRenderer _renderer = null;
         
         private Rigidbody2D _rigidbody = null;
@@ -63,7 +64,7 @@ namespace PongWithMe
         {
             if (state == State.StartGame)
             {
-                _rigidbody.AddForce(Vector3.one * _minForce);
+                _rigidbody.AddForce(_startingForce);
             }
         }
 
