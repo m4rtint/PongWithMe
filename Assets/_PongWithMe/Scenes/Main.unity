@@ -6807,8 +6807,8 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 8468539464090324121}
   - {fileID: 8468539464090324119}
+  - {fileID: 8468539464090324121}
   sceneViewId: 5
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -6827,4 +6827,4 @@ MonoBehaviour:
   m_SynchronizeVelocity: 1
   m_SynchronizeAngularVelocity: 1
   m_TeleportEnabled: 1
-  m_TeleportIfDistanceGreaterThan: 3
+  m_TeleportIfDistanceGreaterThan: 2
