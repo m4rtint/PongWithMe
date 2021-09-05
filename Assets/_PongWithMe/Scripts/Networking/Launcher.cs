@@ -1,6 +1,7 @@
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PongWithMe
 {
@@ -9,6 +10,9 @@ namespace PongWithMe
         private const byte MAX_PLAYERS_PER_ROOM = 4;
         private const string GAME_VERSION = "1.0.0";
 
+        [SerializeField] private Button _playButton = null;
+        [SerializeField] private UsernameViewBehaviour _userNameView = null;
+        
         public override void OnConnectedToMaster()
         {
             Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN");
@@ -29,6 +33,7 @@ namespace PongWithMe
 
         public override void OnDisconnected(DisconnectCause cause)
         {
+            _userNameView.SetLabelAsUsername();
             Debug.LogWarningFormat("PUN Basics Tutorial/Launcher: OnDisconnected() was called by PUN with reason {0}", cause);
         }
 
@@ -40,11 +45,14 @@ namespace PongWithMe
 
         private void Start()
         {
-            ConnectToPhoton();
+            _userNameView.SetLabelAsUsername();
+            _playButton.onClick.AddListener(ConnectToPhoton);
         }
 
         private void ConnectToPhoton()
         {
+            _userNameView.SetLabelAsLoading();
+            
             if (PhotonNetwork.IsConnected)
             {
                 PhotonNetwork.JoinRandomRoom();
