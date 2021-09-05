@@ -6400,10 +6400,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: TopPaddle
       objectReference: {fileID: 0}
-    - target: {fileID: 2061503327562510030, guid: 3eb3d6dd52ae51047a99760a8e4d9b23, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2061503327562510031, guid: 3eb3d6dd52ae51047a99760a8e4d9b23, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -6448,29 +6444,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
       objectReference: {fileID: 0}
-    - target: {fileID: 2061503327767969308, guid: 3eb3d6dd52ae51047a99760a8e4d9b23, type: 3}
-      propertyPath: color.b
-      value: 0.99607843
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061503327767969308, guid: 3eb3d6dd52ae51047a99760a8e4d9b23, type: 3}
-      propertyPath: color.g
-      value: 0.75686276
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061503327767969308, guid: 3eb3d6dd52ae51047a99760a8e4d9b23, type: 3}
-      propertyPath: color.r
-      value: 0.32941177
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061503327767969310, guid: 3eb3d6dd52ae51047a99760a8e4d9b23, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3858105517911251368, guid: 3eb3d6dd52ae51047a99760a8e4d9b23, type: 3}
       propertyPath: sceneViewId
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5644422326227880091, guid: 3eb3d6dd52ae51047a99760a8e4d9b23, type: 3}
-      propertyPath: _playerNumber
-      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3eb3d6dd52ae51047a99760a8e4d9b23, type: 3}
