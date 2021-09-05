@@ -135,7 +135,7 @@ namespace PongWithMe
                     break;
                 case State.Animating:
                     break;
-                case State.EndGame:
+                case State.EndRound:
                     TimeScaleController.EndGameTimeScale();
                     break;
                 case State.ShowScore:

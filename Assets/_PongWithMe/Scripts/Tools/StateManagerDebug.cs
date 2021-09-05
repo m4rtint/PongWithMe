@@ -21,7 +21,7 @@ namespace PongWithMe
         [Button]
         public void SetEndGameState()
         {
-            StateManager.Instance.SetState(State.EndGame);
+            StateManager.Instance.SetState(State.EndRound);
         }
 
         [Button]

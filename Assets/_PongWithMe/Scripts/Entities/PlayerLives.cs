@@ -74,9 +74,9 @@ namespace PongWithMe
         {
             var playerLives = GetPlayerLives(brick.PlayerOwned);
             OnBrickBreak?.Invoke(brick.PlayerOwned, playerLives);
-            if (HasGameEnded())
+            if (HasGameEnded() && StateManager.Instance.GetState() == State.Play)
             {
-                StateManager.Instance.SetState(State.EndGame);
+                StateManager.Instance.SetState(State.EndRound);
             }
         }
         #endregion

@@ -6496,7 +6496,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7584195489174011678, guid: bb105bc3e42ddda4285cfe88a11336b7, type: 3}
       propertyPath: _minForce
-      value: 6
+      value: 6.5
       objectReference: {fileID: 0}
     - target: {fileID: 8468539464001880765, guid: bb105bc3e42ddda4285cfe88a11336b7, type: 3}
       propertyPath: m_CastShadows
