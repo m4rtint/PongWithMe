@@ -66,6 +66,7 @@ namespace PongWithMe
 
         private void ConnectToPhoton()
         {
+            PhotonNetwork.NickName = _userNameView.UserName;
             _userNameView.SetLabelAsLoading();
             
             if (PhotonNetwork.IsConnected)
