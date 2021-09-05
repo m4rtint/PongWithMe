@@ -72,7 +72,7 @@ namespace PongWithMe
         private void HandleBrickIsActiveSet(Brick brick, bool isActive)
         {
             PlayBrickBreakParticleEffect(brick.BrickColor);
-            gameObject.SetActive(isActive);
+            transform.localScale = isActive ? Vector3.one : Vector3.zero;
         }
         #endregion
     }
