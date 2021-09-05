@@ -6,7 +6,7 @@ namespace PongWithMe
 {
     public class PortalBehaviour : MonoBehaviour
     {
-        private const float SHOW_PORTAL_ANIMATION_DURATION = 0.5f;
+        private const float SHOW_PORTAL_ANIMATION_DURATION = 0.25f;
         private Portal _portal = null;
 
         public void Initialize(Portal portal)

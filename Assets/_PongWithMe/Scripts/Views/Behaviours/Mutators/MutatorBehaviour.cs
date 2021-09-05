@@ -15,6 +15,7 @@ namespace PongWithMe
         private bool _canActivate = false;
         private bool _isShown = false;
         private float _elapsedTime = 0;
+        private Sequence sequence;
         
         public void Initialize(MutatorManager mutatorManager)
         {
@@ -25,6 +26,7 @@ namespace PongWithMe
 
         public void CleanUp()
         {
+            sequence.Kill();
             _canActivate = false;
             _isShown = false;
             _elapsedTime = 0;
@@ -84,14 +86,14 @@ namespace PongWithMe
             // Placeholder as to how to inform the player mutator about to happen
             var duration = 0.1f;
             var large = Vector3.one * 1.3f;
-            Sequence seq = DOTween.Sequence();
-            seq.Append(transform.DOScale(large, duration));
-            seq.Append(transform.DOScale(Vector3.one, duration));
-            seq.Append(transform.DOScale(large, duration));
-            seq.Append(transform.DOScale(Vector3.one, duration));
-            seq.Append(transform.DOScale(large, duration));
-            seq.Append(transform.DOScale(Vector3.one, duration));
-            seq.OnComplete(() =>
+            sequence = DOTween.Sequence();
+            sequence.Append(transform.DOScale(large, duration));
+            sequence.Append(transform.DOScale(Vector3.one, duration));
+            sequence.Append(transform.DOScale(large, duration));
+            sequence.Append(transform.DOScale(Vector3.one, duration));
+            sequence.Append(transform.DOScale(large, duration));
+            sequence.Append(transform.DOScale(Vector3.one, duration));
+            sequence.OnComplete(() =>
             {
                 ActivateMutator();
                 HideMutatorOnBoard();
