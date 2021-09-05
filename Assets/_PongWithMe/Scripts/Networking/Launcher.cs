@@ -12,11 +12,17 @@ namespace PongWithMe
 
         [SerializeField] private Button _playButton = null;
         [SerializeField] private UsernameViewBehaviour _userNameView = null;
+
+        private bool _isConnecting = false;
         
         public override void OnConnectedToMaster()
         {
-            Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN");
-            PhotonNetwork.JoinRandomRoom();
+            if (_isConnecting)
+            {            
+                Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN");
+                PhotonNetwork.JoinRandomRoom();
+                _isConnecting = false;
+            }
         }
 
         public override void OnJoinRandomFailed(short returnCode, string message)
@@ -28,6 +34,15 @@ namespace PongWithMe
         public override void OnJoinedRoom()
         {
             Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
+            if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
+            {
+                Debug.Log("We load the 'Room for 1' ");
+
+
+                // #Critical
+                // Load the Room Level.
+                PhotonNetwork.LoadLevel("Main");
+            }
         }
 
 
@@ -59,7 +74,7 @@ namespace PongWithMe
             }
             else
             {
-                PhotonNetwork.ConnectUsingSettings();
+                _isConnecting = PhotonNetwork.ConnectUsingSettings();
                 PhotonNetwork.GameVersion = GAME_VERSION;
             }
         }
