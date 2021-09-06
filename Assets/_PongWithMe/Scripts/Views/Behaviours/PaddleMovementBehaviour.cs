@@ -1,4 +1,3 @@
-using Photon.Pun;
 using UnityEngine;
 
 namespace PongWithMe
@@ -32,7 +31,7 @@ namespace PongWithMe
 
         private void Update()
         {
-            if (_stateManager.GetState() != State.Play)
+            if (_playerInput == null || !CanMoveStates())
             {
                 return;
             }
@@ -46,6 +45,11 @@ namespace PongWithMe
             {
                 HandleHorizontalMovement();
             }
+        }
+
+        private bool CanMoveStates()
+        {
+            return _stateManager.GetState() == State.Play || _stateManager.GetState() == State.PlayerJoining;
         }
 
         private void HandleHorizontalMovement()

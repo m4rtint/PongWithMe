@@ -60,7 +60,10 @@ namespace PongWithMe
 
         private void OnDestroy()
         {
-            _player.OnIsActiveUpdated -= HandleIsActiveUpdated;
+            if (_player != null)
+            {
+                _player.OnIsActiveUpdated -= HandleIsActiveUpdated;
+            }
         }
 
         #region Delegate

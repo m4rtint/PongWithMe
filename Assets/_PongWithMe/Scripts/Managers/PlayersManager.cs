@@ -58,6 +58,7 @@ namespace PongWithMe
             _players.Add(player);
             var paddleBehaviour = GetPaddleFrom(player.PaddleDirection);
             paddleBehaviour.Initialize(player);
+            player.IsActive = true;
         }
 
         private PaddleBehaviour GetPaddleFrom(Direction direction)

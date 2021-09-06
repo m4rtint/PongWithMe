@@ -270,7 +270,7 @@ GameObject:
   - component: {fileID: 29074066}
   - component: {fileID: 29074067}
   m_Layer: 0
-  m_Name: WorldManager
+  m_Name: LocalWorldManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -503,7 +503,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 51.05
+  m_fontSize: 51.1
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

@@ -53,12 +53,10 @@ namespace PongWithMe
 
             // Players
             _playerLives = new PlayerLives(_board, AMOUNT_OF_PLAYERS);
-            _playersManager.Initialize(_ballBehaviour, _playerLives);
-            _playersJoinManager.Initialize(_playersManager);
-
-            // Goals
             _goalsManager.Initialize(_playerLives);
-            
+            _playersManager.Initialize(_ballBehaviour, _playerLives);
+            _playersJoinManager.Initialize(_playersManager, _goalsManager);
+
             // Ball
             _ballBehaviour.Initialize();
             
