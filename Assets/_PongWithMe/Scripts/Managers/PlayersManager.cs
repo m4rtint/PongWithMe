@@ -85,13 +85,6 @@ namespace PongWithMe
             _players.Add(aiPaddle);
             _topPaddle.Initialize(aiPaddle);
             
-            /*
-            var ai2 = new AIInput();
-            var aiPaddle2 = new AIPaddle(ai2, 2, Direction.Bottom, _ball);
-            _players.Add(aiPaddle2);
-            _bottomPaddle.Initialize(aiPaddle2);
-            */
-            
             var ai3 = new AIInput();
             var aiPaddle3 = new AIPaddle(ai3, 3, Direction.Bottom, _ball);
             _players.Add(aiPaddle3);
