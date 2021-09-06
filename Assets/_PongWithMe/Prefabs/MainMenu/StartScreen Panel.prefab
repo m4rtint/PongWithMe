@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 855956243906450121}
   - component: {fileID: 4404153635721924512}
   m_Layer: 5
-  m_Name: Network
+  m_Name: NetworkButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -240,6 +240,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &342880710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4219759285729834349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaa9cc46272c8fe4facb89f6d736ce7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _localButton: {fileID: 1837261597}
+  _networkButton: {fileID: 4404153635721924512}
 --- !u!1001 &1280137518238946338
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -250,6 +264,10 @@ PrefabInstance:
     - target: {fileID: 3119990673725752221, guid: e9183b43e3f9b1444b9a85fbe0ea0869, type: 3}
       propertyPath: m_text
       value: Pong With Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 3119990673725752221, guid: e9183b43e3f9b1444b9a85fbe0ea0869, type: 3}
+      propertyPath: m_fontSize
+      value: 68.8
       objectReference: {fileID: 0}
     - target: {fileID: 3119990674126889294, guid: e9183b43e3f9b1444b9a85fbe0ea0869, type: 3}
       propertyPath: m_Pivot.x
@@ -341,6 +359,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9183b43e3f9b1444b9a85fbe0ea0869, type: 3}
+--- !u!1 &4219759285729834349 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3119990674126889295, guid: e9183b43e3f9b1444b9a85fbe0ea0869, type: 3}
+  m_PrefabInstance: {fileID: 1280137518238946338}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &4219759285729834348 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3119990674126889294, guid: e9183b43e3f9b1444b9a85fbe0ea0869, type: 3}

@@ -1,20 +1,23 @@
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace PongWithMe
 {
-    public class Launcher : MonoBehaviourPunCallbacks
+    public interface INetworkCore
+    {
+        void Connect();
+        void SetUserName(string username);
+    }
+    
+    public class NetworkLauncher : MonoBehaviourPunCallbacks, INetworkCore
     {
         private const byte MAX_PLAYERS_PER_ROOM = 4;
         private const string GAME_VERSION = "1.0.0";
-
-        [SerializeField] private Button _playButton = null;
-        [SerializeField] private UsernameViewBehaviour _userNameView = null;
-
+        
         private bool _isConnecting = false;
         
+        #region CallBack
         public override void OnConnectedToMaster()
         {
             if (_isConnecting)
@@ -37,38 +40,32 @@ namespace PongWithMe
             if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
             {
                 Debug.Log("We load the 'Room for 1' ");
-
-
+                
                 // #Critical
                 // Load the Room Level.
                 PhotonNetwork.LoadLevel("Main");
             }
         }
-
-
+        
         public override void OnDisconnected(DisconnectCause cause)
         {
-            _userNameView.SetLabelAsUsername();
             Debug.LogWarningFormat("PUN Basics Tutorial/Launcher: OnDisconnected() was called by PUN with reason {0}", cause);
         }
+        #endregion
 
         #region Mono
-        private void Awake()
+        public void Initialize()
         {
             PhotonNetwork.AutomaticallySyncScene = true;
         }
 
-        private void Start()
+        public void SetUserName(string username)
         {
-            _userNameView.SetLabelAsUsername();
-            _playButton.onClick.AddListener(ConnectToPhoton);
+            PhotonNetwork.NickName = username;
         }
 
-        private void ConnectToPhoton()
+        public void Connect()
         {
-            PhotonNetwork.NickName = _userNameView.UserName;
-            _userNameView.SetLabelAsLoading();
-            
             if (PhotonNetwork.IsConnected)
             {
                 PhotonNetwork.JoinRandomRoom();
