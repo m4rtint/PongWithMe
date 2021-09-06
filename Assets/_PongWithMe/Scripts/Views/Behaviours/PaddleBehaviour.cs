@@ -55,6 +55,7 @@ namespace PongWithMe
         {
             _movementBehaviour = GetComponent<PaddleMovementBehaviour>();
             _originalSpawn = transform.localPosition;
+            transform.localScale = Vector3.zero;
         }
 
         private void OnDestroy()

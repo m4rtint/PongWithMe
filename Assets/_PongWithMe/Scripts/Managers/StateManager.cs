@@ -4,9 +4,11 @@ namespace PongWithMe
 {
     public enum State
     {
+        PlayerJoining,
         PreGame,
         StartGame,
         Play,
+        Pause,
         Animating,
         EndRound,
         ShowScore,

@@ -13,7 +13,6 @@ namespace PongWithMe
         public void Initialize(Board board)
         {
             _board = board;
-            SetupBricks();
         }
         
         public void CleanUp()
@@ -26,7 +25,6 @@ namespace PongWithMe
             SetupBricks();
         }
         
-
         private void SetupBricks()
         {
             float timeToWait = 0;

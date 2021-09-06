@@ -266,6 +266,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 29074065}
+  - component: {fileID: 29074068}
   - component: {fileID: 29074066}
   - component: {fileID: 29074067}
   m_Layer: 0
@@ -298,20 +299,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 29074064}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f78cf027ac4b70f42b200bcf0d631172, type: 3}
+  m_Script: {fileID: 11500000, guid: caff6c6af846ff44ebfaa170ef67de86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bricksBehaviour: {fileID: 258274324}
-  _ballBehaviour: {fileID: 325154260}
-  _playersManager: {fileID: 129268814}
-  _goalsManager: {fileID: 596599355}
-  _mutatorBehaviour: {fileID: 1652211122}
-  _splattersBehaviour: {fileID: 769737767}
-  _portalsBehaviour: {fileID: 839598912}
-  _livesView: {fileID: 631710154}
-  _gameOverView: {fileID: 324643731}
-  _scorePanelView: {fileID: 1567055765}
-  _mutatorAnnouncementView: {fileID: 2005107172}
 --- !u!114 &29074067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -324,6 +314,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f665dfcad30f4aa3978751872d30641, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &29074068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 29074064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fec99a68feb5e4f4f8769493583309c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bricksBehaviour: {fileID: 258274324}
+  _ballBehaviour: {fileID: 325154260}
+  _playersJoinManager: {fileID: 29074066}
+  _playersManager: {fileID: 129268814}
+  _goalsManager: {fileID: 596599355}
+  _mutatorBehaviour: {fileID: 1652211122}
+  _splattersBehaviour: {fileID: 769737767}
+  _portalsBehaviour: {fileID: 839598912}
+  _livesView: {fileID: 631710154}
+  _gameOverView: {fileID: 324643731}
+  _scorePanelView: {fileID: 1567055765}
+  _mutatorAnnouncementView: {fileID: 2005107172}
 --- !u!1001 &39775905
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -20,12 +20,13 @@ namespace PongWithMe
     public class PlayerPaddle : IPaddle
     {
         private readonly int _playerNumber;
-        private IInput _playerInput;
+        private readonly IInput _playerInput;
+        private readonly Direction _originalDirection;
+        
         private Direction _direction;
         private bool _isActive = true;
 
         public event Action<bool> OnIsActiveUpdated;
-
         public event Action<Direction> OnDirectionChanged;
         
         public IInput Input => _playerInput;
@@ -56,6 +57,7 @@ namespace PongWithMe
         public void Reset()
         {
             IsActive = true;
+            PaddleDirection = _originalDirection;
         }
 
 
@@ -64,6 +66,7 @@ namespace PongWithMe
             _playerNumber = playerNumber;
             _playerInput = input;
             _direction = direction;
+            _originalDirection = direction;
         }
     }
 

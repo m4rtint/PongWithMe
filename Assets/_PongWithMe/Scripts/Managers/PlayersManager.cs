@@ -1,7 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
-using Sirenix.Utilities;
 using UnityEngine;
 
 namespace PongWithMe
@@ -35,7 +35,7 @@ namespace PongWithMe
             _playerLives = lives;
             _playerLives.OnBrickBreak += HandleOnBrickBreak;
             _ball = ball;
-            SetupPlayers();
+            //SetupPlayers();
         }
 
         public void CleanUp()
@@ -45,11 +45,6 @@ namespace PongWithMe
 
         public void Reset()
         {
-            _players[0].PaddleDirection = Direction.Left;
-            _players[1].PaddleDirection = Direction.Right;
-            _players[2].PaddleDirection = Direction.Top;
-            _players[3].PaddleDirection = Direction.Bottom;
-            
             _players.ForEach(player => player.Reset());
             
             _leftPaddle.Reset();
@@ -58,16 +53,31 @@ namespace PongWithMe
             _bottomPaddle.Reset();
         }
 
-        private void HandleOnBrickBreak(int brickOwner, int score)
+        public void AddPlayer(IPaddle player)
         {
-            if (score > 0)
-            {
-                return;
-            }
-
-            _players.First(player => player.PlayerNumber == brickOwner).IsActive = false;
+            _players.Add(player);
+            var paddleBehaviour = GetPaddleFrom(player.PaddleDirection);
+            paddleBehaviour.Initialize(player);
         }
 
+        private PaddleBehaviour GetPaddleFrom(Direction direction)
+        {
+            switch (direction)
+            {
+                case Direction.Top:
+                    return _topPaddle;
+                case Direction.Right:
+                    return _rightPaddle;
+                case Direction.Bottom:
+                    return _bottomPaddle;
+                case Direction.Left:
+                    return _leftPaddle;
+                default:
+                    PanicHelper.Panic(new Exception("Direction passed in does not exist"));
+                    return _topPaddle;
+            }
+        }
+        
         private void SetupPlayers()
         {
             var input = new PongInput(0);                
@@ -94,6 +104,16 @@ namespace PongWithMe
         private void OnDestroy()
         {
             _playerLives.OnBrickBreak-= HandleOnBrickBreak;
+        }
+        
+        private void HandleOnBrickBreak(int brickOwner, int score)
+        {
+            if (score > 0)
+            {
+                return;
+            }
+
+            _players.First(player => player.PlayerNumber == brickOwner).IsActive = false;
         }
     }
 
