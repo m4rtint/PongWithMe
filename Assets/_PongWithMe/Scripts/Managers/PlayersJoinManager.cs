@@ -7,6 +7,7 @@ namespace PongWithMe
     {
         private PlayersManager _playersManager = null;
         private GoalsManager _goalsManager = null;
+        private IBall _ball = null;
         
         private List<PongInput> _inputList = new List<PongInput>();
         private int _numberOfPlayersJoined = 0;
@@ -16,12 +17,31 @@ namespace PongWithMe
         
         public void Initialize(
             PlayersManager playersManager, 
-            GoalsManager goalsManager, 
+            GoalsManager goalsManager,
+            IBall ball,
             int numberOfPlayers = 4)
         {
             _playersManager = playersManager;
             _goalsManager = goalsManager;
+            _ball = ball;
             SetupInputList(numberOfPlayers);
+        }
+
+        public void FillInPlayerSlotsWithAI()
+        {
+            var directions = new[] { Direction.Bottom, Direction.Left, Direction.Right, Direction.Top };
+            foreach (var direction in directions)
+            {
+                var isDirectionOpen = !_takenDirection.Contains(direction);
+                if (isDirectionOpen)
+                {
+                    var aiInput = new AIInput();
+                    var aiPaddle = new AIPaddle(aiInput, _numberOfPlayersJoined, direction, _ball);
+                    _numberOfPlayersJoined++;
+                    _playersManager.AddPlayer(aiPaddle);
+                    _goalsManager.Set(aiPaddle);
+                }
+            }
         }
 
         private void SetupInputList(int numberOfPlayers)

@@ -26,7 +26,8 @@ namespace PongWithMe
         [SerializeField] private GameOverViewBehaviour _gameOverView = null;
         [SerializeField] private ScorePanelViewBehaviour _scorePanelView = null;
         [SerializeField] private MutatorAnnouncementViewBehaviour _mutatorAnnouncementView = null;
-
+        [SerializeField] private StartGameButtonBehaviour _startGameButton = null;
+        
         private IStateManager _stateManager = null;
 
         private PlayerLives _playerLives = null;
@@ -55,7 +56,7 @@ namespace PongWithMe
             _playerLives = new PlayerLives(_board, AMOUNT_OF_PLAYERS);
             _goalsManager.Initialize(_playerLives);
             _playersManager.Initialize(_ballBehaviour, _playerLives);
-            _playersJoinManager.Initialize(_playersManager, _goalsManager);
+            _playersJoinManager.Initialize(_playersManager, _goalsManager, _ballBehaviour);
 
             // Ball
             _ballBehaviour.Initialize();
@@ -80,25 +81,44 @@ namespace PongWithMe
             _gameOverView.Initialize(_playersManager);
             _scorePanelView.Initialize(_playersManager.Players, _playersManager, AMOUNT_OF_WINS);
             _mutatorAnnouncementView.Initialize(mutatorManager);
-            
+            _startGameButton.Initialize(CompletePlayerSetup);
+        }
+
+        private void CompletePlayerSetup()
+        {
+            _startGameButton.HideButton();
+            _playersJoinManager.FillInPlayerSlotsWithAI();
+            _stateManager.SetState(State.PreGame);
         }
 
         private void CleanUp()
         {
             _board.CleanUp();
-            _bricksBehaviour.CleanUp();
-
             _playerLives.CleanUp();
+            _bricksBehaviour.CleanUp();
+            _ballBehaviour.CleanUp();
+            _playersManager.CleanUp();
+            
+            _splattersBehaviour.CleanUp();
+            _portalsBehaviour.CleanUp();
+            _mutatorBehaviour.CleanUp();
+            _mutatorAnnouncementView.CleanUp();
         }
 
         private void Reset()
         {
             var bricks = BoardFactory.Build(AMOUNT_OF_PLAYERS);
             _board.Reset(bricks);
-            _bricksBehaviour.Reset();
-            
             _playerLives.Reset();
+            _bricksBehaviour.Reset();
+            _ballBehaviour.Reset();
+            _playersManager.Reset();
+            
             _goalsManager.Reset(_playersManager.Players);
+
+            _splattersBehaviour.Reset();
+            _portalsBehaviour.Reset();
+            _mutatorBehaviour.Reset();
         }
 
         private void HandleStateChanges(State state)
