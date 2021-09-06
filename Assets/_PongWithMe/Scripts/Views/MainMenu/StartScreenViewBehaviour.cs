@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace PongWithMe
@@ -14,6 +15,11 @@ namespace PongWithMe
             _networkButton.onClick.AddListener(() =>
             {
                 networkAction();
+            });
+            
+            _localButton.onClick.AddListener(() =>
+            {
+                SceneManager.LoadScene("LocalMain");
             });
         }
     }

@@ -151,7 +151,7 @@ GameObject:
   - component: {fileID: 8468539464150973705}
   - component: {fileID: 7584195489174011678}
   m_Layer: 0
-  m_Name: Ball
+  m_Name: LocalBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
