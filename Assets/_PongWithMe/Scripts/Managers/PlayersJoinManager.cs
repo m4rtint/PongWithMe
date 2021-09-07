@@ -5,13 +5,14 @@ namespace PongWithMe
 {
     public class PlayersJoinManager : MonoBehaviour
     {
-        private IPlayersManager _playersManager = null;
+        private PlayersManager _playersManager = null;
         private GoalsManager _goalsManager = null;
         private IBall _ball = null;
         private IScoreView _scoreView = null;
         
         private List<PongInput> _inputList = new List<PongInput>();
         private int _numberOfPlayersJoined = 0;
+        private bool _canJoin = true;
         
         private List<PongInput> _takenInput = new List<PongInput>();
         private List<Direction> _takenDirection = new List<Direction>();
@@ -30,7 +31,13 @@ namespace PongWithMe
             SetupInputList(numberOfPlayers);
         }
 
-        public void FillInPlayerSlotsWithAI()
+        public void CompletePlayerJoiningSession()
+        {
+            FillInPlayerSlotsWithAI();
+            DisableJoining();
+        }
+
+        private void FillInPlayerSlotsWithAI()
         {
             var directions = new[] { Direction.Bottom, Direction.Left, Direction.Right, Direction.Top };
             foreach (var direction in directions)
@@ -44,6 +51,11 @@ namespace PongWithMe
                     SetManagers(aiPaddle);
                 }
             }
+        }
+
+        private void DisableJoining()
+        {
+            _canJoin = false;
         }
 
         private void SetupInputList(int numberOfPlayers)
@@ -112,7 +124,7 @@ namespace PongWithMe
 
             _takenInput.Add(input);
             _takenDirection.Add(direction);
-            return true;
+            return _canJoin;
         }
     }
 }

@@ -74,7 +74,7 @@ namespace PongWithMe
 
         private void CompletePlayerSetup()
         {
-            _playersJoinManager.FillInPlayerSlotsWithAI();
+            _playersJoinManager.CompletePlayerJoiningSession();
             
             _livesView.Initialize(_playerLives, _playersManager.Players);
             var mutatorManager = new MutatorManager(
