@@ -43,7 +43,7 @@ namespace PongWithMe
                 
                 // #Critical
                 // Load the Room Level.
-                PhotonNetwork.LoadLevel("Main");
+                PhotonNetwork.LoadLevel("NetworkMain");
             }
         }
         

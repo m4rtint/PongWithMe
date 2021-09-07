@@ -11,7 +11,12 @@ namespace PongWithMe
         // TODO - THIS IS PLACE HOLDER, NETWORKCORE SHOULD BE PASSED INTO THE BUTTON ITSELF.
         [SerializeField] private Button _leaveButton = null;
 
-
+        public void Initialize()
+        {
+            
+        }
+        
+        #region PUN
         public override void OnLeftRoom()
         {
             SceneManager.LoadScene(0);
@@ -20,8 +25,7 @@ namespace PongWithMe
         public override void OnPlayerEnteredRoom(Player other)
         {
             Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName); // not seen if you're the player connecting
-
-
+            
             if (PhotonNetwork.IsMasterClient)
             {
                 Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
@@ -32,16 +36,14 @@ namespace PongWithMe
         public override void OnPlayerLeftRoom(Player other)
         {
             Debug.LogFormat("OnPlayerLeftRoom() {0}", other.NickName); // seen when other disconnects
-
-
+            
             if (PhotonNetwork.IsMasterClient)
             {
                 Debug.LogFormat("OnPlayerLeftRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
-
-
                 LoadArena();
             }
         }
+        #endregion
 
         public void LeaveRoom()
         {

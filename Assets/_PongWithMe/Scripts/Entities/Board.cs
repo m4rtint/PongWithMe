@@ -10,6 +10,11 @@ namespace PongWithMe
             _bricks = bricks;
         }
 
+        public Board()
+        {
+            _bricks = new Brick[] { };
+        }
+
         public void CleanUp()
         {
             _bricks = new Brick[]{};

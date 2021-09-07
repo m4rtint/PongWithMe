@@ -15,8 +15,13 @@ namespace PongWithMe
     {
         Tween RotatePaddles(bool isClockwiseDirection, float rotationDuration = 2f);
     }
+
+    public interface IPlayersManager
+    {
+        void AddPlayer(IPaddle player);
+    }
     
-    public partial class PlayersManager : MonoBehaviour
+    public partial class PlayersManager : MonoBehaviour, IPlayersManager
     {
         [SerializeField] private PaddleBehaviour _topPaddle = null;
         [SerializeField] private PaddleBehaviour _leftPaddle = null;

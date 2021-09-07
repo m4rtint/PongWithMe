@@ -1,51 +1,27 @@
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 namespace PongWithMe
 {
-    public class PlayersJoinManager : MonoBehaviour
+    public class NetworkPlayerJoinManager : MonoBehaviour, IPunObservable
     {
         private IPlayersManager _playersManager = null;
-        private GoalsManager _goalsManager = null;
-        private IBall _ball = null;
-        private IScoreView _scoreView = null;
         
         private List<PongInput> _inputList = new List<PongInput>();
-        private int _numberOfPlayersJoined = 0;
-        
-        private List<PongInput> _takenInput = new List<PongInput>();
+
         private List<Direction> _takenDirection = new List<Direction>();
-        
-        public void Initialize(
-            PlayersManager playersManager, 
-            GoalsManager goalsManager,
-            IBall ball,
-            IScoreView scoreView,
-            int numberOfPlayers = 4)
+        private List<PongInput> _takenInput = new List<PongInput>();
+
+        private int _numberOfPlayersJoined = 0;
+
+
+        public void Initialize(IPlayersManager playersManager, int numberOfPlayers = 4)
         {
             _playersManager = playersManager;
-            _goalsManager = goalsManager;
-            _ball = ball;
-            _scoreView = scoreView;
             SetupInputList(numberOfPlayers);
         }
-
-        public void FillInPlayerSlotsWithAI()
-        {
-            var directions = new[] { Direction.Bottom, Direction.Left, Direction.Right, Direction.Top };
-            foreach (var direction in directions)
-            {
-                var isDirectionOpen = !_takenDirection.Contains(direction);
-                if (isDirectionOpen)
-                {
-                    var aiInput = new AIInput();
-                    var aiPaddle = new AIPaddle(aiInput, _numberOfPlayersJoined, direction, _ball);
-                    _numberOfPlayersJoined++;
-                    SetManagers(aiPaddle);
-                }
-            }
-        }
-
+        
         private void SetupInputList(int numberOfPlayers)
         {
             _inputList.Clear();
@@ -54,7 +30,7 @@ namespace PongWithMe
                 _inputList.Add(new PongInput(index));
             }
         }
-
+        
         private void Update()
         {
             foreach (var input in _inputList)
@@ -80,7 +56,7 @@ namespace PongWithMe
                 }
             }
         }
-
+        
         private void InitializePlayerPaddle(PongInput input, Direction direction)
         {
             if (CanAddPlayer(input, direction))
@@ -94,13 +70,12 @@ namespace PongWithMe
         private void SetManagers(IPaddle player)
         {
             _playersManager.AddPlayer(player);
-            _goalsManager.Set(player);
-            _scoreView.AddPlayer(player);
+            // TODO
         }
 
         private bool CanAddPlayer(PongInput input, Direction direction)
         {
-            if (_takenInput.Contains(input))
+            if (_takenInput.Contains(input) || _takenInput.Count > 0)
             {
                 return false;
             }
@@ -114,5 +89,18 @@ namespace PongWithMe
             _takenDirection.Add(direction);
             return true;
         }
+        
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            if (stream.IsWriting)
+            {
+                stream.SendNext(_takenDirection);
+            }
+            else
+            {
+                _takenDirection = (List<Direction>) stream.ReceiveNext();
+            }
+        }
     }
+
 }
