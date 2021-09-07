@@ -68,8 +68,7 @@ namespace PongWithMe
                 {
                     _ownPaddle = new PlayerPaddle(input, _numberOfPlayersJoined, direction);
                     _numberOfPlayersJoined++;
-                    var paddlePhotonView = _playersManager.AddPlayer(_ownPaddle);
-                    paddlePhotonView.TransferOwnership(PhotonNetwork.LocalPlayer);
+                    _playersManager.AddPlayer(_ownPaddle, true);
                 }
                 else
                 {

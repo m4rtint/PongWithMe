@@ -28,13 +28,16 @@ namespace PongWithMe
             _playerLives.OnBrickBreak += HandleOnBrickBreak;
         }
         
-        public PhotonView AddPlayer(IPaddle player)
+        public void AddPlayer(IPaddle player, bool forceTakeover = false)
         {
             _players.Add(player);
             var paddleBehaviour = GetPaddleFrom(player.PaddleDirection);
             paddleBehaviour.Initialize(player);
+            if (forceTakeover)
+            {
+                paddleBehaviour.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer);
+            }
             player.IsActive = true;
-            return paddleBehaviour.GetComponent<PhotonView>();
         }
 
         private PaddleBehaviour GetPaddleFrom(Direction direction)
