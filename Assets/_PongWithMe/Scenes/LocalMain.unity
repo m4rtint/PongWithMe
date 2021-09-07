@@ -504,7 +504,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 51.05
+  m_fontSize: 51.1
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3571,7 +3571,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 34.2
+  m_fontSize: 25.75
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3835,7 +3835,7 @@ MonoBehaviour:
       _startingCustomControllers: []
       _assignMouseOnStart: 1
       _assignKeyboardOnStart: 1
-      _excludeFromControllerAutoAssignment: 0
+      _excludeFromControllerAutoAssignment: 1
       _controllerMapLayoutManagerSettings:
         _enabled: 1
         _loadFromUserDataStore: 1
@@ -3860,7 +3860,7 @@ MonoBehaviour:
       _startingCustomControllers: []
       _assignMouseOnStart: 0
       _assignKeyboardOnStart: 1
-      _excludeFromControllerAutoAssignment: 0
+      _excludeFromControllerAutoAssignment: 1
       _controllerMapLayoutManagerSettings:
         _enabled: 1
         _loadFromUserDataStore: 1
