@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using Photon.Pun;
 using Sirenix.OdinInspector;
@@ -43,6 +44,7 @@ namespace PongWithMe
             _stateManager.OnStateChanged += HandleStateChanges;
             
             _stateManager.SetState(State.PlayerJoining);
+            CustomType.Register();
         }
 
         private void Start()
@@ -56,8 +58,6 @@ namespace PongWithMe
             _playersManager.Initialize(_playerLives);
             _playerJoinManager.Initialize(_playersManager);
             
-            
-            
             // Ball
             _ballBehaviour.Initialize();
             
@@ -69,7 +69,52 @@ namespace PongWithMe
             _gameOverView.Initialize(_playersManager);
             _scorePanelView.Initialize(_playersManager, AMOUNT_OF_WINS);
         }
-        
+
+        private void CleanUp()
+        {
+            
+        }
+
+        private void Reset()
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                var bricks = BoardFactory.Build(AMOUNT_OF_PLAYERS);
+                _board.Reset(bricks);
+                _bricksBehaviour.Reset();
+                List<BrickDTO> list = new List<BrickDTO>();
+                
+                foreach (var brick in bricks)
+                {
+                    var brickDTO = new BrickDTO();
+                    brickDTO.PlayerOwned = brick.PlayerOwned;
+                    brickDTO.PositionX = brick.Position.x;
+                    brickDTO.PositionY = brick.Position.y;
+                    list.Add(brickDTO);
+                }
+                PhotonView.Get(this).RPC("BuildBricks", RpcTarget.Others, list.ToArray());
+            }
+        }
+
+        [PunRPC]
+        private void BuildBricks(BrickDTO[] stream)
+        {
+           Debug.Log(stream);
+           List<Brick> list = new List<Brick>();
+           foreach (var brickDTO in stream)
+           {
+               var brick = new Brick();
+               brick.Position = new Vector3(brickDTO.PositionX, brickDTO.PositionY);
+               brick.PlayerOwned = brickDTO.PlayerOwned;
+               brick.BrickColor = ColorPalette.PlayerColor(brickDTO.PlayerOwned);
+               list.Add(brick);
+           }
+
+           var bricks = list.ToArray();
+           _board.Reset(bricks);
+           _bricksBehaviour.Reset();
+        }
+
         private void HandleStateChanges(State state)
         {
             switch (state)
@@ -78,8 +123,8 @@ namespace PongWithMe
                     break;
                 case State.PreGame:
                     TimeScaleController.PlayTimeScale();
-                    //CleanUp();
-                    //Reset();
+                    CleanUp();
+                    Reset();
                     break;
                 case State.StartGame:
                     _stateManager.SetState(State.Play);
