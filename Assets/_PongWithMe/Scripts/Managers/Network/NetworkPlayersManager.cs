@@ -35,7 +35,7 @@ namespace PongWithMe
             paddleBehaviour.Initialize(player);
             if (forceTakeover)
             {
-                paddleBehaviour.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer);
+                PhotonView.Get(paddleBehaviour).TransferOwnership(PhotonNetwork.LocalPlayer);
             }
             player.IsActive = true;
         }

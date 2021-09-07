@@ -72,7 +72,7 @@ namespace PongWithMe
                 }
                 else
                 {
-                    photon.RPC("AddOtherPlayer", RpcTarget.Others, (int) direction);
+                    photon.RPC("AddOtherPlayer", RpcTarget.OthersBuffered, (int) direction);
                 }
             }
         }
