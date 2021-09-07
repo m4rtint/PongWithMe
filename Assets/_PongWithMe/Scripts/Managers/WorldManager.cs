@@ -55,7 +55,7 @@ namespace PongWithMe
             _ballBehaviour.Initialize();
             
             // Players
-            _playersManager.Initialize(_ballBehaviour, _playerLives);
+            _playersManager.Initialize(_playerLives);
 
             // Goals
             _goalsManager.Initialize(_playerLives);
@@ -78,7 +78,7 @@ namespace PongWithMe
             // Interface
             _livesView.Initialize(_playerLives, _playersManager.Players);
             _gameOverView.Initialize(_playersManager);
-            _scorePanelView.Initialize(_playersManager.Players, _playersManager, AMOUNT_OF_WINS);
+            //_scorePanelView.Initialize(_playersManager.Players, _playersManager, AMOUNT_OF_WINS);
             _mutatorAnnouncementView.Initialize(mutatorManager);
             _stateManager.SetState(State.PreGame);
         }

@@ -12,7 +12,8 @@ namespace PongWithMe
         private readonly float _tolerance;
         private readonly float _moveLimit;
         private readonly IStateManager _stateManager;
-        
+        private readonly Direction _originalDirection;
+
         private bool _isActive = true;
         private Direction _paddleDirection;
 
@@ -47,7 +48,8 @@ namespace PongWithMe
             }
         }
 
-        public AIPaddle(IInput input, 
+        public AIPaddle(
+            IInput input, 
             int playerNumber, 
             Direction direction, 
             IBall ball,
@@ -55,17 +57,13 @@ namespace PongWithMe
             float moveLimit = PaddleMovementBehaviour.MOVE_LIMIT,
             IStateManager stateManager = null)
         {
-            if (ball == null)
-            {
-                PanicHelper.Panic(new Exception("AIPaddleBehaviour missing a ball"));
-            }
-
             _tolerance = AIDifficulty.DifficultyTolerance(difficulty);
             _ball = ball;
             _playerNumber = playerNumber;
             _input = input;
             _aiInput = input as AIInput;
             _paddleDirection = direction;
+            _originalDirection = direction;
             _moveLimit = moveLimit;
             _stateManager = stateManager ?? StateManager.Instance;
         }
@@ -73,6 +71,7 @@ namespace PongWithMe
         public void Reset()
         {
             IsActive = true;
+            PaddleDirection = _originalDirection;
         }
 
         public void OnUpdate(Vector3 position)

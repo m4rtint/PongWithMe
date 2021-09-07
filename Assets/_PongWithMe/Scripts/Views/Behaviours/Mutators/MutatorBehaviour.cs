@@ -21,7 +21,6 @@ namespace PongWithMe
         {
             _mutatorManager = mutatorManager;
             _elapsedTime = _countDownToAppear;
-            transform.localScale = Vector3.zero;
         }
 
         public void CleanUp()
@@ -49,11 +48,16 @@ namespace PongWithMe
             }
         }
 
-        private void FixedUpdate()
+        private void Awake()
         {
-            if (!_isShown)
+            transform.localScale = Vector3.zero;
+        }
+
+        private void Update()
+        {
+            if (!_isShown && StateManager.Instance.GetState() == State.Play)
             {
-                _elapsedTime -= Time.fixedDeltaTime;
+                _elapsedTime -= Time.deltaTime;
                 if (_elapsedTime  < 0)
                 {
                     ShowMutatorOnBoard();

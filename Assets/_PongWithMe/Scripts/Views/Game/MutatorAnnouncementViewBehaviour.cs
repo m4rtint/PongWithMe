@@ -60,7 +60,10 @@ namespace PongWithMe
 
         private void OnDestroy()
         {
-            _mutatorManager.OnMutatorPicked -= HandleMutatorPicked;
+            if (_mutatorManager != null)
+            {
+                _mutatorManager.OnMutatorPicked -= HandleMutatorPicked;
+            }
         }
         #endregion
     }

@@ -24,18 +24,15 @@ namespace PongWithMe
         [SerializeField] private PaddleBehaviour _rightPaddle = null;
         
         // Dependencies
-        private IBall _ball = null;        
         private IPlayerLives _playerLives = null;
 
         private List<IPaddle> _players = new List<IPaddle>();
         public List<IPaddle> Players => _players;
 
-        public void Initialize(IBall ball, IPlayerLives lives)
+        public void Initialize(IPlayerLives lives)
         {
             _playerLives = lives;
             _playerLives.OnBrickBreak += HandleOnBrickBreak;
-            _ball = ball;
-            //SetupPlayers();
         }
 
         public void CleanUp()
@@ -77,29 +74,6 @@ namespace PongWithMe
                     PanicHelper.Panic(new Exception("Direction passed in does not exist"));
                     return _topPaddle;
             }
-        }
-        
-        private void SetupPlayers()
-        {
-            var input = new PongInput(0);                
-            var player = new PlayerPaddle(input, 0, Direction.Left);
-            _players.Add(player);
-            _leftPaddle.Initialize(player);
-            
-            var input2 = new PongInput(1);  
-            var player2 = new PlayerPaddle(input2, 1, Direction.Right);
-            _players.Add(player2);
-            _rightPaddle.Initialize(player2);
-            
-            var ai = new AIInput();
-            var aiPaddle = new AIPaddle(ai, 2, Direction.Top, _ball);
-            _players.Add(aiPaddle);
-            _topPaddle.Initialize(aiPaddle);
-            
-            var ai3 = new AIInput();
-            var aiPaddle3 = new AIPaddle(ai3, 3, Direction.Bottom, _ball);
-            _players.Add(aiPaddle3);
-            _bottomPaddle.Initialize(aiPaddle3);
         }
 
         private void OnDestroy()

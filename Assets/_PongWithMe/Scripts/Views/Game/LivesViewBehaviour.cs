@@ -110,6 +110,14 @@ namespace PongWithMe
             textView.SetText(PLAYER_LIVES_TEXT, score);
         }
 
+        private void Awake()
+        {
+            _topLivesPosition.transform.localScale = Vector3.zero;
+            _bottomLivesPosition.transform.localScale = Vector3.zero;
+            _leftLivesPosition.transform.localScale = Vector3.zero;
+            _rightLivesPosition.transform.localScale = Vector3.zero;
+        }
+
         private void OnDestroy()
         {
             if (_viewModel != null)

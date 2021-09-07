@@ -8,6 +8,7 @@ namespace PongWithMe
         private PlayersManager _playersManager = null;
         private GoalsManager _goalsManager = null;
         private IBall _ball = null;
+        private IScoreView _scoreView = null;
         
         private List<PongInput> _inputList = new List<PongInput>();
         private int _numberOfPlayersJoined = 0;
@@ -19,11 +20,13 @@ namespace PongWithMe
             PlayersManager playersManager, 
             GoalsManager goalsManager,
             IBall ball,
+            IScoreView scoreView,
             int numberOfPlayers = 4)
         {
             _playersManager = playersManager;
             _goalsManager = goalsManager;
             _ball = ball;
+            _scoreView = scoreView;
             SetupInputList(numberOfPlayers);
         }
 
@@ -38,8 +41,7 @@ namespace PongWithMe
                     var aiInput = new AIInput();
                     var aiPaddle = new AIPaddle(aiInput, _numberOfPlayersJoined, direction, _ball);
                     _numberOfPlayersJoined++;
-                    _playersManager.AddPlayer(aiPaddle);
-                    _goalsManager.Set(aiPaddle);
+                    SetManagers(aiPaddle);
                 }
             }
         }
@@ -85,9 +87,15 @@ namespace PongWithMe
             {
                 var player = new PlayerPaddle(input, _numberOfPlayersJoined, direction);
                 _numberOfPlayersJoined++;
-                _playersManager.AddPlayer(player);
-                _goalsManager.Set(player);
+                SetManagers(player);
             }
+        }
+
+        private void SetManagers(IPaddle player)
+        {
+            _playersManager.AddPlayer(player);
+            _goalsManager.Set(player);
+            _scoreView.AddPlayer(player);
         }
 
         private bool CanAddPlayer(PongInput input, Direction direction)

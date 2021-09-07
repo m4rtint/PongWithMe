@@ -55,8 +55,8 @@ namespace PongWithMe
             // Players
             _playerLives = new PlayerLives(_board, AMOUNT_OF_PLAYERS);
             _goalsManager.Initialize(_playerLives);
-            _playersManager.Initialize(_ballBehaviour, _playerLives);
-            _playersJoinManager.Initialize(_playersManager, _goalsManager, _ballBehaviour);
+            _playersManager.Initialize(_playerLives);
+            _playersJoinManager.Initialize(_playersManager, _goalsManager, _ballBehaviour, _scorePanelView);
 
             // Ball
             _ballBehaviour.Initialize();
@@ -65,6 +65,17 @@ namespace PongWithMe
             _splattersBehaviour.Initialize();
             _portalsBehaviour.Initialize();
             
+            // Interface
+            _gameOverView.Initialize(_playersManager);
+            _scorePanelView.Initialize(_playersManager, AMOUNT_OF_WINS);
+            _startGameButton.Initialize(CompletePlayerSetup);
+        }
+
+        private void CompletePlayerSetup()
+        {
+            _playersJoinManager.FillInPlayerSlotsWithAI();
+            
+            _livesView.Initialize(_playerLives, _playersManager.Players);
             var mutatorManager = new MutatorManager(
                 _playersManager.Players, 
                 _playersManager, 
@@ -75,19 +86,10 @@ namespace PongWithMe
                 _splattersBehaviour.Splatters,
                 _portalsBehaviour.Portals);
             _mutatorBehaviour.Initialize(mutatorManager);
-
-            // Interface
-            _livesView.Initialize(_playerLives, _playersManager.Players);
-            _gameOverView.Initialize(_playersManager);
-            _scorePanelView.Initialize(_playersManager.Players, _playersManager, AMOUNT_OF_WINS);
             _mutatorAnnouncementView.Initialize(mutatorManager);
-            _startGameButton.Initialize(CompletePlayerSetup);
-        }
 
-        private void CompletePlayerSetup()
-        {
             _startGameButton.HideButton();
-            _playersJoinManager.FillInPlayerSlotsWithAI();
+            _playerLives.ForceUpdatePlayerScores();
             _stateManager.SetState(State.PreGame);
         }
 

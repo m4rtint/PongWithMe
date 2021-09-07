@@ -60,7 +60,6 @@ namespace PongWithMe
             PaddleDirection = _originalDirection;
         }
 
-
         public PlayerPaddle(IInput input, int playerNumber, Direction direction)
         {
             _playerNumber = playerNumber;
