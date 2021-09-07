@@ -73,16 +73,16 @@ namespace PongWithMe
                 }
                 else
                 {
-                    photon.RPC("AddOtherPlayer", RpcTarget.Others, (int) direction);
+                    photon.RPC("AddOtherPlayer", RpcTarget.Others, (int) direction, _numberOfPlayersJoined);
                 }
             }
         }
 
         [PunRPC]
-        private void AddOtherPlayer(int direction)
+        private void AddOtherPlayer(int direction, int numberOfPlayersJoined)
         {
-            _ownPaddle = new PlayerPaddle(_numberOfPlayersJoined, (Direction) direction);
-            _numberOfPlayersJoined++;
+            _ownPaddle = new PlayerPaddle(numberOfPlayersJoined, (Direction) direction);
+            _numberOfPlayersJoined = numberOfPlayersJoined;
             _playersManager.AddPlayer(_ownPaddle);
         }
 
