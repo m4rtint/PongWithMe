@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
@@ -8,8 +9,11 @@ namespace PongWithMe
 {
     public partial class NetworkPlayersManager : MonoBehaviour, IPlayersManager
     {
-        private const string PADDLE_PREFAB = "NetworkedPaddle";
-
+        [SerializeField] private PaddleBehaviour _topPaddle = null;
+        [SerializeField] private PaddleBehaviour _leftPaddle = null;
+        [SerializeField] private PaddleBehaviour _bottomPaddle = null;
+        [SerializeField] private PaddleBehaviour _rightPaddle = null;
+        
         private IPlayerLives _playerLives = null;
         
         private List<IPaddle> _players = new List<IPaddle>();
@@ -27,22 +31,28 @@ namespace PongWithMe
         public void AddPlayer(IPaddle player)
         {
             _players.Add(player);
-            var paddleBehaviour = GetPaddleFor(player.PaddleDirection);
+            var paddleBehaviour = GetPaddleFrom(player.PaddleDirection);
+            paddleBehaviour.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer);
             paddleBehaviour.Initialize(player);
             player.IsActive = true;
         }
 
-        private PaddleBehaviour GetPaddleFor(Direction direction)
+        private PaddleBehaviour GetPaddleFrom(Direction direction)
         {
-            var paddleGameObject = PhotonNetwork.Instantiate(PADDLE_PREFAB, Vector3.zero, Quaternion.identity);
-            if (paddleGameObject.TryGetComponent<PaddleBehaviour>(out var paddle))
+            switch (direction)
             {
-                paddle.transform.SetParent(transform);
-                _paddleBehaviours.Add(paddle);
-                return paddle;
+                case Direction.Top:
+                    return _topPaddle;
+                case Direction.Right:
+                    return _rightPaddle;
+                case Direction.Bottom:
+                    return _bottomPaddle;
+                case Direction.Left:
+                    return _leftPaddle;
+                default:
+                    PanicHelper.Panic(new Exception("Direction passed in does not exist"));
+                    return _topPaddle;
             }
-
-            return null;
         }
         
         private void HandleOnBrickBreak(int brickOwner, int score)

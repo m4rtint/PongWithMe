@@ -1,5 +1,4 @@
 using DG.Tweening;
-using Photon.Pun;
 using Shapes;
 using UnityEngine;
 
@@ -50,7 +49,6 @@ namespace PongWithMe
         private void SetupStyle()
         {
             _rectangle.Color = _player.PlayerColor;
-
         }
 
         private void Awake()
@@ -75,26 +73,12 @@ namespace PongWithMe
             var size = active ? Vector3.one : Vector3.zero;
             var ease = active ? Ease.OutBack : Ease.InBack;
             transform.DOScale(size, DEATH_ANIMATION_DURATION)
-                    .SetEase(ease)
-                    .SetUpdate(true).OnComplete(() =>
-                    {
-                        var photon = PhotonView.Get(this);
-                        photon.RPC("ColorSet", RpcTarget.All);
-                    });
+                .SetEase(ease);
         }
 
         private void HandleOnDirectionChanged(Direction direction)
         {
             _movementBehaviour.Set(direction);
-        }
-        #endregion
-        
-        #region RPC
-
-        [PunRPC]
-        private void ColorSet()
-        {
-            _rectangle.Color = _player.PlayerColor;
         }
         #endregion
     }
