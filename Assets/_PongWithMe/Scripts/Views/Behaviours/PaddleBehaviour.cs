@@ -50,8 +50,7 @@ namespace PongWithMe
         private void SetupStyle()
         {
             _rectangle.Color = _player.PlayerColor;
-            var photon = PhotonView.Get(this);
-            photon.RPC("ColorSet", RpcTarget.All);
+
         }
 
         private void Awake()
@@ -77,7 +76,11 @@ namespace PongWithMe
             var ease = active ? Ease.OutBack : Ease.InBack;
             transform.DOScale(size, DEATH_ANIMATION_DURATION)
                     .SetEase(ease)
-                    .SetUpdate(true);
+                    .SetUpdate(true).OnComplete(() =>
+                    {
+                        var photon = PhotonView.Get(this);
+                        photon.RPC("ColorSet", RpcTarget.All);
+                    });
         }
 
         private void HandleOnDirectionChanged(Direction direction)
