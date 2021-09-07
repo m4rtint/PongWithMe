@@ -63,8 +63,17 @@ namespace PongWithMe
         {
             if (CanAddPlayer(input, direction))
             {
-                PhotonView.Get(this).RPC("AddPlayer", RpcTarget.All, (int) direction);
-                _ownPaddle.Input = input;
+                var photon = PhotonView.Get(this);
+                if (photon.IsMine)
+                {
+                    _ownPaddle = new PlayerPaddle(input, _numberOfPlayersJoined, direction);
+                    _numberOfPlayersJoined++;
+                    SetManagers(_ownPaddle);
+                }
+                else
+                {
+                    photon.RPC("AddPlayer", RpcTarget.Others, (int) direction);
+                }
             }
         }
 

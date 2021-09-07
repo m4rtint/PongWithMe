@@ -29,14 +29,7 @@ namespace PongWithMe
         public event Action<bool> OnIsActiveUpdated;
         public event Action<Direction> OnDirectionChanged;
 
-        public IInput Input
-        {
-            get => _playerInput;
-            set
-            {
-                _playerInput = value;
-            }
-        }
+        public IInput Input => _playerInput;
 
         public Color PlayerColor => ColorPalette.PlayerColor(_playerNumber);
         public int PlayerNumber => _playerNumber;
