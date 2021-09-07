@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace PongWithMe
 {
-    public partial class NetworkPlayersManager : MonoBehaviour, IPlayersManager
+    public partial class NetworkPlayersManager : MonoBehaviour
     {
         [SerializeField] private PaddleBehaviour _topPaddle = null;
         [SerializeField] private PaddleBehaviour _leftPaddle = null;
@@ -28,13 +28,13 @@ namespace PongWithMe
             _playerLives.OnBrickBreak += HandleOnBrickBreak;
         }
         
-        public void AddPlayer(IPaddle player)
+        public PhotonView AddPlayer(IPaddle player)
         {
             _players.Add(player);
             var paddleBehaviour = GetPaddleFrom(player.PaddleDirection);
-            paddleBehaviour.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer);
             paddleBehaviour.Initialize(player);
             player.IsActive = true;
+            return paddleBehaviour.GetComponent<PhotonView>();
         }
 
         private PaddleBehaviour GetPaddleFrom(Direction direction)

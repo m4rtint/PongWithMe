@@ -6,7 +6,7 @@ namespace PongWithMe
 {
     public class NetworkPlayerJoinManager : MonoBehaviour
     {
-        private IPlayersManager _playersManager = null;
+        private NetworkPlayersManager _playersManager = null;
         
         private List<PongInput> _inputList = new List<PongInput>();
 
@@ -16,7 +16,7 @@ namespace PongWithMe
         private int _numberOfPlayersJoined = 0;
 
 
-        public void Initialize(IPlayersManager playersManager, int numberOfPlayers = 4)
+        public void Initialize(NetworkPlayersManager playersManager, int numberOfPlayers = 4)
         {
             _playersManager = playersManager;
             SetupInputList(numberOfPlayers);
@@ -68,27 +68,22 @@ namespace PongWithMe
                 {
                     _ownPaddle = new PlayerPaddle(input, _numberOfPlayersJoined, direction);
                     _numberOfPlayersJoined++;
-                    SetManagers(_ownPaddle);
+                    var paddlePhotonView = _playersManager.AddPlayer(_ownPaddle);
+                    paddlePhotonView.TransferOwnership(PhotonNetwork.LocalPlayer);
                 }
                 else
                 {
-                    photon.RPC("AddPlayer", RpcTarget.Others, (int) direction);
+                    photon.RPC("AddOtherPlayer", RpcTarget.Others, (int) direction);
                 }
             }
         }
 
         [PunRPC]
-        private void AddPlayer(int direction)
+        private void AddOtherPlayer(int direction)
         {
             _ownPaddle = new PlayerPaddle(_numberOfPlayersJoined, (Direction) direction);
             _numberOfPlayersJoined++;
-            SetManagers(_ownPaddle);
-        }
-
-        private void SetManagers(IPaddle player)
-        {
-            _playersManager.AddPlayer(player);
-            // TODO
+            _playersManager.AddPlayer(_ownPaddle);
         }
 
         private bool CanAddPlayer(PongInput input, Direction direction)
