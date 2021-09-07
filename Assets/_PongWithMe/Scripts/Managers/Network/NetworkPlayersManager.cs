@@ -37,6 +37,7 @@ namespace PongWithMe
             var paddleGameObject = PhotonNetwork.Instantiate(PADDLE_PREFAB, Vector3.zero, Quaternion.identity);
             if (paddleGameObject.TryGetComponent<PaddleBehaviour>(out var paddle))
             {
+                paddle.transform.SetParent(transform);
                 _paddleBehaviours.Add(paddle);
                 return paddle;
             }
