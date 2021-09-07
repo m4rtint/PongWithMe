@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_PongWithMe/Scenes/Main.unity
     guid: 5e15c0cdf39fff24ea1f8699a195e10f
+  - enabled: 1
+    path: Assets/_PongWithMe/Scenes/LocalMain.unity
+    guid: 2414bf7957022fa40aa734d3b5b26ad4
   m_configObjects: {}

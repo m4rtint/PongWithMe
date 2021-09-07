@@ -11,6 +11,7 @@ namespace PongWithMe
         private const int AMOUNT_OF_WINS = 3;
         private string emily = "Play with emily";
         
+        [Title("Components")]
         [SerializeField] private BricksBehaviour _bricksBehaviour = null;
         [SerializeField] private BallBehaviour _ballBehaviour = null;
         [SerializeField] private PlayersManager _playersManager = null;
@@ -54,7 +55,7 @@ namespace PongWithMe
             _ballBehaviour.Initialize();
             
             // Players
-            _playersManager.Initialize(_ballBehaviour, _playerLives);
+            _playersManager.Initialize(_playerLives);
 
             // Goals
             _goalsManager.Initialize(_playerLives);
@@ -77,7 +78,7 @@ namespace PongWithMe
             // Interface
             _livesView.Initialize(_playerLives, _playersManager.Players);
             _gameOverView.Initialize(_playersManager);
-            _scorePanelView.Initialize(_playersManager.Players, _playersManager, AMOUNT_OF_WINS);
+            //_scorePanelView.Initialize(_playersManager.Players, _playersManager, AMOUNT_OF_WINS);
             _mutatorAnnouncementView.Initialize(mutatorManager);
             _stateManager.SetState(State.PreGame);
         }

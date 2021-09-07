@@ -55,11 +55,15 @@ namespace PongWithMe
         {
             _movementBehaviour = GetComponent<PaddleMovementBehaviour>();
             _originalSpawn = transform.localPosition;
+            transform.localScale = Vector3.zero;
         }
 
         private void OnDestroy()
         {
-            _player.OnIsActiveUpdated -= HandleIsActiveUpdated;
+            if (_player != null)
+            {
+                _player.OnIsActiveUpdated -= HandleIsActiveUpdated;
+            }
         }
 
         #region Delegate

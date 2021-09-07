@@ -29,6 +29,12 @@ namespace PongWithMe
                 Set(player);
             }
         }
+        
+        public void Set(IPaddle paddle)
+        {
+            var goal = GetGoal(paddle.PaddleDirection);
+            goal.Set(paddle);
+        }
 
         public void ActivateForceField(Direction direction, int forceFieldLives)
         {
@@ -45,12 +51,7 @@ namespace PongWithMe
 
             Set(players);
         }
-        
-        private void Set(IPaddle paddle)
-        {
-            var goal = GetGoal(paddle.PaddleDirection);
-            goal.Set(paddle);
-        }
+
 
         private GoalBehaviour GetGoal(Direction direction)
         {

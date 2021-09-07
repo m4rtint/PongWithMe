@@ -6,6 +6,12 @@ namespace PongWithMe
     public class StateManagerDebug : MonoBehaviour
     {
         [Button]
+        public void SetPreGame()
+        {
+            StateManager.Instance.SetState(State.PreGame);
+        }
+        
+        [Button]
         public void SetPlayState()
         {
             StateManager.Instance.SetState(State.Play);

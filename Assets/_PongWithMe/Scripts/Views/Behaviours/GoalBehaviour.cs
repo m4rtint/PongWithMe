@@ -80,6 +80,15 @@ namespace PongWithMe
         private void SetupStyle()
         {
             transform.localScale = _player.IsActive ? Vector3.one : Vector3.zero;
+            var shouldTweenColor = _renderer.color != _player.PlayerColor;
+            if (shouldTweenColor)
+            {
+                TweenGoalColor();
+            }
+        }
+
+        private void TweenGoalColor()
+        {               
             var sequence = DOTween.Sequence();
             sequence.Append(_renderer.DOColor(Color.clear, COLOR_CHANGE_ANIMATION_DURATION)).SetUpdate(true);
             if (_player.IsActive)
@@ -95,7 +104,14 @@ namespace PongWithMe
                 OnGoalHit?.Invoke(_player);
             }
         }
-#endregion
+
+        private void Awake()
+        {
+            transform.localScale = Vector3.zero;
+            _renderer.color = Color.clear;
+        }
+
+        #endregion
 
     }
 }
