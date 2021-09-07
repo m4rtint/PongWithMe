@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace PongWithMe
 {
-    public class NetworkPlayerJoinManager : MonoBehaviour
+    public class NetworkPlayerJoinManager : MonoBehaviour, IPunObservable
     {
         private NetworkPlayersManager _playersManager = null;
         
@@ -73,16 +73,15 @@ namespace PongWithMe
                 }
                 else
                 {
-                    photon.RPC("AddOtherPlayer", RpcTarget.Others, (int) direction, _numberOfPlayersJoined);
+                    photon.RPC("AddOtherPlayer", RpcTarget.Others, (int) direction);
                 }
             }
         }
 
         [PunRPC]
-        private void AddOtherPlayer(int direction, int numberOfPlayersJoined)
+        private void AddOtherPlayer(int direction)
         {
-            _ownPaddle = new PlayerPaddle(numberOfPlayersJoined, (Direction) direction);
-            _numberOfPlayersJoined = numberOfPlayersJoined;
+            _ownPaddle = new PlayerPaddle(_numberOfPlayersJoined, (Direction) direction);
             _playersManager.AddPlayer(_ownPaddle);
         }
 
@@ -101,6 +100,18 @@ namespace PongWithMe
             _takenInput.Add(input);
             _takenDirection.Add(direction);
             return true;
+        }
+        
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            if (stream.IsWriting)
+            {
+                stream.SendNext(_numberOfPlayersJoined);
+            }
+            else
+            {
+                _numberOfPlayersJoined = (int) stream.ReceiveNext();
+            }
         }
     }
 
