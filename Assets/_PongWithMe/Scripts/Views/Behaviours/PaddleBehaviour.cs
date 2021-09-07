@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Photon.Pun;
 using Shapes;
 using UnityEngine;
 
@@ -49,6 +50,8 @@ namespace PongWithMe
         private void SetupStyle()
         {
             _rectangle.Color = _player.PlayerColor;
+            var photon = PhotonView.Get(this);
+            photon.RPC("ColorSet", RpcTarget.All);
         }
 
         private void Awake()
@@ -80,6 +83,15 @@ namespace PongWithMe
         private void HandleOnDirectionChanged(Direction direction)
         {
             _movementBehaviour.Set(direction);
+        }
+        #endregion
+        
+        #region RPC
+
+        [PunRPC]
+        private void ColorSet()
+        {
+            _rectangle.Color = _player.PlayerColor;
         }
         #endregion
     }
