@@ -66,7 +66,7 @@ namespace PongWithMe
                 var photon = PhotonView.Get(this);
                 if (photon.IsMine)
                 {
-                    _ownPaddle = new PlayerPaddle(input, PhotonNetwork.LocalPlayer.ActorNumber, direction);
+                    _ownPaddle = new PlayerPaddle(input, _numberOfPlayersJoined, direction);
                     _numberOfPlayersJoined++;
                     var paddlePhotonView = _playersManager.AddPlayer(_ownPaddle);
                     paddlePhotonView.TransferOwnership(PhotonNetwork.LocalPlayer);
@@ -81,7 +81,7 @@ namespace PongWithMe
         [PunRPC]
         private void AddOtherPlayer(int direction)
         {
-            _ownPaddle = new PlayerPaddle(PhotonNetwork.LocalPlayer.ActorNumber, (Direction) direction);
+            _ownPaddle = new PlayerPaddle(_numberOfPlayersJoined, (Direction) direction);
             _numberOfPlayersJoined++;
             _playersManager.AddPlayer(_ownPaddle);
         }
