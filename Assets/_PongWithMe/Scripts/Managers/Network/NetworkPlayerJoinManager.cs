@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace PongWithMe
 {
-    public class NetworkPlayerJoinManager : MonoBehaviour, IPunObservable
+    public class NetworkPlayerJoinManager : MonoBehaviour
     {
         private NetworkPlayersManager _playersManager = null;
         
@@ -93,18 +93,6 @@ namespace PongWithMe
             _takenInput.Add(input);
             _takenDirection.Add(direction);
             return true;
-        }
-        
-        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-        {
-            if (stream.IsWriting)
-            {
-                stream.SendNext(_numberOfPlayersJoined);
-            }
-            else
-            {
-                _numberOfPlayersJoined = (int) stream.ReceiveNext();
-            }
         }
     }
 
