@@ -353,8 +353,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bricksBehaviour: {fileID: 258274324}
   _ballBehaviour: {fileID: 73626016}
-  _playersManager: {fileID: 129268814}
-  _playerJoinManager: {fileID: 29074070}
+  _networkPlayersManager: {fileID: 129268814}
+  _networkPlayerJoinManager: {fileID: 29074070}
   _goalsManager: {fileID: 596599355}
   _mutatorBehaviour: {fileID: 1652211122}
   _splattersBehaviour: {fileID: 769737767}
@@ -1423,7 +1423,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.010000229, y: 0.039999977, z: -10}
+  m_LocalPosition: {x: -0.009999275, y: 0.039999977, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
