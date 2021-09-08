@@ -75,6 +75,10 @@ namespace PongWithMe
         private void CleanUp()
         {
             _board.CleanUp();
+            _playerLives.CleanUp();
+            _bricksBehaviour.CleanUp();
+            _ballBehaviour.CleanUp();
+            _networkPlayersManager.CleanUp();
         }
 
         private void Reset()
@@ -87,11 +91,15 @@ namespace PongWithMe
                 
                 PhotonView.Get(this).RPC("BuildBricks", RpcTarget.Others, BrickToDTO.ConvertToDTO(bricks));
             }
+
+            _networkPlayersManager.Reset();
         }
 
         private void CompletePlayerSetup()
         {
             _waitingForMorePlayersView.HideView();
+            _networkPlayerJoinManager.CompletePlayerJoiningSession();
+            
             _stateManager.SetState(State.PreGame);
         }
 

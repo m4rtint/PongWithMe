@@ -17,8 +17,6 @@ namespace PongWithMe
         private IPlayerLives _playerLives = null;
         
         private List<IPaddle> _players = new List<IPaddle>();
-        private List<PaddleBehaviour> _paddleBehaviours = new List<PaddleBehaviour>();
-        
         public List<IPaddle> Players => _players;
         
 
@@ -26,6 +24,21 @@ namespace PongWithMe
         {
             _playerLives = lives;
             _playerLives.OnBrickBreak += HandleOnBrickBreak;
+        }
+
+        public void CleanUp()
+        {
+            transform.localRotation = Quaternion.identity;
+        }
+
+        public void Reset()
+        {           
+            _players.ForEach(player => player.Reset());
+
+            _leftPaddle.Reset();
+            _topPaddle.Reset();
+            _rightPaddle.Reset();
+            _bottomPaddle.Reset();
         }
         
         public void AddPlayer(IPaddle player, bool forceTakeover = false)
@@ -56,6 +69,11 @@ namespace PongWithMe
                     PanicHelper.Panic(new Exception("Direction passed in does not exist"));
                     return _topPaddle;
             }
+        }
+        
+        private void OnDestroy()
+        {
+            _playerLives.OnBrickBreak -= HandleOnBrickBreak;
         }
         
         private void HandleOnBrickBreak(int brickOwner, int score)

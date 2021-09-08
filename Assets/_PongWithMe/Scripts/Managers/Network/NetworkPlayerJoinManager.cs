@@ -8,6 +8,7 @@ namespace PongWithMe
     {
         private NetworkPlayersManager _networkPlayersManager = null;
         private GoalsManager _goalsManager = null;
+        private IBall _ball = null;
         
         private List<PongInput> _inputList = new List<PongInput>();
 
@@ -19,11 +20,13 @@ namespace PongWithMe
 
         public void Initialize(
             NetworkPlayersManager playersManager, 
-            GoalsManager goalsManager, 
+            GoalsManager goalsManager,
+            IBall ball,
             int numberOfPlayers = 4)
         {
             _goalsManager = goalsManager;
             _networkPlayersManager = playersManager;
+            _ball = ball;
             SetupInputList(numberOfPlayers);
         }
         
@@ -62,23 +65,49 @@ namespace PongWithMe
             }
         }
         
+        public void CompletePlayerJoiningSession()
+        {
+            FillInPlayerSlotsWithAI();
+        }
+        
+        private void FillInPlayerSlotsWithAI()
+        {
+            var directions = new[] { Direction.Bottom, Direction.Left, Direction.Right, Direction.Top };
+            foreach (var direction in directions)
+            {
+                var isDirectionOpen = !_takenDirection.Contains(direction);
+                if (isDirectionOpen)
+                {
+                    var aiInput = new AIInput();
+                    var aiPaddle = new AIPaddle(aiInput, _numberOfPlayersJoined, direction, _ball);
+                    _numberOfPlayersJoined++;
+                    
+                    _networkPlayersManager.AddPlayer(aiPaddle);
+                    _goalsManager.Set(aiPaddle);
+                }
+            }
+        }
+        
         private void InitializePlayerPaddle(PongInput input, Direction direction)
         {
             if (CanAddPlayer(input, direction))
             {
                 var ownPaddle = new PlayerPaddle(input, _numberOfPlayersJoined, direction);
                 _numberOfPlayersJoined++;
+                PhotonView.Get(this).RPC("AddOtherPlayer", RpcTarget.OthersBuffered, (int) direction);
+                
                 _networkPlayersManager.AddPlayer(ownPaddle, true);
                 _goalsManager.Set(ownPaddle);
-                PhotonView.Get(this).RPC("AddOtherPlayer", RpcTarget.OthersBuffered, (int) direction);
             }
         }
 
         [PunRPC]
         private void AddOtherPlayer(int direction)
         {
+            _takenDirection.Add((Direction) direction);
             var otherPaddle = new PlayerPaddle(_numberOfPlayersJoined, (Direction) direction);
             _numberOfPlayersJoined++;
+            
             _networkPlayersManager.AddPlayer(otherPaddle);
             _goalsManager.Set(otherPaddle);
         }

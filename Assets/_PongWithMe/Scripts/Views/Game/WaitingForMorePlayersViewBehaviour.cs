@@ -16,12 +16,15 @@ namespace PongWithMe
         private WaitingForMorePlayersViewModel _viewModel = null;
         private IStateManager _stateManager = null;
 
-        public void Initialize(Action action, NetworkManager networkManager, IStateManager stateManager = null)
+        private Action OnTimerEndAction = null;
+
+        public void Initialize(Action timerEndAction, NetworkManager networkManager, IStateManager stateManager = null)
         {
             _stateManager = stateManager ?? StateManager.Instance;
+            OnTimerEndAction = timerEndAction;
             _viewModel = new WaitingForMorePlayersViewModel(networkManager, _secondsBeforeStart);
             _viewModel.OnElapsedTimeChanged += HandleOnElapsedTimeChanged;
-            _viewModel.OnTimerEnded += action;
+            _viewModel.OnTimerEnded += OnTimerEndAction;
         }
 
         public void HideView()
@@ -39,6 +42,15 @@ namespace PongWithMe
             if (_stateManager.GetState() == State.PlayerJoining)
             {
                 _viewModel.Update(Time.deltaTime);
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (_viewModel != null)
+            {
+                _viewModel.OnElapsedTimeChanged -= HandleOnElapsedTimeChanged;
+                _viewModel.OnTimerEnded -= OnTimerEndAction; 
             }
         }
 
