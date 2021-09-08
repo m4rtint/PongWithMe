@@ -74,14 +74,15 @@ namespace PongWithMe
         
         private void CompletePlayerSetup()
         {
-            _waitingForMorePlayersView.HideView();
             _networkPlayerJoinManager.CompletePlayerJoiningSession();
             _livesView.Initialize(_playerLives, _networkPlayersManager.Players);
             
+            _waitingForMorePlayersView.HideView();
             _playerLives.ForceUpdatePlayerScores();
             _stateManager.SetState(State.PreGame);
         }
-#region CleanUp
+        
+        #region CleanUp
         private void CleanUp()
         {
             _board.CleanUp();
@@ -111,8 +112,8 @@ namespace PongWithMe
         private void Reset(Brick[] bricks)
         {
             _board.Reset(bricks);
-            _bricksBehaviour.Reset();
             _playerLives.Reset();
+            _bricksBehaviour.Reset();
             _ballBehaviour.Reset();
             _networkPlayersManager.Reset();
             
