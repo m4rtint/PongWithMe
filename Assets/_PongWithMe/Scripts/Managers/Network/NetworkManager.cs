@@ -1,3 +1,4 @@
+using System;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -6,11 +7,18 @@ using UnityEngine.UI;
 
 namespace PongWithMe
 {
-    public class NetworkManager : MonoBehaviourPunCallbacks
+    public interface INetworkManager
+    {
+        public event Action OnPlayerEntered;
+
+    }
+    public class NetworkManager : MonoBehaviourPunCallbacks, INetworkManager
     {
         // TODO - THIS IS PLACE HOLDER, NETWORKCORE SHOULD BE PASSED INTO THE BUTTON ITSELF.
         [SerializeField] private Button _leaveButton = null;
 
+        public event Action OnPlayerEntered;
+        
         public void Initialize()
         {
             
@@ -25,12 +33,12 @@ namespace PongWithMe
         public override void OnPlayerEnteredRoom(Player other)
         {
             Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName); // not seen if you're the player connecting
-            
             if (PhotonNetwork.IsMasterClient)
             {
                 Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
-                LoadArena();
             }
+            
+            OnPlayerEntered?.Invoke();
         }
         
         public override void OnPlayerLeftRoom(Player other)

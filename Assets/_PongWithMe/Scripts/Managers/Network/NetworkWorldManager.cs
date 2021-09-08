@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using DG.Tweening;
 using Photon.Pun;
 using Sirenix.OdinInspector;
@@ -17,6 +16,7 @@ namespace PongWithMe
         [SerializeField] private BallBehaviour _ballBehaviour = null;
         [SerializeField] private NetworkPlayersManager _networkPlayersManager = null;
         [SerializeField] private NetworkPlayerJoinManager _networkPlayerJoinManager = null;
+        [SerializeField] private NetworkManager _networkmanager = null;
         [SerializeField] private GoalsManager _goalsManager = null;
         [SerializeField] private MutatorBehaviour _mutatorBehaviour = null;
 
@@ -29,6 +29,7 @@ namespace PongWithMe
         [SerializeField] private GameOverViewBehaviour _gameOverView = null;
         [SerializeField] private ScorePanelViewBehaviour _scorePanelView = null;
         [SerializeField] private MutatorAnnouncementViewBehaviour _mutatorAnnouncementView = null;
+        [SerializeField] private WaitingForMorePlayersViewBehaviour _waitingForMorePlayersView = null;
         
         private IStateManager _stateManager = null;
         private PlayerLives _playerLives = null;
@@ -68,6 +69,7 @@ namespace PongWithMe
             // Interface
             _gameOverView.Initialize(_networkPlayersManager);
             _scorePanelView.Initialize(_networkPlayersManager, AMOUNT_OF_WINS);
+            _waitingForMorePlayersView.Initialize(CompletePlayerSetup, _networkmanager);
         }
 
         private void CleanUp()
@@ -85,6 +87,11 @@ namespace PongWithMe
                 
                 PhotonView.Get(this).RPC("BuildBricks", RpcTarget.Others, BrickToDTO.ConvertToDTO(bricks));
             }
+        }
+
+        private void CompletePlayerSetup()
+        {
+            _waitingForMorePlayersView.HideView();
         }
 
         [PunRPC]
