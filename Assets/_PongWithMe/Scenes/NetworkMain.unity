@@ -4573,7 +4573,7 @@ GameObject:
   - component: {fileID: 1581145640}
   - component: {fileID: 1581145639}
   m_Layer: 5
-  m_Name: Title
+  m_Name: WaitingForMorePlayersTitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

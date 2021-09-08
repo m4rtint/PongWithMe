@@ -1,11 +1,12 @@
 using System;
 using DG.Tweening;
+using Photon.Pun;
 using TMPro;
 using UnityEngine;
 
 namespace PongWithMe
 {
-    public class WaitingForMorePlayersViewBehaviour : MonoBehaviour
+    public class WaitingForMorePlayersViewBehaviour : MonoBehaviour, IPunObservable
     {
         private const string TITLE = "Waiting for more players to join...";
         
@@ -14,6 +15,7 @@ namespace PongWithMe
 
         private WaitingForMorePlayersViewModel _viewModel = null;
         private IStateManager _stateManager = null;
+        private IPunObservable _punObservableImplementation;
 
         public void Initialize(Action action, NetworkManager networkManager, IStateManager stateManager = null)
         {
@@ -38,6 +40,22 @@ namespace PongWithMe
             if (_stateManager.GetState() == State.PlayerJoining)
             {
                 _viewModel.Update(Time.deltaTime);
+            }
+        }
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                if (stream.IsWriting)
+                {
+                    stream.SendNext(_viewModel.ElapsedTime);
+                }
+            }
+
+            if (stream.IsReading)
+            {
+                _viewModel.ElapsedTime = (float) stream.ReceiveNext();
             }
         }
     }

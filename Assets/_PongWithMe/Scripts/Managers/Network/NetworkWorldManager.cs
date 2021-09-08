@@ -92,6 +92,7 @@ namespace PongWithMe
         private void CompletePlayerSetup()
         {
             _waitingForMorePlayersView.HideView();
+            _stateManager.SetState(State.PreGame);
         }
 
         [PunRPC]
