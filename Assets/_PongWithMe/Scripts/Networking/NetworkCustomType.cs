@@ -2,7 +2,7 @@ using ExitGames.Client.Photon;
 
 namespace PongWithMe
 {
-    public static class CustomType
+    public static class NetworkCustomType
     {
         private const int VECTOR2_SIZE = 2 * 4;
         private const int INT_SIZE = 4;

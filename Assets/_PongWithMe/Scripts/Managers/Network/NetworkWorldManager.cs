@@ -15,8 +15,8 @@ namespace PongWithMe
         [Title("Components")] 
         [SerializeField] private BricksBehaviour _bricksBehaviour = null;
         [SerializeField] private BallBehaviour _ballBehaviour = null;
-        [SerializeField] private NetworkPlayersManager _playersManager = null;
-        [SerializeField] private NetworkPlayerJoinManager _playerJoinManager = null;
+        [SerializeField] private NetworkPlayersManager _networkPlayersManager = null;
+        [SerializeField] private NetworkPlayerJoinManager _networkPlayerJoinManager = null;
         [SerializeField] private GoalsManager _goalsManager = null;
         [SerializeField] private MutatorBehaviour _mutatorBehaviour = null;
 
@@ -44,7 +44,7 @@ namespace PongWithMe
             _stateManager.OnStateChanged += HandleStateChanges;
             
             _stateManager.SetState(State.PlayerJoining);
-            CustomType.Register();
+            NetworkCustomType.Register();
         }
 
         private void Start()
@@ -55,8 +55,8 @@ namespace PongWithMe
             
             _playerLives = new PlayerLives(_board, AMOUNT_OF_PLAYERS);
             _goalsManager.Initialize(_playerLives);
-            _playersManager.Initialize(_playerLives);
-            _playerJoinManager.Initialize(_playersManager);
+            _networkPlayersManager.Initialize(_playerLives);
+            _networkPlayerJoinManager.Initialize(_networkPlayersManager, _goalsManager);
             
             // Ball
             _ballBehaviour.Initialize();
@@ -66,13 +66,13 @@ namespace PongWithMe
             _portalsBehaviour.Initialize();
             
             // Interface
-            _gameOverView.Initialize(_playersManager);
-            _scorePanelView.Initialize(_playersManager, AMOUNT_OF_WINS);
+            _gameOverView.Initialize(_networkPlayersManager);
+            _scorePanelView.Initialize(_networkPlayersManager, AMOUNT_OF_WINS);
         }
 
         private void CleanUp()
         {
-            
+            _board.CleanUp();
         }
 
         private void Reset()
@@ -82,35 +82,15 @@ namespace PongWithMe
                 var bricks = BoardFactory.Build(AMOUNT_OF_PLAYERS);
                 _board.Reset(bricks);
                 _bricksBehaviour.Reset();
-                List<BrickDTO> list = new List<BrickDTO>();
                 
-                foreach (var brick in bricks)
-                {
-                    var brickDTO = new BrickDTO();
-                    brickDTO.PlayerOwned = brick.PlayerOwned;
-                    brickDTO.PositionX = brick.Position.x;
-                    brickDTO.PositionY = brick.Position.y;
-                    list.Add(brickDTO);
-                }
-                PhotonView.Get(this).RPC("BuildBricks", RpcTarget.Others, list.ToArray());
+                PhotonView.Get(this).RPC("BuildBricks", RpcTarget.Others, BrickToDTO.ConvertToDTO(bricks));
             }
         }
 
         [PunRPC]
         private void BuildBricks(BrickDTO[] stream)
         {
-           Debug.Log(stream);
-           List<Brick> list = new List<Brick>();
-           foreach (var brickDTO in stream)
-           {
-               var brick = new Brick();
-               brick.Position = new Vector3(brickDTO.PositionX, brickDTO.PositionY);
-               brick.PlayerOwned = brickDTO.PlayerOwned;
-               brick.BrickColor = ColorPalette.PlayerColor(brickDTO.PlayerOwned);
-               list.Add(brick);
-           }
-
-           var bricks = list.ToArray();
+            var bricks = BrickToDTO.ConvertToBricks(stream);
            _board.Reset(bricks);
            _bricksBehaviour.Reset();
         }

@@ -49,8 +49,7 @@ namespace PongWithMe
         private void Start()
         {
             // Board
-            var bricks = BoardFactory.Build(AMOUNT_OF_PLAYERS);
-            _board = new Board(bricks);
+            _board = new Board();
             _bricksBehaviour.Initialize(_board);
 
             // Players
