@@ -71,7 +71,17 @@ namespace PongWithMe
             _scorePanelView.Initialize(_networkPlayersManager, AMOUNT_OF_WINS);
             _waitingForMorePlayersView.Initialize(CompletePlayerSetup, _networkmanager);
         }
-
+        
+        private void CompletePlayerSetup()
+        {
+            _waitingForMorePlayersView.HideView();
+            _networkPlayerJoinManager.CompletePlayerJoiningSession();
+            _livesView.Initialize(_playerLives, _networkPlayersManager.Players);
+            
+            _playerLives.ForceUpdatePlayerScores();
+            _stateManager.SetState(State.PreGame);
+        }
+#region CleanUp
         private void CleanUp()
         {
             _board.CleanUp();
@@ -81,36 +91,53 @@ namespace PongWithMe
             _networkPlayersManager.CleanUp();
         }
 
-        private void Reset()
+        private void CleanUpMaster()
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                CleanUp();
+                PhotonView.Get(this).RPC("CleanUpOthers", RpcTarget.Others);
+            }
+        }
+        
+        [PunRPC]
+        private void CleanUpOthers()
+        {
+            CleanUp();
+        }
+        #endregion
+
+        #region Reset
+        private void Reset(Brick[] bricks)
+        {
+            _board.Reset(bricks);
+            _bricksBehaviour.Reset();
+            _playerLives.Reset();
+            _ballBehaviour.Reset();
+            _networkPlayersManager.Reset();
+            
+            _goalsManager.Reset(_networkPlayersManager.Players);
+        }
+
+        private void ResetMaster()
         {
             if (PhotonNetwork.IsMasterClient)
             {
                 var bricks = BoardFactory.Build(AMOUNT_OF_PLAYERS);
-                _board.Reset(bricks);
-                _bricksBehaviour.Reset();
-                
-                PhotonView.Get(this).RPC("BuildBricks", RpcTarget.Others, BrickToDTO.ConvertToDTO(bricks));
+                Reset(bricks);
+                PhotonView.Get(this).RPC("ResetOthers", RpcTarget.Others, BrickToDTO.ConvertToDTO(bricks));
             }
-
-            _networkPlayersManager.Reset();
-        }
-
-        private void CompletePlayerSetup()
-        {
-            _waitingForMorePlayersView.HideView();
-            _networkPlayerJoinManager.CompletePlayerJoiningSession();
-            
-            _stateManager.SetState(State.PreGame);
         }
 
         [PunRPC]
-        private void BuildBricks(BrickDTO[] stream)
+        private void ResetOthers(BrickDTO[] stream)
         {
-            var bricks = BrickToDTO.ConvertToBricks(stream);
-           _board.Reset(bricks);
-           _bricksBehaviour.Reset();
+            var bricks = BrickToDTO.ConvertToBricks(stream); 
+            Reset(bricks);
         }
 
+        #endregion
+        
         private void HandleStateChanges(State state)
         {
             switch (state)
@@ -119,8 +146,8 @@ namespace PongWithMe
                     break;
                 case State.PreGame:
                     TimeScaleController.PlayTimeScale();
-                    CleanUp();
-                    Reset();
+                    CleanUpMaster();
+                    ResetMaster();
                     break;
                 case State.StartGame:
                     _stateManager.SetState(State.Play);
