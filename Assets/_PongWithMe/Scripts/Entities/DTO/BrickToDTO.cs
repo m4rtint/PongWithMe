@@ -26,10 +26,13 @@ namespace PongWithMe
            List<Brick> list = new List<Brick>();
            foreach (var brickDTO in bricks)
            {
-               var brick = new Brick();
-               brick.Position = new Vector3(brickDTO.PositionX, brickDTO.PositionY);
-               brick.PlayerOwned = brickDTO.PlayerOwned;
-               brick.BrickColor = ColorPalette.PlayerColor(brickDTO.PlayerOwned);
+               var brick = new Brick
+               {
+                   Position = new Vector3(brickDTO.PositionX, brickDTO.PositionY),
+                   PlayerOwned = brickDTO.PlayerOwned,
+                   BrickColor = ColorPalette.PlayerColor(brickDTO.PlayerOwned),
+                   IsActive = true
+               };
                list.Add(brick);
            }
 
