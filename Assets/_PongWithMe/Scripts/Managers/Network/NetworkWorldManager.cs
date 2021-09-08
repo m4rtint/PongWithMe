@@ -57,7 +57,7 @@ namespace PongWithMe
             _playerLives = new PlayerLives(_board, AMOUNT_OF_PLAYERS);
             _goalsManager.Initialize(_playerLives);
             _networkPlayersManager.Initialize(_playerLives);
-            _networkPlayerJoinManager.Initialize(_networkPlayersManager, _goalsManager);
+            _networkPlayerJoinManager.Initialize(_networkPlayersManager, _goalsManager, _ballBehaviour);
             
             // Ball
             _ballBehaviour.Initialize();
