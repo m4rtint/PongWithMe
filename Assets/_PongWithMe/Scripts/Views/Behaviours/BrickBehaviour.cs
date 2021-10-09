@@ -9,7 +9,7 @@ namespace PongWithMe
         private const float BRICK_BREAK_ANIMATION_DURATION = 0.5F;
         [SerializeField] private Disc _shape = null;
 
-        private Brick _brick = null;
+        protected Brick _brick = null;
         private IBrickPopEffect _popEffectPool = null;
         
         public void Initialize(Brick brick, IBrickPopEffect popEffectPool = null)
@@ -34,7 +34,7 @@ namespace PongWithMe
             }
         }
 
-        private void OnCollisionEnter2D(Collision2D other)
+        protected virtual void OnCollisionEnter2D(Collision2D other)
         {
             if (other.collider.TryGetComponent(out BallBehaviour ball))
             {
